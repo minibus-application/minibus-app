@@ -1,6 +1,5 @@
 package com.example.minibus.ui.schedule;
 
-import android.animation.LayoutTransition;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -41,7 +40,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.minibus.ui.BackButtonListener;
+import com.example.minibus.ui.base.BackButtonListener;
 import com.example.minibus.data.network.pojo.schedule.BusTrip;
 import com.example.minibus.ui.R;
 import com.example.minibus.ui.custom.SpanningLinearLayoutManager;

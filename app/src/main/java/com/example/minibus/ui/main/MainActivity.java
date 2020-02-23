@@ -20,7 +20,7 @@ import com.example.minibus.di.components.DaggerActivityComponent;
 import com.example.minibus.di.modules.ActivityModule;
 import com.example.minibus.ui.R;
 import com.example.minibus.ui.schedule.BusScheduleFragment;
-import com.example.minibus.ui.BackButtonListener;
+import com.example.minibus.ui.base.BackButtonListener;
 import com.example.minibus.utils.NetworkChangeReceiver;
 
 import java.util.List;

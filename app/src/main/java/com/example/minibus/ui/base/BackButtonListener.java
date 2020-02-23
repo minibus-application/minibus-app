@@ -1,4 +1,4 @@
-package com.example.minibus.ui;
+package com.example.minibus.ui.base;
 
 public interface BackButtonListener {
 
