@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">700</string>
+
+    <!-- Buttons -->
+    <string name="login">Войти</string>
+    <string name="logout">Выйти</string>
+    <string name="close">Закрыть</string>
+    <string name="refresh">Обновить</string>
+    <string name="settings">Настройки</string>
+    <string name="ok">ОК</string>
+    <string name="retry">Повторить</string>
+    <string name="back">Назад</string>
+    <string name="book">Бронь</string>
+    <string name="cancel">Отменить</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+    <!-- Empty state -->
+    <string name="bookings_empty_title">Нет активных броней</string>
+    <string name="bookings_empty_message">Поспешите забронировать рейс</string>
+    <string name="bus_stops_empty_title">Нет остановок</string>
+    <string name="bus_stops_empty_message">Попробуйте обновить позже</string>
+    <string name="bus_schedule_empty_title">Нет расписания</string>
+    <string name="bus_schedule_empty_message">Смените дату или остановку</string>
+
+    <!-- Labels -->
+    <string name="label_date">Дата: %1$s</string>
+    <string name="label_departure_time">Отправление: %1$s</string>
+    <string name="label_arrival_time">Прибытие: %1$s</string>
+    <string name="label_bus_stop">Остановка: %1$s</string>
+    <string name="label_passengers_count">Кол-во пассажиров:</string>
+    <string name="label_available_seats_count">Мест свободно: %1$d</string>
+    <string name="label_bus_stop_prefix">ост. %1$s</string>
+
+    <!-- Auth form -->
+    <string name="user_phone_country_code">+375</string>
+    <string name="user_name_empty_error">Введите имя</string>
+    <string name="user_phone_format_error">Неверный формат номера</string>
+    <string name="user_pass_empty_error">Введите пароль</string>
+    <string name="user_confirm_pass_error">Пароли не совпадают</string>
+    <string name="user_confirm_pass_empty_error">Подтвердите пароль</string>
+    <string name="login_account_exists">У меня есть аккаунт</string>
+    <string name="login_no_account">У меня нет аккаунта</string>
+
+    <!-- Titles -->
+    <string name="login_title">Логин</string>
+    <string name="profile_title">Профиль</string>
+    <string name="profile_active_user_bookings">Активные бронирования:</string>
+    <string name="bus_stops_title">Остановки</string>
+    <string name="bus_schedule_title">Расписание</string>
+    <string name="bus_schedule_filter_title">Фильтр</string>
+    <string name="bus_trip_summary_title">Бронирование</string>
+
+    <!-- Success -->
+    <string name="success_booking_title">Забронировано!</string>
+    <string name="success_booking_message">Чтобы ознакомится с активными бронированиями, перейдите в профиль</string>
+
+    <!-- Progress -->
+    <string name="progress_default_title">Идет загрузка</string>
+    <string name="progress_default_message">Пожалуйста, подождите</string>
+
+    <!-- Errors -->
+    <string name="error_default_title">Ошибка</string>
+    <string name="error_default_message">Во время загрузки данных произошла ошибка</string>
+    <string name="error_no_bus_trip_message">Выбранная поездка отсуствует</string>
+
+    <!-- Warnings -->
+    <string name="warning_default_title">Внимание</string>
+    <string name="warning_arrival_stop_message">Маршрутное такси едет до конечной станции.
+        О необходимости выйти на нужной Вам остановке сообщите водителю заранее</string>
+    <string name="warning_bookings_limit_message">Превышен лимит активных бронирований</string>
+    <string name="warning_no_seats_message">Мест больше нет</string>
+    <string name="warning_logout_message">Вы действительно хотите выйти?</string>
+    <string name="warning_booking_cancel_message">Вы действительно хотите отменить бронирование?</string>
+    <string name="warning_unauthorized_message">Чтобы продолжить, необходимо авторизоваться</string>
+    <string name="warning_bad_connectivity_message">Потеря интернет соединения</string>
+
+    <!-- Hints -->
+    <string name="hint_enter_name">Имя</string>
+    <string name="hint_enter_phone">Номер телефона</string>
+    <string name="hint_enter_pass">Пароль</string>
+    <string name="hint_confirm_pass">Повторите пароль</string>
+    <string name="hint_departure">Откуда</string>
+    <string name="hint_arrival">Куда</string>
+
+    <!-- Welcome and goodbye -->
+    <string name="welcome_default_title">Добро пожаловать!</string>
+    <string name="welcome_default_message">Пожалуйста, выберите город и остановку отправления</string>
+    <string name="welcome_user_message">Добро пожаловать, %1$s</string>
+    <string name="goodbye_user_message">Возвращайтесь снова, %1$s</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

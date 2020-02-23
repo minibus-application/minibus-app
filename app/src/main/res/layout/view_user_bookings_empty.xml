@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_empty"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorSurface"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/image_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_user_bookings_empty_state" />
+
+    <TextView
+        android:id="@+id/text_empty_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_empty"
+        android:layout_margin="4dp"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?textAppearanceHeadline6"
+        android:text="@string/bookings_empty_title" />
+
+    <TextView
+        android:id="@+id/text_empty_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_empty_title"
+        android:layout_margin="4dp"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?textAppearanceBody2"
+        android:text="@string/bookings_empty_message" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_empty_bus_schedule"
+        style="@style/Widget.AppTheme.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_empty_subtitle"
+        android:layout_margin="8dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/bus_schedule_title" />
+</RelativeLayout>

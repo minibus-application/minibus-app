@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="7dp">
+
+    <RelativeLayout
+        android:id="@+id/layout_profile_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/image_user_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:tint="@color/colorIconSecondary"
+            app:srcCompat="@drawable/ic_avatar_dark_24dp" />
+
+        <TextView
+            android:id="@+id/text_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/image_user_avatar"
+            android:layout_toEndOf="@id/image_user_avatar"
+            android:ellipsize="end"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:singleLine="true"
+            android:textAppearance="?textAppearanceBody1" />
+
+        <TextView
+            android:id="@+id/text_user_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/image_user_avatar"
+            android:layout_toEndOf="@id/image_user_avatar"
+            android:ellipsize="end"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:singleLine="true"
+            android:textAppearance="?textAppearanceBody2" />
+
+        <Button
+            android:id="@+id/button_user_logout"
+            style="@style/Widget.AppTheme.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/logout"
+            android:textSize="14sp"
+            android:textColor="#FF5252"
+            app:rippleColor="#FF5252"
+            android:textAllCaps="true" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_delimiter"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignBottom="@id/layout_profile_header"
+        android:background="@color/colorBackground" />
+
+    <RelativeLayout
+        android:id="@+id/container_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_delimiter"
+        android:background="@color/colorBackground">
+
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/multi_state_user_bookings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:msv_errorView="@layout/view_user_bookings_empty"
+            app:msv_emptyView="@layout/view_user_bookings_empty"
+            app:msv_loadingView="@layout/view_loading"
+            app:msv_viewState="content">
+
+            <RelativeLayout
+                android:id="@+id/container_user_bookings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/text_user_bookings_active"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingStart="16dp"
+                    android:textAppearance="?textAppearanceBody2"
+                    android:text="@string/profile_active_user_bookings" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_user_bookings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_user_bookings_active"
+                    android:clipToPadding="false" />
+
+                <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                    android:id="@+id/indicator_user_bookings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recycler_user_bookings"
+                    android:layout_centerHorizontal="true"
+                    app:spi_dotColor="@color/colorTextSecondary"
+                    app:spi_dotSelectedColor="@color/colorAccent" />
+            </RelativeLayout>
+        </com.kennyc.view.MultiStateView>
+    </RelativeLayout>
+</RelativeLayout>
