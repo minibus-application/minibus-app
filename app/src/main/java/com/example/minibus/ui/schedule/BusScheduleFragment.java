@@ -21,6 +21,9 @@ import com.example.minibus.ui.stops.BusStopsFragment;
 import com.google.android.material.appbar.AppBarLayout;
 
 import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -132,6 +135,9 @@ public class BusScheduleFragment extends BaseFragment implements
         adapterBusSchedule = new BusScheduleAdapter(getMainActivity());
         adapterBusSchedule.setOnItemClickListener(this);
 
+        DividerItemDecoration itemDecorator = new DividerItemDecoration(getMainActivity(), DividerItemDecoration.VERTICAL);
+        itemDecorator.setDrawable(ContextCompat.getDrawable(getMainActivity(), R.drawable.item_divider));
+        recyclerBusSchedule.addItemDecoration(itemDecorator);
         recyclerBusSchedule.setAdapter(adapterBusSchedule);
         recyclerBusSchedule.setLayoutManager(layoutManagerBusSchedule);
         recyclerBusSchedule.setHasFixedSize(false);
