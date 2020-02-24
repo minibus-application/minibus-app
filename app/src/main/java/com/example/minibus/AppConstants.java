@@ -15,4 +15,5 @@ public class AppConstants {
     public static final int BUS_STOPS_FRAGMENT_REQ_CODE = 1;
     public static final int USER_PROFILE_FRAGMENT_REQ_CODE = 2;
     public static final int LOGIN_FRAGMENT_REQ_CODE = 3;
+    public static final double MAX_FONT_SCALE_FACTOR = 1.0;
 }

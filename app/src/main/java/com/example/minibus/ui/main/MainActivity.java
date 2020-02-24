@@ -15,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.minibus.App;
+import com.example.minibus.AppConstants;
 import com.example.minibus.di.components.ActivityComponent;
 import com.example.minibus.di.components.DaggerActivityComponent;
 import com.example.minibus.di.modules.ActivityModule;
 import com.example.minibus.ui.R;
 import com.example.minibus.ui.schedule.BusScheduleFragment;
 import com.example.minibus.ui.base.BackButtonListener;
+import com.example.minibus.utils.CommonUtil;
 import com.example.minibus.utils.NetworkChangeReceiver;
 
 import java.util.List;
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        CommonUtil.adjustFontSize(this, (float) AppConstants.MAX_FONT_SCALE_FACTOR);
+
+        setContentView(R.layout.activity_main);
+
         activityComponent = DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
                 .applicationComponent(((App) getApplication()).getComponent())
@@ -46,14 +52,8 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(new NetworkChangeReceiver(), filter);
 
-        setContentView(R.layout.activity_main);
-
         View decor = getWindow().getDecorView();
-        if (decor != null) {
-            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        } else {
-            decor.setSystemUiVisibility(0);
-        }
+        decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
