@@ -137,7 +137,7 @@ public class BusStopsFragment extends BaseDialogFragment implements
 
     @Override
     public void hideProgress() {
-        if (multiStateView.getViewState().equals(MultiStateView.ViewState.LOADING)) {
+        if (multiStateView.getViewState() == MultiStateView.ViewState.LOADING) {
             multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
         }
     }

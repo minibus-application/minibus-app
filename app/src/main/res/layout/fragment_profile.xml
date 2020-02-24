@@ -77,7 +77,7 @@
             app:msv_errorView="@layout/view_user_bookings_empty"
             app:msv_emptyView="@layout/view_user_bookings_empty"
             app:msv_loadingView="@layout/view_loading"
-            app:msv_viewState="content">
+            app:msv_viewState="loading">
 
             <RelativeLayout
                 android:id="@+id/container_user_bookings"

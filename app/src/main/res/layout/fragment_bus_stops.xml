@@ -30,7 +30,7 @@
             app:msv_errorView="@layout/view_bus_stops_empty"
             app:msv_emptyView="@layout/view_bus_stops_empty"
             app:msv_loadingView="@layout/view_loading"
-            app:msv_viewState="empty">
+            app:msv_viewState="loading">
 
             <ExpandableListView
                 android:id="@+id/list_cities"

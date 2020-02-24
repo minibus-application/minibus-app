@@ -330,17 +330,17 @@ public class BusScheduleFragment extends BaseFragment implements
 
     @Override
     public void showProgress() {
-        multiStateView.setViewState(MultiStateView.ViewState.LOADING);
+        if (multiStateView.getViewState() != MultiStateView.ViewState.LOADING) {
+            multiStateView.setViewState(MultiStateView.ViewState.LOADING);
+        }
     }
 
     @Override
     public void hideProgress() {
-        if (multiStateView.getViewState().equals(MultiStateView.ViewState.LOADING)) {
-            multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
-        }
+        if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
 
-        if (swipeRefresh.isRefreshing()) {
-            swipeRefresh.setRefreshing(false);
+        if (multiStateView.getViewState() == MultiStateView.ViewState.LOADING) {
+            multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
         }
     }
 
