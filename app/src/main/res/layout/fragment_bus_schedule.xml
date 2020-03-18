@@ -86,7 +86,7 @@
             app:msv_errorView="@layout/view_bus_schedule_empty"
             app:msv_emptyView="@layout/view_bus_schedule_empty"
             app:msv_loadingView="@layout/view_loading"
-            app:msv_viewState="loading">
+            app:msv_viewState="empty">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_bus_schedule"
