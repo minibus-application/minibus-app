@@ -104,6 +104,18 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
         return builder.create();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.onSetupPassengersOptions(seatsCount);
+    }
+
+    @Override
+    public void onDestroyView() {
+        presenter.detachView();
+        super.onDestroyView();
+    }
+
     @OnClick(R.id.button_sum_cancel)
     public void onCancelButtonClick() {
         presenter.onCancelClick();
@@ -112,12 +124,6 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
     @OnClick(R.id.button_sum_book)
     public void onBookButtonClick() {
         presenter.onBookClick(departureDate, busTrip, departureBusStop, getPassengersCount());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        presenter.onSetupPassengersOptions(seatsCount);
     }
 
     @Override
@@ -177,9 +183,8 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
     }
 
     @Override
-    public void onDestroyView() {
-        presenter.detachView();
-        super.onDestroyView();
+    protected void onBack() {
+        presenter.onCancelClick();
     }
 
     private int getPassengersCount() {

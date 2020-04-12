@@ -7,11 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.minibus.app.AppConstants;
+import org.minibus.app.helpers.AppAlertsHelper;
 import org.minibus.app.ui.base.BaseDialogFragment;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
+
+import android.os.Handler;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
@@ -127,6 +130,12 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        presenter.detachView();
+        super.onDestroyView();
+    }
+
     @OnClick(R.id.button_login)
     public void onLoginClick() {
         hideKeyboard();
@@ -212,9 +221,18 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     }
 
     @Override
-    public void onDestroyView() {
-        presenter.detachView();
-        super.onDestroyView();
+    public void closeOnSuccessLogin() {
+        final Handler handler = new Handler();
+        AppAlertsHelper.setProgressHudCompleted(getMainActivity());
+        handler.postDelayed(() -> {
+            AppAlertsHelper.hideProgressHud();
+            close();
+        }, 1200);
+    }
+
+    @Override
+    protected void onBack() {
+        presenter.onCloseButtonClick();
     }
 
     private String getFieldText(TextInputEditText editText) {

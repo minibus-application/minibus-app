@@ -1,6 +1,11 @@
 package org.minibus.app.ui.base;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import org.minibus.app.di.components.ActivityComponent;
@@ -13,16 +18,15 @@ public abstract class BaseDialogFragment extends DialogFragment implements Contr
     private MainActivity activity;
     private Unbinder unbinder;
 
-    public MainActivity getMainActivity() {
-        return activity;
-    }
-
-    public ActivityComponent getActivityComponent() {
-        return activity.getActivityComponent();
-    }
-
-    public void setUnbinder(Unbinder unbinder) {
-        this.unbinder = unbinder;
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return new Dialog(activity, getTheme()){
+            @Override
+            public void onBackPressed() {
+                onBack();
+            }
+        };
     }
 
     @Override
@@ -51,4 +55,18 @@ public abstract class BaseDialogFragment extends DialogFragment implements Contr
     public void showEmptyView() {
 
     }
+
+    public MainActivity getMainActivity() {
+        return activity;
+    }
+
+    public ActivityComponent getActivityComponent() {
+        return activity.getActivityComponent();
+    }
+
+    public void setUnbinder(Unbinder unbinder) {
+        this.unbinder = unbinder;
+    }
+
+    protected abstract void onBack();
 }

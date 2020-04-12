@@ -17,22 +17,19 @@ public interface Contract {
         void showEmptyView();
 
         default void showProgress() {
-            AppAlertsHelper.showProgressDialog(getMainActivity());
+            AppAlertsHelper.showProgressHud(getMainActivity());
         }
 
         default void hideProgress() {
-            AppAlertsHelper.hideProgressDialog();
+            AppAlertsHelper.hideProgressHud();
         }
 
         default void showError(String msg) {
-            AppAlertsHelper.showAlertDialog(getMainActivity(),
-                    getMainActivity().getResources().getString(R.string.error_default_title), msg);
+            showInfo(msg);
         }
 
         default void showError(@StringRes int msgResId) {
-            AppAlertsHelper.showAlertDialog(getMainActivity(),
-                    getMainActivity().getResources().getString(R.string.error_default_title),
-                    getMainActivity().getResources().getString(msgResId));
+            showInfo(getMainActivity().getResources().getString(msgResId));
         }
 
         default void showInfo(@StringRes int msgResId) {

@@ -1,10 +1,13 @@
 package org.minibus.app.ui.base;
 
 import android.content.Context;
+import android.os.Bundle;
+
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.minibus.app.di.components.ActivityComponent;
-import org.minibus.app.helpers.AppAlertsHelper;
 import org.minibus.app.ui.main.MainActivity;
 
 import butterknife.Unbinder;
@@ -22,18 +25,6 @@ public abstract class BaseFragment extends Fragment implements Contract.View {
         }
     }
 
-    public MainActivity getMainActivity() {
-        return activity;
-    }
-
-    public ActivityComponent getActivityComponent() {
-        return activity.getActivityComponent();
-    }
-
-    public void setUnbinder(Unbinder unbinder) {
-        this.unbinder = unbinder;
-    }
-
     @Override
     public void onDestroyView() {
         if (unbinder != null) {
@@ -48,23 +39,36 @@ public abstract class BaseFragment extends Fragment implements Contract.View {
         super.onDetach();
     }
 
-    @Override
-    public void showError(String msg) {
-        AppAlertsHelper.showSnackbar(getMainActivity(), msg);
+    public MainActivity getMainActivity() {
+        return activity;
     }
 
-    @Override
-    public void showError(int msgResId) {
-        this.showError(getMainActivity().getResources().getString(msgResId));
+    public ActivityComponent getActivityComponent() {
+        return activity.getActivityComponent();
     }
 
-    @Override
-    public void showInfo(int msgResId) {
-        this.showInfo(getMainActivity().getResources().getString(msgResId));
+    public void setUnbinder(Unbinder unbinder) {
+        this.unbinder = unbinder;
     }
 
-    @Override
-    public void showInfo(String msg) {
-        AppAlertsHelper.showSnackbar(getMainActivity(), msg);
+    protected <T extends DialogFragment> T openDialogFragment(T fragment, int reqCode, Bundle bundle) {
+        String tag = fragment.getClass().getName();
+        FragmentTransaction transaction = requireFragmentManager().beginTransaction();
+        Fragment prevFragment = requireFragmentManager().findFragmentByTag(tag);
+
+        fragment.setTargetFragment(this, reqCode);
+
+        if (bundle != null) {
+            fragment.setArguments(bundle);
+        }
+
+        if (prevFragment != null) {
+            transaction.remove(prevFragment);
+        } else {
+            transaction.addToBackStack(null);
+            fragment.show(transaction, tag);
+        }
+
+        return fragment;
     }
 }

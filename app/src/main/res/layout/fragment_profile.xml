@@ -9,13 +9,16 @@
     <RelativeLayout
         android:id="@+id/layout_profile_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="?attr/actionBarSize"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/image_user_avatar"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:tint="@color/colorIconSecondary"
             app:srcCompat="@drawable/ic_avatar_dark_24dp" />
 
@@ -47,21 +50,21 @@
             android:id="@+id/button_user_logout"
             style="@style/Widget.AppTheme.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:text="@string/logout"
             android:textSize="14sp"
-            android:textColor="#FF5252"
-            app:rippleColor="#FF5252"
+            android:textColor="@color/colorErrorVariant"
+            app:rippleColor="@color/colorErrorVariant"
             android:textAllCaps="true" />
     </RelativeLayout>
 
     <View
         android:id="@+id/view_delimiter"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_alignBottom="@id/layout_profile_header"
-        android:background="@color/colorBackground" />
+        android:background="@color/colorControl" />
 
     <RelativeLayout
         android:id="@+id/container_content"

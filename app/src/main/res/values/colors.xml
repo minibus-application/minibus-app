@@ -15,6 +15,7 @@
     <color name="colorSurface">#ffffff</color>
     <color name="colorOnSurface">#121212</color>
     <color name="colorError">#FF1744</color>
+    <color name="colorErrorVariant">#FF5252</color>
     <color name="colorOnError">#FFFFFF</color>
 
     <color name="colorTextPrimary">#121212</color>
@@ -23,6 +24,8 @@
     <color name="colorIconSecondary">#E0E0E0</color>
 
     <color name="colorControl">#E0E0E0</color>
+
+    <color name="colorProgressHud">#80121212</color>
 
     <color tools:override = "true" name="mtrl_textinput_default_box_stroke_color">#E0E0E0</color>
 </resources>

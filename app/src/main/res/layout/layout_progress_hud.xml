@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
+    android:weightSum="5"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_progress_hud"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="20dp">
+
+    <FrameLayout
+        android:id="@+id/container_hub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/image_hub_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:layout_gravity="center|center_vertical"
+            android:background="@drawable/ic_arc_rotate"/>
+
+        <ImageView
+            android:id="@+id/image_hub_checkmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="1.7"
+            android:scaleY="1.7"
+            android:visibility="gone"
+            android:layout_gravity="center|center_vertical"
+            android:src="@drawable/ic_check_mark_dark_24dp"
+            android:tint="@color/colorPrimary"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/text_hub_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="bottom"
+        android:textAlignment="center"
+        android:gravity="bottom"
+        android:text="Завершено"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@color/colorPrimary"/>
+</LinearLayout>

@@ -14,6 +14,7 @@ public interface LoginContract {
         void showPhoneFieldError(@StringRes int msgResId);
         void showPasswordFieldError(@StringRes int msgResId);
         void showConfirmPasswordFieldError(@StringRes int msgResId);
+        void closeOnSuccessLogin();
         void hideNameFieldError();
         void hidePhoneFieldError();
         void hidePasswordFieldError();

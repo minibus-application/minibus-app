@@ -1,34 +1,18 @@
 package org.minibus.app.helpers;
 
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.widget.TextView;
 
 public class AppAnimHelper {
 
     public static void textFadeInOut(final TextView view, String text) {
-        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
-        alphaAnimation.setDuration(200);
-        alphaAnimation.setRepeatCount(1);
-        alphaAnimation.setRepeatMode(Animation.REVERSE);
-
-        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+        view.animate().setDuration(200).setListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationEnd(Animator animation) {
                 view.setText(text);
+                view.animate().setListener(null).setDuration(200).alpha(1.0f);
             }
-        });
-
-        view.startAnimation(alphaAnimation);
+        }).alpha(0.0f);
     }
 }

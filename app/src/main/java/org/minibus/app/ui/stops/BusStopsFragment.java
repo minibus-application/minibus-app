@@ -86,15 +86,21 @@ public class BusStopsFragment extends BaseDialogFragment implements
         return view;
     }
 
-    @OnClick(R.id.button_empty_bus_stops)
-    public void onRefreshButtonClick() {
-        presenter.onRefreshButtonClick();
-    }
-
     @Override
     public void onStart() {
         super.onStart();
         presenter.onStart();
+    }
+
+    @Override
+    public void onDestroyView() {
+        presenter.detachView();
+        super.onDestroyView();
+    }
+
+    @OnClick(R.id.button_empty_bus_stops)
+    public void onRefreshButtonClick() {
+        presenter.onRefreshButtonClick();
     }
 
     @Override
@@ -148,8 +154,7 @@ public class BusStopsFragment extends BaseDialogFragment implements
     }
 
     @Override
-    public void onDestroyView() {
-        presenter.detachView();
-        super.onDestroyView();
+    protected void onBack() {
+        presenter.onCloseButtonClick();
     }
 }

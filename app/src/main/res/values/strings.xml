@@ -56,7 +56,8 @@
     <string name="success_booking_message">Чтобы ознакомится с активными бронированиями, перейдите в профиль</string>
 
     <!-- Progress -->
-    <string name="progress_default_title">Идет загрузка</string>
+    <string name="progress_default_title">Загрузка</string>
+    <string name="progress_success_title">Завершено</string>
     <string name="progress_default_message">Пожалуйста, подождите</string>
 
     <!-- Errors -->

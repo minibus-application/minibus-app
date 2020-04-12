@@ -6,6 +6,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -16,26 +17,27 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 import org.minibus.app.ui.R;
+import org.minibus.app.ui.custom.ProgressHud;
 import org.minibus.app.ui.main.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 public class AppAlertsHelper {
 
-    private static ProgressDialog progressDialog;
+    private static Toast toast;
+    private static ProgressHud progressHud;
 
-    public static ProgressDialog showProgressDialog(Context context) {
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setTitle(R.string.progress_default_title);
-        progressDialog.setMessage(context.getResources().getString(R.string.progress_default_message));
-        progressDialog.show();
-        return progressDialog;
+    public static ProgressHud showProgressHud(Context context) {
+        progressHud = new ProgressHud(context, R.style.ProgressHud);
+        progressHud.showHud(context.getString(R.string.progress_default_title), false, null);
+        return progressHud;
     }
 
-    public static void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) progressDialog.cancel();
+    public static void setProgressHudCompleted(Context context) {
+        if (progressHud != null) progressHud.setCompleted(context.getString(R.string.progress_success_title));
+    }
+
+    public static void hideProgressHud() {
+        if (progressHud != null && progressHud.isShowing()) progressHud.cancel();
     }
 
     public static AlertDialog showActionDialog(Context context,
@@ -92,7 +94,9 @@ public class AppAlertsHelper {
         TextView text = layout.findViewById(R.id.text_toast_message);
         text.setText(msg);
 
-        Toast toast = new Toast(context);
+        if (toast != null) toast.cancel();
+
+        toast = new Toast(context);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();

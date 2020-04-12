@@ -397,36 +397,26 @@ public class BusScheduleFragment extends BaseFragment implements
     @Override
     public void openBusTripSummary(BusTrip busTrip, BusStop departureBusStop, String departureDate) {
         Bundle bundle = new Bundle();
-
         bundle.putSerializable(BusTripFragment.BUS_TRIP_KEY, busTrip);
         bundle.putSerializable(BusTripFragment.BUS_STOP_KEY, departureBusStop);
         bundle.putString(BusTripFragment.BUS_DATE_KEY, departureDate);
 
-        BusTripFragment busTripFragment = BusTripFragment.newInstance();
-        busTripFragment.setArguments(bundle);
-        busTripFragment.setTargetFragment(this, BusTripFragment.REQ_CODE);
-        busTripFragment.show(requireFragmentManager(), BusTripFragment.class.getName());
+        super.openDialogFragment(BusTripFragment.newInstance(), BusTripFragment.REQ_CODE, bundle);
     }
 
     @Override
     public void openProfile() {
-        UserProfileFragment userProfileFragment = UserProfileFragment.newInstance();
-        userProfileFragment.setTargetFragment(this, UserProfileFragment.REQ_CODE);
-        userProfileFragment.show(requireFragmentManager(), UserProfileFragment.class.getName());
+        super.openDialogFragment(UserProfileFragment.newInstance(), UserProfileFragment.REQ_CODE, null);
     }
 
     @Override
     public void openLogin() {
-        LoginFragment loginFragment = LoginFragment.newInstance();
-        loginFragment.setTargetFragment(this, LoginFragment.REQ_CODE);
-        loginFragment.show(requireFragmentManager(), LoginFragment.class.getName());
+        super.openDialogFragment(LoginFragment.newInstance(), LoginFragment.REQ_CODE, null);
     }
 
     @Override
     public void openDepartureBusStops() {
-        BusStopsFragment busStopsFragment = BusStopsFragment.newInstance();
-        busStopsFragment.setTargetFragment(this, BusStopsFragment.REQ_CODE);
-        busStopsFragment.show(requireFragmentManager(), BusStopsFragment.class.getName());
+        super.openDialogFragment(BusStopsFragment.newInstance(), BusStopsFragment.REQ_CODE, null);
     }
 
     @Override

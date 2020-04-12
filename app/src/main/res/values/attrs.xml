@@ -5,4 +5,5 @@
     <attr name="colorIconPrimary" format="color|reference" />
     <attr name="colorIconSecondary" format="color|reference" />
     <attr name="colorControls" format="color|reference" />
+    <attr name="colorErrorVariant" format="color|reference" />
 </resources>

@@ -117,10 +117,9 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
             emptyView.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             int emptyViewHeight = emptyView.getMeasuredHeight();
 
-            RelativeLayout loadingView = (RelativeLayout) multiStateView.getView(MultiStateView.ViewState.LOADING);
-            ViewGroup.LayoutParams loadingViewParams = loadingView.getLayoutParams();
-            loadingViewParams.height = emptyViewHeight;
-            loadingView.setLayoutParams(loadingViewParams);
+            ViewGroup.LayoutParams multiStateViewParams = multiStateView.getLayoutParams();
+            multiStateViewParams.height = emptyViewHeight;
+            multiStateView.setLayoutParams(multiStateViewParams);
         } catch (NullPointerException e) {}
 
         return view;

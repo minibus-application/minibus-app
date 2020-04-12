@@ -45,18 +45,17 @@ public class LoginPresenter<V extends LoginContract.View> extends BasePresenter<
                     : getUserCreationObservable(userName, userPhone, userPassword);
 
             addSubscription(observable.doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
-                    .doFinally(() -> getView().ifAlive(V::hideProgress))
                     .subscribeWith(new DisposableSingleObserver<UserResponse>() {
                         @Override
                         public void onSuccess(UserResponse userResponse) {
                             storage.setUserSession(authToken, userResponse);
 
-                            getView().ifAlive(v -> v.showWelcomeMessage(R.string.welcome_user_message, userResponse.getName()));
-                            getView().ifAlive(V::close);
+                            getView().ifAlive(V::closeOnSuccessLogin);
                         }
 
                         @Override
                         public void onError(Throwable throwable) {
+                            getView().ifAlive(V::hideProgress);
                             getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
                         }
                     }));
