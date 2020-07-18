@@ -1,8 +1,11 @@
 package org.minibus.app.ui.schedule;
 
+import org.minibus.app.AppConstants;
 import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.data.network.model.BusScheduleModel;
+import org.minibus.app.data.network.model.CitiesModel;
 import org.minibus.app.data.network.pojo.city.BusStop;
+import org.minibus.app.data.network.pojo.city.CityResponse;
 import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
 import org.minibus.app.ui.R;
@@ -10,6 +13,7 @@ import org.minibus.app.ui.base.BasePresenter;
 import org.minibus.app.helpers.ApiErrorHelper;
 import org.minibus.app.helpers.AppDatesHelper;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -23,12 +27,15 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
         implements BusScheduleContract.Presenter<V> {
 
     private BusScheduleModel busScheduleModel;
-
-    @Inject AppStorageManager storage;
+    private CitiesModel citiesModel;
 
     @Inject
-    public BusSchedulePresenter(BusScheduleModel model) {
-        this.busScheduleModel = model;
+    AppStorageManager storage;
+
+    @Inject
+    public BusSchedulePresenter(BusScheduleModel busScheduleModel, CitiesModel citiesModel) {
+        this.busScheduleModel = busScheduleModel;
+        this.citiesModel = citiesModel;
     }
 
     @Override
@@ -137,13 +144,28 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
                     .subscribeWith(getBusScheduleObserver()));
         } else {
-            getView().ifAlive(v -> v.showOnboardingDialog(R.string.welcome_default_title,
-                    R.string.welcome_default_message,
-                    R.string.bus_stops_title,
-                    (dialog, i) -> {
-                        dialog.dismiss();
-                        getView().ifAlive(V::openDepartureBusStops);
-                    }));
+            addSubscription(getCitiesDataObservable()
+                    .doOnSubscribe(disposable -> getView().ifAlive(V::showLoadingDataDialog))
+                    .doFinally(() -> getView().ifAlive(V::hideLoadingDataDialog))
+                    .flatMap(cityResponses -> {
+                        boolean isEmpty = cityResponses.stream().allMatch(CityResponse::isBusStopsListEmpty);
+
+                        if (!isEmpty) {
+                            BusStop departure = cityResponses.get(0).getStartBusStop();
+                            BusStop arrival = cityResponses.get(1).getStartBusStop();
+
+                            storage.setDirection(departure, arrival);
+                            storage.setDepartureCityStartBusStop(departure);
+
+                            getView().ifAlive(v -> v.setDirection(departure.getJoinedCityBusStop(), arrival.getJoinedCityBusStop()));
+
+                            return getBusScheduleObservable(departure, departureDate);
+                        } else {
+                            getView().ifAlive(V::showEmptyView);
+                            throw new Exception("Oops something went wrong!");
+                        }
+                    })
+                    .subscribeWith(getBusScheduleObserver()));
         }
     }
 
@@ -266,13 +288,15 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
         };
     }
 
-    private Single<BusScheduleResponse> getBusScheduleObservable(BusStop busStop, String date) {
-        return doGetBusScheduleData(busStop, date)
-                .subscribeOn(Schedulers.newThread())
+    private Single<List<CityResponse>> getCitiesDataObservable() {
+        return citiesModel.doGetCitiesData()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<BusScheduleResponse> doGetBusScheduleData(BusStop busStop, String date) {
-        return busScheduleModel.doGetBusScheduleData(busStop.getId(), date);
+    private Single<BusScheduleResponse> getBusScheduleObservable(BusStop busStop, String date) {
+        return busScheduleModel.doGetBusScheduleData(busStop.getId(), date)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

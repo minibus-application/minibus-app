@@ -85,8 +85,6 @@
     <string name="hint_arrival">Куда</string>
 
     <!-- Welcome and goodbye -->
-    <string name="welcome_default_title">Добро пожаловать!</string>
-    <string name="welcome_default_message">Пожалуйста, выберите город и остановку отправления</string>
     <string name="welcome_user_message">Добро пожаловать, %1$s</string>
     <string name="goodbye_user_message">Возвращайтесь снова, %1$s</string>
 

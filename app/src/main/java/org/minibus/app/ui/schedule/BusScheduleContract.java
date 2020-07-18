@@ -16,10 +16,8 @@ public interface BusScheduleContract {
         void showFilter();
         void showDirectionSwapAnimation();
         void showJumpTopFab();
-        void showOnboardingDialog(@StringRes int titleResId,
-                                  @StringRes int msgResId,
-                                  @StringRes int btnResId,
-                                  DialogInterface.OnClickListener clickListener);
+        void showLoadingDataDialog();
+        void hideLoadingDataDialog();
         void showRefresh();
         void showBusTripLoading();
         void hideBusTripLoading();

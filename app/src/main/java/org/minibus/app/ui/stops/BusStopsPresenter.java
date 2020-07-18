@@ -79,13 +79,9 @@ public class BusStopsPresenter<V extends BusStopsContract.View> extends BasePres
     }
 
     private Single<List<CityResponse>> getCitiesDataObservable() {
-        return doGetCitiesData()
+        return citiesModel.doGetCitiesData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private Single<List<CityResponse>> doGetCitiesData() {
-        return citiesModel.doGetCitiesData();
     }
 
     // have to do those hacks due to the lack of city types

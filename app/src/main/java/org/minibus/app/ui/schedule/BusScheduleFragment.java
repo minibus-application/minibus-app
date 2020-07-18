@@ -279,11 +279,13 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void showOnboardingDialog(@StringRes int titleResId,
-                                     @StringRes int msgResId,
-                                     @StringRes int btnResId,
-                                     DialogInterface.OnClickListener clickListener) {
-        showAction(titleResId, msgResId, btnResId, clickListener);
+    public void showLoadingDataDialog() {
+        super.showProgress();
+    }
+
+    @Override
+    public void hideLoadingDataDialog() {
+        super.hideProgress();
     }
 
     @Override
