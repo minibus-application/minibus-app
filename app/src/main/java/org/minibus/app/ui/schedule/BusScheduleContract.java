@@ -1,10 +1,8 @@
 package org.minibus.app.ui.schedule;
 
-import android.content.DialogInterface;
-
 import androidx.annotation.StringRes;
 
-import org.minibus.app.data.network.pojo.city.BusStop;
+import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
 import org.minibus.app.ui.base.Contract;
@@ -14,7 +12,7 @@ public interface BusScheduleContract {
     interface View extends Contract.View {
 
         void showFilter();
-        void showDirectionSwapAnimation();
+        void showSwapDirectionAnimation();
         void showJumpTopFab();
         void showLoadingDataDialog();
         void hideLoadingDataDialog();
@@ -29,20 +27,20 @@ public interface BusScheduleContract {
         void setBusScheduleData(BusScheduleResponse busSchedule);
         void setToolbarSubtitle(String text);
         void setToolbarSubtitle(@StringRes int resId);
-        void setDepartureBusStop(String departureBusStop);
-        void setArrivalBusStop(String arrivalBusStop);
+        void setDepartureCity(String departureBusStop);
+        void setArrivalCity(String arrivalBusStop);
         void setDirection(String departureBusStop, String destinationCity);
         void openProfile();
         void openLogin();
-        void openDepartureBusStops();
-        void openBusTripSummary(BusTrip busTrip, BusStop departureBusStop, String departureDate);
+        void openDepartureCities();
+        void openArrivalCities();
+        void openBusTripSummary(BusTrip busTrip, City departureCity, String departureDate);
         void jumpTop();
         void finish();
     }
 
     interface Presenter<V extends BusScheduleContract.View> extends Contract.Presenter<V> {
 
-        void onDepartureStopsButtonClick();
         void onBackPressed();
         void onStart(String departureDate);
         void onCreateProfileBadge();
@@ -56,10 +54,10 @@ public interface BusScheduleContract {
         void onFilterExpanded();
         void onDirectionSwapButtonClick(String departureDate);
         void onDateClick(String departureDate);
-        void onArrivalBusStopChange(BusStop arrivalCityFinalBusStop, BusStop departureCityStartBusStop);
-        void onDepartureBusStopChange(BusStop selectedDepartureBusStop, String departureDate);
-        void onDepartureBusStopClick();
-        void onArrivalBusStopClick();
+        void onArrivalCityChange(City city, String departureDate);
+        void onDepartureCityChange(City city, String departureDate);
+        void onDepartureCityClick();
+        void onArrivalCityClick();
         void onProfileIconClick();
         void onFilterFabClick();
         void onJumpTopFabClick();

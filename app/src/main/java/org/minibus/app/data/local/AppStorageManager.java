@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.minibus.app.AppConstants;
-import org.minibus.app.data.network.pojo.city.BusStop;
+import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.user.User;
 import org.minibus.app.di.ApplicationContext;
 import com.google.gson.Gson;
@@ -23,9 +23,9 @@ public class AppStorageManager {
     private static final String KEY_USER_BOOKINGS_LEFT = "key_user_bookings_left";
     private static final String KEY_USER_AUTH_TOKEN = "key_user_auth_token";
     private static final String KEY_USER_DATA = "key_user_data";
-    private static final String KEY_DEPARTURE_BUS_STOP = "key_departure_bus_stop";
+    private static final String KEY_DEPARTURE_CITY = "key_departure_city";
     private static final String KEY_DEPARTURE_START_BUS_STOP = "key_departure_start_bus_stop";
-    private static final String KEY_ARRIVAL_BUS_STOP = "key_arrival_bus_stop";
+    private static final String KEY_ARRIVAL_CITY = "key_arrival_city";
 
     private SharedPreferences storage;
 
@@ -43,36 +43,32 @@ public class AppStorageManager {
     }
 
     public boolean isDirectionStored() {
-        return isArrivalBusStopStored() && isDepartureBusStopStored() && contains(KEY_DEPARTURE_START_BUS_STOP);
+        return isArrivalCityStored() && isDepartureCityStored();
     }
 
-    public boolean isArrivalBusStopStored() {
-        return contains(KEY_ARRIVAL_BUS_STOP);
+    public boolean isArrivalCityStored() {
+        return contains(KEY_ARRIVAL_CITY);
     }
 
-    public boolean isDepartureBusStopStored() {
-        return contains(KEY_DEPARTURE_BUS_STOP);
+    public boolean isDepartureCityStored() {
+        return contains(KEY_DEPARTURE_CITY);
     }
 
-    public boolean isStoredArrivalCityMatches(String newArrivalCity) {
-        return isDirectionStored() && getArrivalBusStop().getDepartureCityName().equals(newArrivalCity);
+    public void setDepartureCity(City city) {
+        put(KEY_DEPARTURE_CITY, city);
     }
 
-    public void setDepartureBusStop(BusStop busStop) {
-        put(KEY_DEPARTURE_BUS_STOP, busStop);
+    public void setArrivalCity(City city) {
+        put(KEY_ARRIVAL_CITY, city);
     }
 
-    public void setArrivalBusStop(BusStop busStop) {
-        put(KEY_ARRIVAL_BUS_STOP, busStop);
+    public void setDepartureCityStartBusStop(City city) {
+        put(KEY_DEPARTURE_START_BUS_STOP, city);
     }
 
-    public void setDepartureCityStartBusStop(BusStop busStop) {
-        put(KEY_DEPARTURE_START_BUS_STOP, busStop);
-    }
-
-    public void setDirection(BusStop departureBusStop, BusStop arrivalBusStop) {
-        setDepartureBusStop(departureBusStop);
-        setArrivalBusStop(arrivalBusStop);
+    public void setDirection(City departureCity, City arrivalCity) {
+        setDepartureCity(departureCity);
+        setArrivalCity(arrivalCity);
     }
 
     public void setUserData(UserResponse userResponse) {
@@ -129,16 +125,16 @@ public class AppStorageManager {
         return new Gson().fromJson(get(KEY_USER_DATA, null), User.class);
     }
 
-    public BusStop getArrivalBusStop() {
-        return new Gson().fromJson(get(KEY_ARRIVAL_BUS_STOP, null), BusStop.class);
+    public City getArrivalCity() {
+        return new Gson().fromJson(get(KEY_ARRIVAL_CITY, null), City.class);
     }
 
-    public BusStop getDepartureBusStop() {
-        return new Gson().fromJson(get(KEY_DEPARTURE_BUS_STOP, null), BusStop.class);
+    public City getDepartureCity() {
+        return new Gson().fromJson(get(KEY_DEPARTURE_CITY, null), City.class);
     }
 
-    public BusStop getDepartureCityStartBusStop() {
-        return new Gson().fromJson(get(KEY_DEPARTURE_START_BUS_STOP, null), BusStop.class);
+    public City getDepartureCityStartBusStop() {
+        return new Gson().fromJson(get(KEY_DEPARTURE_START_BUS_STOP, null), City.class);
     }
 
     public void clearAll() {
@@ -154,8 +150,8 @@ public class AppStorageManager {
     }
 
     public void clearDirection() {
-        delete(KEY_ARRIVAL_BUS_STOP);
-        delete(KEY_DEPARTURE_BUS_STOP);
+        delete(KEY_ARRIVAL_CITY);
+        delete(KEY_DEPARTURE_CITY);
         delete(KEY_DEPARTURE_START_BUS_STOP);
     }
     private boolean contains(String key) {

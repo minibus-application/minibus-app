@@ -4,7 +4,7 @@ import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.data.network.pojo.booking.BookingRequest;
 import org.minibus.app.data.network.model.BookingModel;
 import org.minibus.app.data.network.pojo.booking.BookingResponse;
-import org.minibus.app.data.network.pojo.city.BusStop;
+import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.base.BasePresenter;
@@ -63,10 +63,10 @@ public class BusTripPresenter<V extends BusTripContract.View> extends BasePresen
     }
 
     @Override
-    public void onBookClick(String departureDate, BusTrip busTrip, BusStop departureBusStop, int seatsCount) {
+    public void onBookClick(String departureDate, BusTrip busTrip, City departureCity, int seatsCount) {
         if (storage.isUserLoggedIn()) {
             BookingRequest booking = new BookingRequest(storage.getUserData(),
-                    departureBusStop, busTrip.getSelected(), seatsCount, departureDate);
+                    departureCity, busTrip.getSelected(), seatsCount, departureDate);
 
             addSubscription(getBusTripBookingObservable(storage.getUserAuthToken(), booking)
                     .doOnSubscribe(disposable -> {

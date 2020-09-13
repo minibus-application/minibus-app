@@ -1,6 +1,6 @@
 package org.minibus.app.data.network.pojo.booking;
 
-import org.minibus.app.data.network.pojo.city.BusStop;
+import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.user.User;
 import org.minibus.app.data.network.pojo.schedule.SelectedBusTrip;
 import com.google.gson.annotations.SerializedName;
@@ -15,13 +15,13 @@ public class BookingResponse extends Booking {
 
     public BookingResponse(int id,
                            User user,
-                           BusStop busStop,
+                           City city,
                            SelectedBusTrip selectedBusTrip,
                            String departureDate,
                            Double price,
                            String status,
                            int bookingsLeft) {
-        super(id, busStop, selectedBusTrip, departureDate, price, status);
+        super(id, city, selectedBusTrip, departureDate, price, status);
         this.user = user;
         this.bookingsLeft = bookingsLeft;
     }

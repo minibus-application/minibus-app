@@ -13,7 +13,7 @@ import java.util.Locale;
 public class AppDatesHelper {
 
     public enum DatePattern {
-        API_SCHEDULE_REQUEST("yyyy-MM-dd'T'HH:mm:ss"),
+        API_SCHEDULE_REQUEST("yyyy-MM-dd"),
         API_BOOKING_RESPONSE ("yyyy-MM-dd"),
         CALENDAR ("EE d"),
         BOOKING ("EEEE, d MMM"),

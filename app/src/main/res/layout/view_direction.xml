@@ -30,7 +30,7 @@
                 android:paddingEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_dep_bus_stop"
+                    android:id="@+id/input_dep_city"
                     style="@style/Widget.AppTheme.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -60,11 +60,10 @@
                 android:paddingEnd="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_arr_bus_stop"
+                    android:id="@+id/input_arr_city"
                     style="@style/Widget.AppTheme.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorTextSecondary"
                     android:hint="@string/hint_arrival" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

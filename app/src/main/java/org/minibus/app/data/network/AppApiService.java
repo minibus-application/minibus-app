@@ -24,8 +24,8 @@ public interface AppApiService {
     Single<BusScheduleResponse> getScheduleData(@Path(value = "stopId") String stopId,
                                                 @Header("CurrentDate") String date);
 
-    @GET("cities")
-    Single<List<CityResponse>> getCitiesData();
+    @GET("/cities")
+    Single<CityResponse> getCitiesData();
 
     @GET("users?old_trips=true")
     Single<UserResponse> getUserData(@Header("Authorization") String authToken);

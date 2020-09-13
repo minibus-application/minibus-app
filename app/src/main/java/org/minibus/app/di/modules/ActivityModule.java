@@ -17,8 +17,8 @@ import org.minibus.app.ui.schedule.BusScheduleContract;
 import org.minibus.app.ui.schedule.BusSchedulePresenter;
 import org.minibus.app.ui.schedule.trip.BusTripContract;
 import org.minibus.app.ui.schedule.trip.BusTripPresenter;
-import org.minibus.app.ui.stops.BusStopsContract;
-import org.minibus.app.ui.stops.BusStopsPresenter;
+import org.minibus.app.ui.cities.CitiesContract;
+import org.minibus.app.ui.cities.CitiesPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -50,8 +50,8 @@ public class ActivityModule {
     }
 
     @Provides
-    BusStopsContract.Presenter<BusStopsContract.View> provideCityStopsPresenter
-            (BusStopsPresenter<BusStopsContract.View> presenter) {
+    CitiesContract.Presenter<CitiesContract.View> provideCityStopsPresenter
+            (CitiesPresenter<CitiesContract.View> presenter) {
         return presenter;
     }
 

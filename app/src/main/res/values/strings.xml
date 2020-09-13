@@ -43,13 +43,14 @@
     <string name="login_no_account">У меня нет аккаунта</string>
 
     <!-- Titles -->
-    <string name="login_title">Логин</string>
-    <string name="profile_title">Профиль</string>
-    <string name="profile_active_user_bookings">Активные бронирования:</string>
-    <string name="bus_stops_title">Остановки</string>
-    <string name="bus_schedule_title">Расписание</string>
-    <string name="bus_schedule_filter_title">Фильтр</string>
-    <string name="bus_trip_summary_title">Бронирование</string>
+    <string name="login_title">Sign in</string>
+    <string name="profile_title">Profile</string>
+    <string name="profile_active_user_bookings">Active bookings:</string>
+    <string name="departure_cities_title">Departure</string>
+    <string name="arrival_cities_title">Arrival</string>
+    <string name="bus_schedule_title">Schedule</string>
+    <string name="bus_schedule_filter_title">Direction</string>
+    <string name="bus_trip_summary_title">Reservation</string>
 
     <!-- Success -->
     <string name="success_booking_title">Забронировано!</string>
@@ -61,9 +62,11 @@
     <string name="progress_default_message">Пожалуйста, подождите</string>
 
     <!-- Errors -->
-    <string name="error_default_title">Ошибка</string>
-    <string name="error_default_message">Во время загрузки данных произошла ошибка</string>
-    <string name="error_no_bus_trip_message">Выбранная поездка отсуствует</string>
+    <string name="error_default_title">Error</string>
+    <string name="error_default_message">An error occurred while loading data</string>
+    <string name="error_no_bus_trip_message">This ride is no longer available</string>
+    <string name="error_departure_first">Please select your departure point firstly</string>
+    <string name="error_complete_direction">Please fill in your direction details</string>
 
     <!-- Warnings -->
     <string name="warning_default_title">Внимание</string>
@@ -77,15 +80,15 @@
     <string name="warning_bad_connectivity_message">Потеря интернет соединения</string>
 
     <!-- Hints -->
-    <string name="hint_enter_name">Имя</string>
-    <string name="hint_enter_phone">Номер телефона</string>
-    <string name="hint_enter_pass">Пароль</string>
-    <string name="hint_confirm_pass">Повторите пароль</string>
-    <string name="hint_departure">Откуда</string>
-    <string name="hint_arrival">Куда</string>
+    <string name="hint_enter_name">Name</string>
+    <string name="hint_enter_phone">Phone number</string>
+    <string name="hint_enter_pass">Password</string>
+    <string name="hint_confirm_pass">Confirm password</string>
+    <string name="hint_departure">From</string>
+    <string name="hint_arrival">To</string>
 
     <!-- Welcome and goodbye -->
-    <string name="welcome_user_message">Добро пожаловать, %1$s</string>
+    <string name="welcome_user_message">Welcome, %1$s</string>
     <string name="goodbye_user_message">Возвращайтесь снова, %1$s</string>
 
     <!-- TODO: Remove or change this placeholder text -->

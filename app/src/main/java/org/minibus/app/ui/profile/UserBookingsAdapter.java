@@ -98,12 +98,12 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
             textDepartureDate.setText(date.substring(0, 1).toUpperCase().concat(date.substring(1)));
 
             textDepartureTime.setText(booking.getSelectedBusTrip().getDepartureTime());
-            textDepartureCity.setText(booking.getBusStop().getDepartureCityName());
+            textDepartureCity.setText(booking.getCity().getName());
             textDepartureBusStop.setText(context.getResources()
-                    .getString(R.string.label_bus_stop_prefix, booking.getBusStop().getName()));
+                    .getString(R.string.label_bus_stop_prefix, booking.getCity().getName()));
 
             textArrivalTime.setText(booking.getSelectedBusTrip().getArrivalTime());
-            textArrivalCity.setText(booking.getBusStop().getArrivalCityName());
+            textArrivalCity.setText(booking.getCity().getName());
         }
 
         @OnClick(R.id.button_booking_cancel)

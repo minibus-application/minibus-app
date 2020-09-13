@@ -6,15 +6,23 @@
     android:background="@color/colorSurface">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_bus_stops"
+        android:id="@+id/appbar_cities"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
 
         <include layout="@layout/view_toolbar"
-            android:id="@+id/toolbar_custom"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_collapseMode="pin" />
+
+        <View
+            android:id="@+id/view_delimiter"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="bottom"
+            android:background="@color/colorBackground" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
@@ -23,7 +31,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.kennyc.view.MultiStateView
-            android:id="@+id/container_cities"
+            android:id="@+id/msv_cities"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
@@ -32,13 +40,11 @@
             app:msv_loadingView="@layout/view_loading"
             app:msv_viewState="loading">
 
-            <ExpandableListView
-                android:id="@+id/list_cities"
-                android:layout_height="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_cities"
                 android:layout_width="match_parent"
-                android:childDivider="@color/colorBackground"
-                android:divider="@color/colorBackground"
-                android:dividerHeight="1dp" />
+                android:layout_height="match_parent"
+                android:clipToPadding="false" />
         </com.kennyc.view.MultiStateView>
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,5 @@
 package org.minibus.app.ui.schedule;
 
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -8,8 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.minibus.app.data.network.pojo.city.BusStop;
+import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
+import org.minibus.app.ui.cities.ArrivalCitiesFragment;
+import org.minibus.app.ui.cities.DepartureCitiesFragment;
 import org.minibus.app.utils.CommonUtil;
 import org.minibus.app.ui.base.BaseFragment;
 import org.minibus.app.ui.custom.BadgeDrawable;
@@ -17,10 +18,9 @@ import org.minibus.app.ui.login.LoginFragment;
 import org.minibus.app.ui.profile.UserProfileFragment;
 import org.minibus.app.ui.schedule.trip.BusTripFragment;
 import org.minibus.app.helpers.AppAnimHelper;
-import org.minibus.app.ui.stops.BusStopsFragment;
+
 import com.google.android.material.appbar.AppBarLayout;
 
-import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -62,7 +62,8 @@ public class BusScheduleFragment extends BaseFragment implements
         SwipeRefreshLayout.OnRefreshListener,
         BusScheduleAdapter.OnItemClickListener,
         BusScheduleCalendarAdapter.OnItemClickListener,
-        BusStopsFragment.BusStopsFragmentCallback,
+        DepartureCitiesFragment.onCitySelectListener,
+        ArrivalCitiesFragment.OnCitySelectListener,
         BusTripFragment.BusTripFragmentCallback,
         LoginFragment.LoginFragmentCallback,
         UserProfileFragment.UserProfileFragmentCallback,
@@ -72,10 +73,10 @@ public class BusScheduleFragment extends BaseFragment implements
     @BindView(R.id.recycler_bus_schedule) RecyclerView recyclerBusSchedule;
     @BindView(R.id.swipe_refresh_bus_schedule) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.button_swap_direction) ImageButton buttonSwapDirection;
-    @BindView(R.id.input_dep_bus_stop) TextInputEditText inputDepartureBusStop;
-    @BindView(R.id.input_arr_bus_stop) TextInputEditText inputArrivalBusStop;
-    @BindView(R.id.text_toolbar_title) TextView textToolbarTitle;
-    @BindView(R.id.text_toolbar_subtitle) TextView textToolbarSubtitle;
+    @BindView(R.id.input_dep_city) TextInputEditText inputDepartureBusStop;
+    @BindView(R.id.input_arr_city) TextInputEditText inputArrivalBusStop;
+    @BindView(R.id.tv_toolbar_title) TextView textToolbarTitle;
+    @BindView(R.id.tv_toolbar_subtitle) TextView textToolbarSubtitle;
     @BindView(R.id.appbar) AppBarLayout appBar;
     @BindView(R.id.container_bus_schedule) MultiStateView multiStateView;
     @BindView(R.id.toolbar_custom) Toolbar toolbar;
@@ -208,14 +209,14 @@ public class BusScheduleFragment extends BaseFragment implements
         presenter.onDirectionSwapButtonClick(adapterCalendar.getSelectedDate());
     }
 
-    @OnClick(R.id.input_dep_bus_stop)
-    public void onDepartureStopFieldClick() {
-        presenter.onDepartureBusStopClick();
+    @OnClick(R.id.input_dep_city)
+    public void onDepartureCityFieldClick() {
+        presenter.onDepartureCityClick();
     }
 
-    @OnClick(R.id.input_arr_bus_stop)
-    public void onArrivalStopFieldClick() {
-        presenter.onArrivalBusStopClick();
+    @OnClick(R.id.input_arr_city)
+    public void onArrivalCityFieldClick() {
+        presenter.onArrivalCityClick();
     }
 
     @Override
@@ -244,13 +245,13 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void onChangedDepartureBusStop(BusStop selectedDepartureBusStop) {
-        presenter.onDepartureBusStopChange(selectedDepartureBusStop, adapterCalendar.getSelectedDate());
+    public void onArrivalCitySelected(City city) {
+        presenter.onArrivalCityChange(city, adapterCalendar.getSelectedDate());
     }
 
     @Override
-    public void onChangedArrivalBusStop(BusStop arrivalCityFinalBusStop, BusStop departureCityStartBusStop) {
-        presenter.onArrivalBusStopChange(arrivalCityFinalBusStop, departureCityStartBusStop);
+    public void onDepartureCitySelected(City city) {
+        presenter.onDepartureCityChange(city, adapterCalendar.getSelectedDate());
     }
 
     @Override
@@ -346,7 +347,7 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void showDirectionSwapAnimation() {
+    public void showSwapDirectionAnimation() {
         RotateAnimation rotateAnimation = new RotateAnimation(0, 180,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotateAnimation.setDuration((long) 200);
@@ -355,19 +356,19 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void setDirection(String departureBusStop, String arrivalStop) {
-        setDepartureBusStop(departureBusStop);
-        setArrivalBusStop(arrivalStop);
+    public void setDirection(String departureCity, String arrivalCity) {
+        setDepartureCity(departureCity);
+        setArrivalCity(arrivalCity);
     }
 
     @Override
-    public void setDepartureBusStop(String departureBusStop) {
-        inputDepartureBusStop.setText(departureBusStop);
+    public void setDepartureCity(String city) {
+        inputDepartureBusStop.setText(city);
     }
 
     @Override
-    public void setArrivalBusStop(String arrivalBusStop) {
-        inputArrivalBusStop.setText(arrivalBusStop);
+    public void setArrivalCity(String city) {
+        inputArrivalBusStop.setText(city);
     }
 
     @Override
@@ -397,10 +398,10 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void openBusTripSummary(BusTrip busTrip, BusStop departureBusStop, String departureDate) {
+    public void openBusTripSummary(BusTrip busTrip, City departureCity, String departureDate) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BusTripFragment.BUS_TRIP_KEY, busTrip);
-        bundle.putSerializable(BusTripFragment.BUS_STOP_KEY, departureBusStop);
+        bundle.putSerializable(BusTripFragment.BUS_STOP_KEY, departureCity);
         bundle.putString(BusTripFragment.BUS_DATE_KEY, departureDate);
 
         super.openDialogFragment(BusTripFragment.newInstance(), BusTripFragment.REQ_CODE, bundle);
@@ -417,8 +418,13 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void openDepartureBusStops() {
-        super.openDialogFragment(BusStopsFragment.newInstance(), BusStopsFragment.REQ_CODE, null);
+    public void openDepartureCities() {
+        super.openDialogFragment(DepartureCitiesFragment.newInstance(), DepartureCitiesFragment.REQ_CODE, null);
+    }
+
+    @Override
+    public void openArrivalCities() {
+        super.openDialogFragment(ArrivalCitiesFragment.newInstance(), ArrivalCitiesFragment.REQ_CODE, null);
     }
 
     @Override

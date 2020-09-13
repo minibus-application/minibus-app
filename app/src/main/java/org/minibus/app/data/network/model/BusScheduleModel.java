@@ -7,7 +7,7 @@ import io.reactivex.Single;
 
 public class BusScheduleModel {
 
-    public Single<BusScheduleResponse> doGetBusScheduleData(int busStopId, String date) {
-        return AppApiClient.getApiService().getScheduleData(String.valueOf(busStopId), date);
+    public Single<BusScheduleResponse> doGetBusScheduleData(long cityId, String date) {
+        return AppApiClient.getApiService().getScheduleData(String.valueOf(cityId), date);
     }
 }

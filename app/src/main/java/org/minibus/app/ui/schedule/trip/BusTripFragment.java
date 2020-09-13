@@ -14,7 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import org.minibus.app.AppConstants;
-import org.minibus.app.data.network.pojo.city.BusStop;
+import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
 import org.minibus.app.utils.CommonUtil;
 import org.minibus.app.ui.R;
@@ -53,7 +53,7 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
 
     private BusTripFragmentCallback callback;
     private BusTrip busTrip;
-    private BusStop departureBusStop;
+    private City departureCity;
     private String departureDate;
     private int seatsCount;
 
@@ -73,7 +73,7 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
 
         if (getArguments() != null) {
             busTrip = (BusTrip) getArguments().getSerializable(BUS_TRIP_KEY);
-            departureBusStop = (BusStop) getArguments().getSerializable(BUS_STOP_KEY);
+            departureCity = (City) getArguments().getSerializable(BUS_STOP_KEY);
             departureDate = getArguments().getString(BUS_DATE_KEY);
             seatsCount = busTrip.getSeatsCount();
         } else {
@@ -98,7 +98,7 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
 
         textDepartureTime.setText(res.getString(R.string.label_departure_time, busTrip.getDepartureTime()));
         textArrivalTime.setText(res.getString(R.string.label_arrival_time, busTrip.getArrivalTime()));
-        textDepartureBusStop.setText(res.getString(R.string.label_bus_stop, departureBusStop.getName()));
+        textDepartureBusStop.setText(res.getString(R.string.label_bus_stop, departureCity.getName()));
         textDepartureDate.setText(res.getString(R.string.label_date, departureDate));
 
         return builder.create();
@@ -123,7 +123,7 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
 
     @OnClick(R.id.button_sum_book)
     public void onBookButtonClick() {
-        presenter.onBookClick(departureDate, busTrip, departureBusStop, getPassengersCount());
+        presenter.onBookClick(departureDate, busTrip, departureCity, getPassengersCount());
     }
 
     @Override

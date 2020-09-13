@@ -7,28 +7,48 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:background="@color/colorSurface">
 
-    <TextView
-        android:id="@+id/text_bus_stop_name"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:paddingEnd="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:gravity="start"
-        android:textAppearance="?textAppearanceBody1" />
-
-    <ImageView
-        android:id="@+id/image_bus_stop_selected"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:visibility="gone"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_check_mark_dark_24dp"
-        android:tint="@color/colorAccent" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_city_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAppearance="?textAppearanceBody1" />
+
+        <TextView
+            android:id="@+id/tv_region_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAppearance="?textAppearanceBody2" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_city_location"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_navigation_dark_24dp"
+            android:tint="@color/colorAccent" />
+    </RelativeLayout>
 </LinearLayout>

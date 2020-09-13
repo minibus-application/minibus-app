@@ -1,6 +1,6 @@
 package org.minibus.app.ui.schedule.trip;
 
-import org.minibus.app.data.network.pojo.city.BusStop;
+import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
 import org.minibus.app.ui.base.Contract;
 
@@ -18,7 +18,7 @@ public interface BusTripContract {
 
     interface Presenter<V extends BusTripContract.View> extends Contract.Presenter<V> {
 
-        void onBookClick(String departureDate, BusTrip busTrip, BusStop departureBusStop, int seatsCount);
+        void onBookClick(String departureDate, BusTrip busTrip, City departureCity, int seatsCount);
         void onSetupPassengersOptions(int seatsCount);
         void onCancelClick();
     }

@@ -9,7 +9,7 @@ import io.reactivex.Single;
 
 public class CitiesModel {
 
-    public Single<List<CityResponse>> doGetCitiesData() {
+    public Single<CityResponse> doGetCitiesData() {
         return AppApiClient.getApiService().getCitiesData();
     }
 }

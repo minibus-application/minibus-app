@@ -42,5 +42,5 @@
         android:layout_below="@id/text_empty_subtitle"
         android:layout_margin="8dp"
         android:layout_centerHorizontal="true"
-        android:text="@string/bus_stops_title" />
+        android:text="@string/departure_cities_title" />
 </RelativeLayout>

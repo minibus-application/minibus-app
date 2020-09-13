@@ -2,6 +2,7 @@ package org.minibus.app.ui.schedule;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -124,7 +125,13 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
             textSeatsCount.setText(context.getResources()
                     .getString(R.string.label_available_seats_count, busTrip.getSeatsCount()));
 
-            layoutBusTrip.setAlpha(busTrip.getSeatsCount() == 0 ? 0.5f : 1.0f);
+            if (busTrip.getSeatsCount() == 0) {
+                textSeatsCount.setTextColor(ContextCompat.getColor(context, R.color.colorError));
+                layoutBusTrip.setEnabled(false);
+            } else {
+                textSeatsCount.setTextColor(ContextCompat.getColor(context, R.color.colorTextSecondary));
+                layoutBusTrip.setEnabled(true);
+            }
         }
 
         @OnClick
