@@ -20,8 +20,9 @@ import io.reactivex.schedulers.Schedulers;
 public class CitiesPresenter<V extends CitiesContract.View> extends BasePresenter<V>
         implements CitiesContract.Presenter<V> {
 
-    private CitiesModel citiesModel;
-    private List<City> cities;
+    protected CitiesModel citiesModel;
+    protected List<City> cities;
+    protected long prevSelectedCityId;
 
     @Inject
     AppStorageManager storage;
@@ -29,31 +30,6 @@ public class CitiesPresenter<V extends CitiesContract.View> extends BasePresente
     @Inject
     public CitiesPresenter(CitiesModel citiesModel) {
         this.citiesModel = citiesModel;
-    }
-
-    @Override
-    public void onStart() {
-        addSubscription(getCitiesDataObservable()
-                .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
-                .subscribeWith(new DisposableSingleObserver<CityResponse>() {
-                    @Override
-                    public void onSuccess(CityResponse response) {
-                        cities = response.getCities();
-                        long prevSelectedCityId = storage.isDirectionStored()
-                                ? storage.getDepartureCity().getId()
-                                : AppConstants.DEFAULT_SELECTED_CITY_ID;
-
-                        // add selected id setting
-                        if (!response.isEmpty()) getView().ifAlive(v -> v.setCitiesData(cities));
-                        else getView().ifAlive(V::showEmptyView);
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
-                        getView().ifAlive(V::showEmptyView);
-                    }
-                }));
     }
 
     @Override
@@ -71,7 +47,7 @@ public class CitiesPresenter<V extends CitiesContract.View> extends BasePresente
         getView().ifAlive(V::close);
     }
 
-    private Single<CityResponse> getCitiesDataObservable() {
+    protected Single<CityResponse> getCitiesDataObservable() {
         return citiesModel.doGetCitiesData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

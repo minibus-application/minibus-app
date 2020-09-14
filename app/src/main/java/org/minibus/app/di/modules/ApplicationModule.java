@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import org.minibus.app.data.local.AppStorageManager;
+import org.minibus.app.data.network.AppApiClient;
 import org.minibus.app.di.ApplicationContext;
 
 import javax.inject.Singleton;
@@ -36,5 +37,11 @@ public class ApplicationModule {
     @Provides
     public AppStorageManager provideStorageManager(@ApplicationContext Context context) {
         return new AppStorageManager(context);
+    }
+
+    @Singleton
+    @Provides
+    public AppApiClient provideAppApiClient(@ApplicationContext Context context) {
+        return new AppApiClient(context);
     }
 }

@@ -7,9 +7,13 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public class CitiesModel {
+public class CitiesModel extends BaseModel {
+
+    public CitiesModel(AppApiClient appApiClient) {
+        super(appApiClient);
+    }
 
     public Single<CityResponse> doGetCitiesData() {
-        return AppApiClient.getApiService().getCitiesData();
+        return getClient().getApiService().getCitiesData();
     }
 }

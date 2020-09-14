@@ -10,9 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -99,15 +97,9 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
         return view;
     }
 
-    @OnClick(R.id.button_empty_bus_stops)
+    @OnClick(R.id.button_empty_cities)
     public void onBusScheduleButtonClick() {
         presenter.onCloseButtonClick();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        presenter.onStart();
     }
 
     @Override

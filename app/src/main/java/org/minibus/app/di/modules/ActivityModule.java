@@ -4,11 +4,16 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.minibus.app.data.network.AppApiClient;
 import org.minibus.app.data.network.model.BookingModel;
 import org.minibus.app.data.network.model.CitiesModel;
 import org.minibus.app.data.network.model.BusScheduleModel;
 import org.minibus.app.data.network.model.UserModel;
 import org.minibus.app.di.ActivityContext;
+import org.minibus.app.ui.cities.arrival.ArrivalCitiesContract;
+import org.minibus.app.ui.cities.arrival.ArrivalCitiesPresenter;
+import org.minibus.app.ui.cities.departure.DepartureCitiesContract;
+import org.minibus.app.ui.cities.departure.DepartureCitiesPresenter;
 import org.minibus.app.ui.login.LoginContract;
 import org.minibus.app.ui.login.LoginPresenter;
 import org.minibus.app.ui.profile.UserProfileContract;
@@ -50,8 +55,20 @@ public class ActivityModule {
     }
 
     @Provides
-    CitiesContract.Presenter<CitiesContract.View> provideCityStopsPresenter
+    CitiesContract.Presenter<CitiesContract.View> provideCitiesPresenter
             (CitiesPresenter<CitiesContract.View> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    DepartureCitiesContract.Presenter<DepartureCitiesContract.View> provideDepartureCitiesPresenter
+            (DepartureCitiesPresenter<DepartureCitiesContract.View> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    ArrivalCitiesContract.Presenter<ArrivalCitiesContract.View> provideArrivalCitiesPresenter
+            (ArrivalCitiesPresenter<ArrivalCitiesContract.View> presenter) {
         return presenter;
     }
 
@@ -74,22 +91,22 @@ public class ActivityModule {
     }
 
     @Provides
-    BusScheduleModel provideBusScheduleModel() {
-        return new BusScheduleModel();
+    BusScheduleModel provideBusScheduleModel(AppApiClient appApiClient) {
+        return new BusScheduleModel(appApiClient);
     }
 
     @Provides
-    CitiesModel provideCitiesModel() {
-        return new CitiesModel();
+    CitiesModel provideCitiesModel(AppApiClient appApiClient) {
+        return new CitiesModel(appApiClient);
     }
 
     @Provides
-    BookingModel provideBookingModel() {
-        return new BookingModel();
+    BookingModel provideBookingModel(AppApiClient appApiClient) {
+        return new BookingModel(appApiClient);
     }
 
     @Provides
-    UserModel provideUserModel() {
-        return new UserModel();
+    UserModel provideUserModel(AppApiClient appApiClient) {
+        return new UserModel(appApiClient);
     }
 }

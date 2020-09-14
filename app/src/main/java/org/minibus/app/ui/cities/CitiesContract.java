@@ -10,14 +10,12 @@ public interface CitiesContract {
 
     interface View extends Contract.View {
 
-        void setCitiesData(List<City> cities);
         void changeCity(City city);
         void close();
     }
 
     interface Presenter<V extends CitiesContract.View> extends Contract.Presenter<V> {
 
-        void onStart();
         void onCloseButtonClick();
         void onCitySelect(City city);
     }

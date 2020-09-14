@@ -5,6 +5,7 @@ import android.content.Context;
 
 import org.minibus.app.App;
 import org.minibus.app.data.local.AppStorageManager;
+import org.minibus.app.data.network.AppApiClient;
 import org.minibus.app.di.ApplicationContext;
 import org.minibus.app.di.modules.ApplicationModule;
 
@@ -24,4 +25,6 @@ public interface ApplicationComponent {
     Application getApplication();
 
     AppStorageManager getStorageManager();
+
+    AppApiClient getAppApiClient();
 }

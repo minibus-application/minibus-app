@@ -9,8 +9,8 @@ import androidx.annotation.Nullable;
 
 import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
-import org.minibus.app.ui.cities.ArrivalCitiesFragment;
-import org.minibus.app.ui.cities.DepartureCitiesFragment;
+import org.minibus.app.ui.cities.arrival.ArrivalCitiesFragment;
+import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
 import org.minibus.app.utils.CommonUtil;
 import org.minibus.app.ui.base.BaseFragment;
 import org.minibus.app.ui.custom.BadgeDrawable;
@@ -62,7 +62,7 @@ public class BusScheduleFragment extends BaseFragment implements
         SwipeRefreshLayout.OnRefreshListener,
         BusScheduleAdapter.OnItemClickListener,
         BusScheduleCalendarAdapter.OnItemClickListener,
-        DepartureCitiesFragment.onCitySelectListener,
+        DepartureCitiesFragment.OnCitySelectListener,
         ArrivalCitiesFragment.OnCitySelectListener,
         BusTripFragment.BusTripFragmentCallback,
         LoginFragment.LoginFragmentCallback,
@@ -189,9 +189,9 @@ public class BusScheduleFragment extends BaseFragment implements
         } catch (NullPointerException e) {}
     }
 
-    @OnClick(R.id.button_empty_bus_stops)
-    public void onDepartureStopsButtonClick() {
-        presenter.onDepartureStopsButtonClick();
+    @OnClick(R.id.button_empty_cities)
+    public void onDepartureCitiesButtonClick() {
+        presenter.onDepartureCityClick();
     }
 
     @OnClick(R.id.fab_filter)

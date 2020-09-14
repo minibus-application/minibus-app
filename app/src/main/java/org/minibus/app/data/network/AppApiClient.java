@@ -1,8 +1,14 @@
 package org.minibus.app.data.network;
 
+import android.content.Context;
+
 import org.minibus.app.AppConstants;
+import org.minibus.app.di.ApplicationContext;
 
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -11,13 +17,20 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
+@Singleton
 public class AppApiClient {
 
     private static Retrofit retrofit;
     private static final String BASE_URL = AppConstants.BASE_URL;
     public static final int BASE_TIMEOUT_SEC = AppConstants.DEFAULT_TIMEOUT_SEC;
+    private Context context;
 
-    public static AppApiService getApiService() {
+    @Inject
+    public AppApiClient(@ApplicationContext Context context) {
+        this.context = context;
+    }
+
+    public AppApiService getApiService() {
         if (retrofit == null) {
             retrofit = new Retrofit
                     .Builder()
@@ -30,11 +43,11 @@ public class AppApiClient {
         return retrofit.create(AppApiService.class);
     }
 
-    public static Retrofit getRetrofit() {
+    public Retrofit getRetrofit() {
         return retrofit;
     }
 
-    private static OkHttpClient getOkHttpClient() {
+    private OkHttpClient getOkHttpClient() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor((message) -> {
             Timber.tag("OkHttp").d(message);
         });

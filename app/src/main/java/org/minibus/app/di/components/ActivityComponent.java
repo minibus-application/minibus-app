@@ -3,6 +3,8 @@ package org.minibus.app.di.components;
 import org.minibus.app.di.modules.ActivityModule;
 import org.minibus.app.di.scopes.PerActivity;
 import org.minibus.app.ui.cities.BaseCitiesFragment;
+import org.minibus.app.ui.cities.arrival.ArrivalCitiesFragment;
+import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
 import org.minibus.app.ui.login.LoginFragment;
 import org.minibus.app.ui.main.MainActivity;
 import org.minibus.app.ui.profile.UserProfileFragment;
@@ -22,6 +24,10 @@ public interface ActivityComponent {
     // void inject(CitiesFragment citiesFragment);
 
     void inject(BaseCitiesFragment baseCitiesFragment);
+
+    void inject(DepartureCitiesFragment departureCitiesFragment);
+
+    void inject(ArrivalCitiesFragment arrivalCitiesFragment);
 
     void inject(BusTripFragment busTripFragment);
 
