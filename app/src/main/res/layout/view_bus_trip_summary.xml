@@ -18,31 +18,6 @@
             android:layout_weight="1"
             android:maxLines="1"
             android:textAppearance="?textAppearanceBody1"
-            android:text="@string/label_departure_date"/>
-
-        <TextView
-            android:id="@+id/tv_dep_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="1"
-            android:textAppearance="?textAppearanceBody1"
-            android:ellipsize="end"
-            android:textAlignment="textEnd"
-            android:textStyle="bold"/>
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="1"
-            android:textAppearance="?textAppearanceBody1"
             android:text="@string/label_travel_time"/>
 
         <TextView
@@ -148,16 +123,35 @@
             android:textAppearance="?textAppearanceBody1"
             android:text="@string/label_vehicle"/>
 
-        <TextView
-            android:id="@+id/tv_trip_vehicle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:maxLines="1"
-            android:textAppearance="?textAppearanceBody1"
-            android:ellipsize="end"
-            android:textAlignment="textEnd"
-            android:textStyle="bold"/>
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_trip_vehicle_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textAppearance="?textAppearanceBody1"
+                android:ellipsize="end"
+                android:layout_marginEnd="8dp"
+                android:textAlignment="textEnd"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_trip_vehicle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textAppearance="?textAppearanceBody1"
+                android:ellipsize="end"
+                android:textAlignment="textEnd"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
     </TableRow>
 
     <TableRow
@@ -188,8 +182,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorControl"
+        android:layout_height="2dp"
+        android:background="@color/colorBackground"
         android:layout_marginBottom="16dp"/>
 
     <TableRow

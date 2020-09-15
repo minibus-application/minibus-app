@@ -63,7 +63,7 @@ public class CounterLayout extends LinearLayout {
         incrementButton = rootView.findViewById(R.id.btn_counter_increment);
 
         decrementButton.setOnClickListener(view -> {
-            int currentValue = Integer.valueOf(valueView.getText().toString());
+            int currentValue = Integer.parseInt(valueView.getText().toString());
 
             if (currentValue > minValue) {
                 currentValue--;
@@ -73,7 +73,7 @@ public class CounterLayout extends LinearLayout {
         });
 
         incrementButton.setOnClickListener(view -> {
-            int currentValue = Integer.valueOf(valueView.getText().toString());
+            int currentValue = Integer.parseInt(valueView.getText().toString());
 
             if (currentValue < maxValue) {
                 currentValue++;
@@ -100,7 +100,7 @@ public class CounterLayout extends LinearLayout {
     }
 
     public int getValue() {
-        return Integer.valueOf(valueView.getText().toString());
+        return Integer.parseInt(valueView.getText().toString());
     }
 
     public void setValue(int newValue) {

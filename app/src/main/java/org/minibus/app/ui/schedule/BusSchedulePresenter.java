@@ -225,41 +225,67 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
 
     @Override
     public void onBusTripSelectButtonClick(String depDate, long id, int pos, String routeId) {
-        if (storage.isAuthorised()) {
-            addSubscription(getBusScheduleObservable(depDate, routeId)
-                    .doOnSubscribe(disposable -> getView().ifAlive(V::showBusTripLoading))
-                    .doFinally(() -> getView().ifAlive(V::hideBusTripLoading))
-                    .subscribeWith(new DisposableSingleObserver<BusScheduleResponse>() {
-                        @Override
-                        public void onSuccess(BusScheduleResponse response) {
-                            getView().ifAlive(v -> v.setBusScheduleData(response.getBusTrips(), response.getRoute()));
+//        if (storage.isAuthorised()) {
+//            addSubscription(getBusScheduleObservable(depDate, routeId)
+//                    .doOnSubscribe(disposable -> getView().ifAlive(V::showBusTripLoading))
+//                    .doFinally(() -> getView().ifAlive(V::hideBusTripLoading))
+//                    .subscribeWith(new DisposableSingleObserver<BusScheduleResponse>() {
+//                        @Override
+//                        public void onSuccess(BusScheduleResponse response) {
+//                            getView().ifAlive(v -> v.setBusScheduleData(response.getBusTrips(), response.getRoute()));
+//
+//                            Optional<BusTrip> optBusTrip = response.getBusTripById(id);
+//
+//                            if (optBusTrip.isPresent()) {
+//                                String date = AppDatesHelper.formatDate(depDate,
+//                                        AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST,
+//                                        AppDatesHelper.DatePattern.SUMMARY);
+//
+//                                getView().ifAlive(v -> v.openBusTripSummary(optBusTrip.get(), storage.getRoute(), date));
+//                            } else {
+//                                getView().ifAlive(v -> v.showError(R.string.error_trip_not_available));
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable throwable) {
+//                            getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
+//                        }
+//                    }));
+//        } else {
+//            getView().ifAlive(v -> v.showAction(R.string.warning_unauthorized_message,
+//                    R.string.login_title,
+//                    ((dialogInterface, i) -> {
+//                        dialogInterface.dismiss();
+//                        getView().ifAlive(V::openLogin);
+//                    })));
+//        }
+        addSubscription(getBusScheduleObservable(depDate, routeId)
+                .doOnSubscribe(disposable -> getView().ifAlive(V::showBusTripLoading))
+                .doFinally(() -> getView().ifAlive(V::hideBusTripLoading))
+                .subscribeWith(new DisposableSingleObserver<BusScheduleResponse>() {
+                    @Override
+                    public void onSuccess(BusScheduleResponse response) {
+                        getView().ifAlive(v -> v.setBusScheduleData(response.getBusTrips(), response.getRoute()));
 
-                            Optional<BusTrip> optBusTrip = response.getBusTripById(id);
+                        Optional<BusTrip> optBusTrip = response.getBusTripById(id);
 
-                            if (optBusTrip.isPresent()) {
-                                String date = AppDatesHelper.formatDate(depDate,
-                                        AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST,
-                                        AppDatesHelper.DatePattern.SUMMARY);
+                        if (optBusTrip.isPresent()) {
+                            String date = AppDatesHelper.formatDate(depDate,
+                                    AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST,
+                                    AppDatesHelper.DatePattern.SUMMARY);
 
-                                getView().ifAlive(v -> v.openBusTripSummary(optBusTrip.get(), storage.getRoute(), date));
-                            } else {
-                                getView().ifAlive(v -> v.showError(R.string.error_trip_not_available));
-                            }
+                            getView().ifAlive(v -> v.openBusTripSummary(optBusTrip.get(), storage.getRoute(), date));
+                        } else {
+                            getView().ifAlive(v -> v.showError(R.string.error_trip_not_available));
                         }
+                    }
 
-                        @Override
-                        public void onError(Throwable throwable) {
-                            getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
-                        }
-                    }));
-        } else {
-            getView().ifAlive(v -> v.showAction(R.string.warning_unauthorized_message,
-                    R.string.login_title,
-                    ((dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                        getView().ifAlive(V::openLogin);
-                    })));
-        }
+                    @Override
+                    public void onError(Throwable throwable) {
+                        getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
+                    }
+                }));
     }
 
     private DisposableSingleObserver<BusScheduleResponse> getBusScheduleObserver() {

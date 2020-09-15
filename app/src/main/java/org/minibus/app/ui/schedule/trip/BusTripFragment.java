@@ -1,12 +1,15 @@
 package org.minibus.app.ui.schedule.trip;
 
 import android.app.Dialog;
+
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,17 +41,18 @@ public class BusTripFragment extends BaseSheetDialogFragment implements BusTripC
     @BindView(R.id.btn_confirm_reservation) MaterialButton btnConfirmReservation;
     @BindView(R.id.tv_summary_title) TextView textTitle;
     @BindView(R.id.tv_summary_cost) TextView textCost;
-    @BindView(R.id.tv_dep_date) TextView textDepartureDate;
     @BindView(R.id.tv_trip_travel_time) TextView textTravelTime;
     @BindView(R.id.tv_trip_route) TextView textRoute;
     @BindView(R.id.tv_trip_dep_station) TextView textDepartureStation;
     @BindView(R.id.tv_trip_arr_station) TextView textArrivalStation;
     @BindView(R.id.tv_trip_vehicle) TextView textVehicle;
+    @BindView(R.id.tv_trip_vehicle_color) TextView textVehicleColor;
     @BindView(R.id.tv_trip_vehicle_plate_num) TextView textVehiclePlateNumber;
     @BindView(R.id.tv_trip_passenger_info) TextView textPassengerInfo;
     @BindView(R.id.cl_trip_seats) CounterLayout counterSeats;
 
-    @Inject BusTripPresenter<BusTripContract.View> presenter;
+    @Inject
+    BusTripPresenter<BusTripContract.View> presenter;
 
     public interface OnBusTripBookingListener {
         void onBusTripBooked();
@@ -94,13 +98,14 @@ public class BusTripFragment extends BaseSheetDialogFragment implements BusTripC
         getActivityComponent().inject(this);
         presenter.attachView(this);
 
-        textTitle.setText(getString(R.string.bus_trip_summary_title));
+        textTitle.setText(departureDate);
         textCost.setText(String.format("%s %s", busTrip.getCost(), busTrip.getCurrency()));
-        textDepartureDate.setText(departureDate);
         textTravelTime.setText(String.format("%s - %s (%s)", busTrip.getDepartureTime(), busTrip.getArrivalTime(), busTrip.getDuration()));
         textRoute.setText(route.getDescription());
         textDepartureStation.setText(route.getDepartureCity().getStation());
         textArrivalStation.setText(route.getArrivalCity().getStation());
+        textVehicleColor.setText(Html.fromHtml("\u2B24"));
+        textVehicleColor.setTextColor(Color.parseColor(busTrip.getVehicle().getColor()));
         textVehicle.setText(String.format("%s %s", busTrip.getVehicle().getMake(), busTrip.getVehicle().getModel()));
         textVehiclePlateNumber.setText(busTrip.getVehicle().getPlateNumber());
 
@@ -121,7 +126,7 @@ public class BusTripFragment extends BaseSheetDialogFragment implements BusTripC
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Dialog bottomSheetDialog =  super.onCreateDialog(savedInstanceState);
+        final Dialog bottomSheetDialog = super.onCreateDialog(savedInstanceState);
 
         bottomSheetDialog.setOnShowListener(dialogInterface -> {
             FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
