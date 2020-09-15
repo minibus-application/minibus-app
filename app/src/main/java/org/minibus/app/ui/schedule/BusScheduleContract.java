@@ -26,19 +26,19 @@ public interface BusScheduleContract {
         void hideJumpTopFab();
         void toggleFilter();
         void updateProfileBadge();
-        void setProfileBadge(int bookingsQuantity);
+        void setProfileBadge(int bookingsCount);
         void setBusScheduleData(List<BusTrip> busTrips, Route route);
         void setDirectionDescription(String text);
         void setDirectionDescription(@StringRes int resId);
-        void setDepartureCity(String departureBusStop);
-        void setArrivalCity(String arrivalBusStop);
-        void setDirection(String fromCity, String toCity);
+        void setDepartureCity(String depCity);
+        void setArrivalCity(String arrCity);
+        void setDirection(String depCity, String arrCity);
         void setOperationalDays(List<Integer> daysOfWeek);
         void openProfile();
         void openLogin();
         void openDepartureCities();
         void openArrivalCities();
-        void openBusTripSummary(BusTrip busTrip, City departureCity, String departureDate);
+        void openBusTripSummary(BusTrip busTrip, Route route, String depDate);
         void jumpTop();
         void finish();
     }
@@ -46,25 +46,24 @@ public interface BusScheduleContract {
     interface Presenter<V extends BusScheduleContract.View> extends Contract.Presenter<V> {
 
         void onBackPressed();
-        void onStart(String departureDate);
+        void onStart(String depDate);
         void onCreateProfileBadge();
-        void onRedirectToLogin();
-        void onRefresh(String departureDate);
+        void onRefresh(String depDate);
         void onUserLoggedIn();
         void onUserLoggedOut();
-        void onUserBookedBusTrip(String departureDate);
+        void onUserBookedBusTrip(String depDate);
         void onUserBookingsUpdate();
         void onFilterCollapsed();
         void onFilterExpanded();
-        void onDirectionSwapButtonClick(String departureDate);
-        void onDateClick(String departureDate);
-        void onArrivalCityChange(City city, String departureDate);
-        void onDepartureCityChange(City city, String departureDate);
+        void onDirectionSwapButtonClick(String depDate);
+        void onDateClick(String depDate);
+        void onArrivalCityChange(City city, String depDate);
+        void onDepartureCityChange(City city, String depDate);
         void onDepartureCityClick();
         void onArrivalCityClick();
         void onProfileIconClick();
         void onFilterFabClick();
         void onJumpTopFabClick();
-        void onBusTripSelectButtonClick(String departureDate, long id, int pos, String routeId);
+        void onBusTripSelectButtonClick(String depDate, long id, int pos, String routeId);
     }
 }

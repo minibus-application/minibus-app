@@ -6,7 +6,6 @@ import org.minibus.app.data.network.model.CitiesModel;
 import org.minibus.app.data.network.model.RoutesModel;
 import org.minibus.app.data.network.pojo.BaseResponse;
 import org.minibus.app.data.network.pojo.city.City;
-import org.minibus.app.data.network.pojo.city.CityResponse;
 import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
@@ -58,7 +57,7 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
 
     @Override
     public void onProfileIconClick() {
-        if (storage.isUserLoggedIn()) getView().ifAlive(V::openProfile);
+        if (storage.isAuthorised()) getView().ifAlive(V::openProfile);
         else getView().ifAlive(V::openLogin);
     }
 
@@ -75,16 +74,6 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
     @Override
     public void onBackPressed() {
         getView().ifAlive(V::finish);
-    }
-
-    @Override
-    public void onRedirectToLogin() {
-        getView().ifAlive(v -> v.showAction(R.string.warning_unauthorized_message,
-                R.string.login_title,
-                ((dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-                    getView().ifAlive(V::openLogin);
-                })));
     }
 
     @Override
@@ -118,7 +107,7 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
 
     @Override
     public void onCreateProfileBadge() {
-        if (storage.isUserLoggedIn()) {
+        if (storage.isAuthorised()) {
             final int value = storage.getUserBookingsCount();
             getView().ifAlive(v -> v.setProfileBadge(value));
 
@@ -235,35 +224,42 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
     }
 
     @Override
-    public void onBusTripSelectButtonClick(String departureDate, long id, int pos, String routeId) {
-        City departureCity = storage.getDepartureCity();
+    public void onBusTripSelectButtonClick(String depDate, long id, int pos, String routeId) {
+        if (storage.isAuthorised()) {
+            addSubscription(getBusScheduleObservable(depDate, routeId)
+                    .doOnSubscribe(disposable -> getView().ifAlive(V::showBusTripLoading))
+                    .doFinally(() -> getView().ifAlive(V::hideBusTripLoading))
+                    .subscribeWith(new DisposableSingleObserver<BusScheduleResponse>() {
+                        @Override
+                        public void onSuccess(BusScheduleResponse response) {
+                            getView().ifAlive(v -> v.setBusScheduleData(response.getBusTrips(), response.getRoute()));
 
-        addSubscription(getBusScheduleObservable(departureDate, routeId)
-                .doOnSubscribe(disposable -> getView().ifAlive(V::showBusTripLoading))
-                .doFinally(() -> getView().ifAlive(V::hideBusTripLoading))
-                .subscribeWith(new DisposableSingleObserver<BusScheduleResponse>() {
-                    @Override
-                    public void onSuccess(BusScheduleResponse response) {
-                        getView().ifAlive(v -> v.setBusScheduleData(response.getBusTrips(), response.getRoute()));
+                            Optional<BusTrip> optBusTrip = response.getBusTripById(id);
 
-                        Optional<BusTrip> optBusTrip = response.getBusTripById(id);
+                            if (optBusTrip.isPresent()) {
+                                String date = AppDatesHelper.formatDate(depDate,
+                                        AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST,
+                                        AppDatesHelper.DatePattern.SUMMARY);
 
-                        if (optBusTrip.isPresent()) {
-                            String date = AppDatesHelper.formatDate(departureDate,
-                                    AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST,
-                                    AppDatesHelper.DatePattern.SUMMARY);
-
-                            getView().ifAlive(v -> v.openBusTripSummary(optBusTrip.get(), departureCity, date));
-                        } else {
-                            getView().ifAlive(v -> v.showError(R.string.error_no_bus_trip_message));
+                                getView().ifAlive(v -> v.openBusTripSummary(optBusTrip.get(), storage.getRoute(), date));
+                            } else {
+                                getView().ifAlive(v -> v.showError(R.string.error_trip_not_available));
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
-                    }
-                }));
+                        @Override
+                        public void onError(Throwable throwable) {
+                            getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
+                        }
+                    }));
+        } else {
+            getView().ifAlive(v -> v.showAction(R.string.warning_unauthorized_message,
+                    R.string.login_title,
+                    ((dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                        getView().ifAlive(V::openLogin);
+                    })));
+        }
     }
 
     private DisposableSingleObserver<BusScheduleResponse> getBusScheduleObserver() {

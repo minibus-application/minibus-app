@@ -1,24 +1,26 @@
 package org.minibus.app.ui.schedule.trip;
 
 import android.app.Dialog;
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.minibus.app.AppConstants;
-import org.minibus.app.data.network.pojo.city.City;
+import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
-import org.minibus.app.utils.CommonUtil;
+import org.minibus.app.ui.base.BaseSheetDialogFragment;
+import org.minibus.app.ui.custom.CounterLayout;
 import org.minibus.app.ui.R;
-import org.minibus.app.ui.base.BaseDialogFragment;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 
 import javax.inject.Inject;
@@ -26,45 +28,44 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 
-public class BusTripFragment extends BaseDialogFragment implements BusTripContract.View {
+public class BusTripFragment extends BaseSheetDialogFragment implements BusTripContract.View {
 
     public static final int REQ_CODE = AppConstants.BUS_TRIP_FRAGMENT_REQ_CODE;
 
-    @BindView(R.id.radio_group_sum_passengers) RadioGroup radioGroupPassengers;
-    @BindView(R.id.text_sum_arr_time) TextView textArrivalTime;
-    @BindView(R.id.text_sum_dep_time) TextView textDepartureTime;
-    @BindView(R.id.text_sum_dep_date) TextView textDepartureDate;
-    @BindView(R.id.text_sum_dep_bus_stop) TextView textDepartureBusStop;
-    @BindView(R.id.button_sum_cancel) MaterialButton buttonCancel;
-    @BindView(R.id.button_sum_book) MaterialButton buttonBook;
+    @BindView(R.id.btn_confirm_reservation) MaterialButton btnConfirmReservation;
+    @BindView(R.id.tv_summary_title) TextView textTitle;
+    @BindView(R.id.tv_summary_cost) TextView textCost;
+    @BindView(R.id.tv_dep_date) TextView textDepartureDate;
+    @BindView(R.id.tv_trip_travel_time) TextView textTravelTime;
+    @BindView(R.id.tv_trip_route) TextView textRoute;
+    @BindView(R.id.tv_trip_dep_station) TextView textDepartureStation;
+    @BindView(R.id.tv_trip_arr_station) TextView textArrivalStation;
+    @BindView(R.id.tv_trip_vehicle) TextView textVehicle;
+    @BindView(R.id.tv_trip_vehicle_plate_num) TextView textVehiclePlateNumber;
+    @BindView(R.id.tv_trip_passenger_info) TextView textPassengerInfo;
+    @BindView(R.id.cl_trip_seats) CounterLayout counterSeats;
 
     @Inject BusTripPresenter<BusTripContract.View> presenter;
 
-    public interface BusTripFragmentCallback {
+    public interface OnBusTripBookingListener {
         void onBusTripBooked();
-        void onRedirectToLogin();
     }
 
-    public static final String BUS_STOP_KEY = "key_bus_stop";
+    public static final String BUS_ROUTE_KEY = "key_route";
     public static final String BUS_TRIP_KEY = "key_bus_trip";
     public static final String BUS_DATE_KEY = "key_bus_date";
 
-    private BusTripFragmentCallback callback;
+    private OnBusTripBookingListener listener;
     private BusTrip busTrip;
-    private City departureCity;
+    private Route route;
     private String departureDate;
-    private int seatsCount;
+    private int availableSeatsCount;
 
     public static BusTripFragment newInstance() {
         return new BusTripFragment();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogScaleAnimation;
     }
 
     @Override
@@ -73,41 +74,69 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
 
         if (getArguments() != null) {
             busTrip = (BusTrip) getArguments().getSerializable(BUS_TRIP_KEY);
-            departureCity = (City) getArguments().getSerializable(BUS_STOP_KEY);
+            route = (Route) getArguments().getSerializable(BUS_ROUTE_KEY);
             departureDate = getArguments().getString(BUS_DATE_KEY);
-            seatsCount = busTrip.getSeatsAvailable();
+            availableSeatsCount = busTrip.getAvailableSeats();
         } else {
             dismiss();
         }
+
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_BottomSheetDialog);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = getMainActivity().getLayoutInflater().inflate(R.layout.fragment_bus_trip_summary, null);
+
+        listener = (OnBusTripBookingListener) getTargetFragment();
+        setUnbinder(ButterKnife.bind(this, view));
+        getActivityComponent().inject(this);
+        presenter.attachView(this);
+
+        textTitle.setText(getString(R.string.bus_trip_summary_title));
+        textCost.setText(String.format("%s %s", busTrip.getCost(), busTrip.getCurrency()));
+        textDepartureDate.setText(departureDate);
+        textTravelTime.setText(String.format("%s - %s (%s)", busTrip.getDepartureTime(), busTrip.getArrivalTime(), busTrip.getDuration()));
+        textRoute.setText(route.getDescription());
+        textDepartureStation.setText(route.getDepartureCity().getStation());
+        textArrivalStation.setText(route.getArrivalCity().getStation());
+        textVehicle.setText(String.format("%s %s", busTrip.getVehicle().getMake(), busTrip.getVehicle().getModel()));
+        textVehiclePlateNumber.setText(busTrip.getVehicle().getPlateNumber());
+
+        counterSeats.setOnChangedValueListener(value -> {
+            try {
+                float cost = Float.parseFloat(busTrip.getCost());
+                String newCost = String.format("%s %s",
+                        (double) Math.round(counterSeats.getValue() * cost * 10) / 10, busTrip.getCurrency());
+                textCost.setText(newCost);
+            } catch (Exception ignore) {
+                Timber.d("Can't parse to float: %s", textCost.getText());
+            }
+        });
+
+        return view;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
-        View view = getMainActivity().getLayoutInflater().inflate(R.layout.fragment_bus_trip, null);
+        final Dialog bottomSheetDialog =  super.onCreateDialog(savedInstanceState);
 
-        builder.setView(view).setTitle(R.string.bus_trip_summary_title);
+        bottomSheetDialog.setOnShowListener(dialogInterface -> {
+            FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
 
-        callback = (BusTripFragment.BusTripFragmentCallback) getTargetFragment();
-        setUnbinder(ButterKnife.bind(this, view));
-        getActivityComponent().inject(this);
-        presenter.attachView(this);
-
-        Resources res = getMainActivity().getResources();
-
-        textDepartureTime.setText(res.getString(R.string.label_departure_time, busTrip.getDepartureTime()));
-        textArrivalTime.setText(res.getString(R.string.label_arrival_time, busTrip.getArrivalTime()));
-        textDepartureBusStop.setText(res.getString(R.string.label_bus_stop, departureCity.getName()));
-        textDepartureDate.setText(res.getString(R.string.label_date, departureDate));
-
-        return builder.create();
+            BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+            behavior.setSkipCollapsed(true);
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        });
+        return bottomSheetDialog;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        presenter.onSetupPassengersOptions(seatsCount);
+        presenter.onStart(availableSeatsCount);
     }
 
     @Override
@@ -116,49 +145,31 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
         super.onDestroyView();
     }
 
-    @OnClick(R.id.button_sum_cancel)
-    public void onCancelButtonClick() {
-        presenter.onCancelClick();
-    }
-
-    @OnClick(R.id.button_sum_book)
-    public void onBookButtonClick() {
-        presenter.onBookClick(departureDate, busTrip, departureCity, getPassengersCount());
+    @OnClick(R.id.btn_confirm_reservation)
+    public void onConfirmReservationButtonClick() {
+        presenter.onConfirmReservationButtonClick(departureDate, busTrip.getId(), counterSeats.getValue());
     }
 
     @Override
-    public void setPassengersCount(int passengersCount) {
-        RadioButton[] radioButtons = new RadioButton[passengersCount];
-        int margin = CommonUtil.dpToPx(getMainActivity(),4);
-        int height = CommonUtil.dpToPx(getMainActivity(),32);
-        int width = height;
-
-        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(width, height);
-        params.setMargins(margin, margin, margin, margin);
-
-        if (radioGroupPassengers.getChildCount() == 0) {
-            for (int i = 0; i < passengersCount; i++) {
-                radioButtons[i] = new RadioButton(getMainActivity());
-                radioButtons[i].setText(String.valueOf(i + 1));
-                radioButtons[i].setChecked(i == 0);
-                radioButtons[i].setId(i);
-                radioButtons[i].setLayoutParams(params);
-
-                radioGroupPassengers.addView(radioButtons[i]);
-            }
-        }
+    public void disableConfirmReservationButton() {
+        btnConfirmReservation.setEnabled(false);
     }
 
     @Override
-    public void openLogin() {
-        callback.onRedirectToLogin();
-        close();
+    public void enableConfirmReservationButton() {
+        btnConfirmReservation.setEnabled(true);
     }
 
     @Override
-    public void closeOnBooked() {
-        callback.onBusTripBooked();
-        close();
+    public void setPassengerName(String name) {
+        textPassengerInfo.setText(name);
+    }
+
+    @Override
+    public void setSeatsCounterRange(int minSeatsValue, int maxSeatsValue) {
+        counterSeats.setValue(minSeatsValue);
+        counterSeats.setMinValue(minSeatsValue);
+        counterSeats.setMaxValue(maxSeatsValue);
     }
 
     @Override
@@ -167,33 +178,8 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
     }
 
     @Override
-    public void hide() {
-        getDialog().hide();
-    }
-
-    @Override
-    public void resume() {
-        getDialog().show();
-    }
-
-    @Override
-    public void showError(String msg) {
+    public void closeOnBooked() {
+        listener.onBusTripBooked();
         close();
-        super.showError(msg);
-    }
-
-    @Override
-    protected void onBack() {
-        presenter.onCancelClick();
-    }
-
-    private int getPassengersCount() {
-        int checkedId = radioGroupPassengers.getCheckedRadioButtonId();
-        View radioButton = radioGroupPassengers.findViewById(checkedId);
-
-        int idx = radioGroupPassengers.indexOfChild(radioButton);
-        RadioButton rb = (RadioButton) radioGroupPassengers.getChildAt(idx);
-
-        return Integer.valueOf(rb.getText().toString());
     }
 }

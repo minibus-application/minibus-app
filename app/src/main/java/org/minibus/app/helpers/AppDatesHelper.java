@@ -17,7 +17,7 @@ public class AppDatesHelper {
         API_BOOKING_RESPONSE ("yyyy-MM-dd"),
         CALENDAR ("EE d"),
         BOOKING ("EEEE, d MMM"),
-        SUMMARY ("yyyy-MM-dd");
+        SUMMARY ("EE, d MMM");
 
         private final String pattern;
 

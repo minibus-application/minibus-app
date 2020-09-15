@@ -31,15 +31,15 @@ public class BusScheduleDiffUtilCallback extends DiffUtil.Callback {
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         BusTrip oldBusTrip = oldList.get(oldItemPosition);
         BusTrip newBusTrip = newList.get(newItemPosition);
-        return oldBusTrip.getId() == newBusTrip.getId();
+        return oldBusTrip.getLongId() == newBusTrip.getLongId();
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         BusTrip oldBusTrip = oldList.get(oldItemPosition);
         BusTrip newBusTrip = newList.get(newItemPosition);
-        return oldBusTrip.getId() == newBusTrip.getId()
-                && oldBusTrip.getSeatsAvailable() == newBusTrip.getSeatsAvailable()
+        return oldBusTrip.getLongId() == newBusTrip.getLongId()
+                && oldBusTrip.getAvailableSeats() == newBusTrip.getAvailableSeats()
                 && oldBusTrip.getDepartureTime().equals(newBusTrip.getDepartureTime());
     }
 

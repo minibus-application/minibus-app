@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_counter_decrement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="?colorSurface"
+        android:src="@drawable/ic_decrement_arrow_dark_24dp" />
+
+    <EditText
+        android:id="@+id/edt_counter_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:enabled="false"
+        android:background="@null"
+        android:textColor="@color/colorTextPrimary"
+        android:inputType="number" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_counter_increment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="?colorSurface"
+        android:src="@drawable/ic_increment_arrow_dark_24dp" />
+</merge>

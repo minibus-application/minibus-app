@@ -7,7 +7,7 @@ import org.minibus.app.data.network.pojo.carrier.Carrier;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-public class Transport implements Serializable {
+public class Vehicle implements Serializable {
 
     @SerializedName("_id")
     private String id;
@@ -30,13 +30,13 @@ public class Transport implements Serializable {
     @SerializedName("carrier")
     private Carrier carrier;
 
-    public Transport(String id,
-                     String color,
-                     String make,
-                     String model,
-                     int capacity,
-                     String plateNumber,
-                     Carrier carrier) {
+    public Vehicle(String id,
+                   String color,
+                   String make,
+                   String model,
+                   int capacity,
+                   String plateNumber,
+                   Carrier carrier) {
         this.id = id;
         this.color = color;
         this.make = make;

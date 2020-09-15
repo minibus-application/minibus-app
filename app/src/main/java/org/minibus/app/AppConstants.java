@@ -17,4 +17,6 @@ public class AppConstants {
     public static final int USER_PROFILE_FRAGMENT_REQ_CODE = 3;
     public static final int LOGIN_FRAGMENT_REQ_CODE = 4;
     public static final double MAX_FONT_SCALE_FACTOR = 1.0;
+    public static final int MIN_SEATS_PER_BOOKING = 1;
+    public static final int MAX_SEATS_PER_BOOKING = 3;
 }

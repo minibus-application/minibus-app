@@ -2,9 +2,8 @@ package org.minibus.app.data.network.pojo.schedule;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.minibus.app.data.network.pojo.BaseResponse;
 import org.minibus.app.data.network.pojo.route.Route;
-import org.minibus.app.data.network.pojo.transport.Transport;
+import org.minibus.app.data.network.pojo.transport.Vehicle;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -29,8 +28,8 @@ public class BusTrip implements Serializable {
     @SerializedName("duration")
     private String duration;
 
-    @SerializedName("van")
-    private Transport transport;
+    @SerializedName("vehicle")
+    private Vehicle vehicle;
 
     @SerializedName("route")
     private Route route;
@@ -43,7 +42,7 @@ public class BusTrip implements Serializable {
                    String departureTime,
                    String arrivalTime,
                    String duration,
-                   Transport transport,
+                   Vehicle vehicle,
                    Route route,
                    int seatsBooked) {
         this.cost = cost;
@@ -51,13 +50,17 @@ public class BusTrip implements Serializable {
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.duration = duration;
-        this.transport = transport;
+        this.vehicle = vehicle;
         this.route = route;
         this.seatsBooked = seatsBooked;
     }
 
-    public long getId() {
+    public long getLongId() {
         return new BigInteger(id, 16).longValue();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getCost() {
@@ -80,16 +83,16 @@ public class BusTrip implements Serializable {
         return duration;
     }
 
-    public Transport getTransport() {
-        return transport;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
     public Route getRoute() {
         return route;
     }
 
-    public int getSeatsAvailable() {
-        return transport.getCapacity() - seatsBooked;
+    public int getAvailableSeats() {
+        return vehicle.getCapacity() - seatsBooked;
     }
 
     public int getSeatsBooked() {

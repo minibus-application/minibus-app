@@ -36,12 +36,12 @@ public class AppStorageManager {
         storage = context.getSharedPreferences(AppConstants.STORAGE_NAME, Context.MODE_PRIVATE);
     }
 
-    public boolean isUserLoggedIn() {
+    public boolean isAuthorised() {
         return contains(KEY_USER_AUTH_TOKEN) && !get(KEY_USER_AUTH_TOKEN, "").isEmpty();
     }
 
     public boolean isEmpty() {
-        return !isUserLoggedIn() && !isRouteStored();
+        return !isAuthorised() && !isRouteStored();
     }
 
     public boolean isRouteStored() {

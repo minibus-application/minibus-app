@@ -11,6 +11,7 @@
     <string name="retry">Retry</string>
     <string name="back">Back</string>
     <string name="book">Book</string>
+    <string name="confirm_reservation">Confirm reservation</string>
     <string name="go">Go</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
@@ -25,14 +26,18 @@
     <string name="bus_schedule_empty_message">Change the date or departure city</string>
 
     <!-- Labels -->
-    <string name="label_date">Date: %1$s</string>
-    <string name="label_departure_time">Departure: %1$s</string>
-    <string name="label_arrival_time">Arrival: %1$s</string>
-    <string name="label_bus_stop">Station: %1$s</string>
-    <string name="label_passengers_count">Seats to reserve:</string>
-    <string name="label_available_seats_count">Seats available: %1$d</string>
-    <string name="label_seats_count">%1$d seats</string>
-    <string name="label_bus_stop_prefix">st. %1$s</string>
+    <string name="label_departure_date">Departure date:</string>
+    <string name="label_travel_time">Travel time:</string>
+    <string name="label_arrival_time">Arrival time:</string>
+    <string name="label_trip_route">Route:</string>
+    <string name="label_passenger">Passenger:</string>
+    <string name="label_departure_station">Departure station:</string>
+    <string name="label_arrival_station">Arrival station:</string>
+    <string name="label_seats_to_reserve">Seats to reserve:</string>
+    <string name="label_vehicle">Vehicle:</string>
+    <string name="label_plate_number">Plate number:</string>
+    <string name="label_payment_on_boarding">*payment on boarding</string>
+    <string name="label_available_seats_count">%1$d seats</string>
 
     <!-- Auth form -->
     <string name="user_phone_country_code">+375</string>
@@ -66,7 +71,7 @@
     <!-- Errors -->
     <string name="error_default_title">Error</string>
     <string name="error_default_message">An error occurred while loading data</string>
-    <string name="error_no_bus_trip_message">This ride is no longer available</string>
+    <string name="error_trip_not_available">This ride is no longer available</string>
     <string name="error_departure_first">Please select your departure point firstly</string>
     <string name="error_complete_route">Please complete your route details</string>
 

@@ -8,18 +8,18 @@ public interface BusTripContract {
 
     interface View extends Contract.View {
 
-        void setPassengersCount(int passengersCount);
-        void openLogin();
+        void setSeatsCounterRange(int minSeatsValue, int maxSeatsValue);
+        void setPassengerName(String name);
+        void disableConfirmReservationButton();
+        void enableConfirmReservationButton();
         void closeOnBooked();
         void close();
-        void hide();
-        void resume();
     }
 
     interface Presenter<V extends BusTripContract.View> extends Contract.Presenter<V> {
 
-        void onBookClick(String departureDate, BusTrip busTrip, City departureCity, int seatsCount);
-        void onSetupPassengersOptions(int seatsCount);
-        void onCancelClick();
+        void onStart(int availableSeats);
+        void onConfirmReservationButtonClick(String depDate, String busTripId, int seatsToReserve);
+        void onSeatsCountChanged(int newValue);
     }
 }

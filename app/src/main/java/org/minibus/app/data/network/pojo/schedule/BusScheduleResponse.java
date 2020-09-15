@@ -14,7 +14,7 @@ public class BusScheduleResponse extends BaseResponse<List<BusTrip>> implements 
     }
 
     public Route getRoute() {
-        return getResult().get(0).getRoute();
+        return isEmpty() ? null : getResult().get(0).getRoute();
     }
 
     public List<BusTrip> getBusTrips() {
@@ -26,6 +26,6 @@ public class BusScheduleResponse extends BaseResponse<List<BusTrip>> implements 
     }
 
     public Optional<BusTrip> getBusTripById(long id) {
-        return getBusTrips().stream().filter(busTrip -> busTrip.getId() == id).findFirst();
+        return getBusTrips().stream().filter(busTrip -> busTrip.getLongId() == id).findFirst();
     }
 }

@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 
 import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.route.Route;
-import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
 import org.minibus.app.ui.cities.arrival.ArrivalCitiesFragment;
 import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
 import org.minibus.app.utils.CommonUtil;
@@ -24,8 +23,6 @@ import org.minibus.app.helpers.AppAnimHelper;
 import com.google.android.material.appbar.AppBarLayout;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,7 +66,7 @@ public class BusScheduleFragment extends BaseFragment implements
         BusScheduleCalendarAdapter.OnItemClickListener,
         DepartureCitiesFragment.OnCitySelectListener,
         ArrivalCitiesFragment.OnCitySelectListener,
-        BusTripFragment.BusTripFragmentCallback,
+        BusTripFragment.OnBusTripBookingListener,
         LoginFragment.LoginFragmentCallback,
         UserProfileFragment.UserProfileFragmentCallback,
         BackButtonListener {
@@ -246,11 +243,6 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void onRedirectToLogin() {
-        presenter.onRedirectToLogin();
-    }
-
-    @Override
     public void onArrivalCitySelected(City city) {
         presenter.onArrivalCityChange(city, adapterCalendar.getSelectedDate());
     }
@@ -422,11 +414,11 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void openBusTripSummary(BusTrip busTrip, City departureCity, String departureDate) {
+    public void openBusTripSummary(BusTrip busTrip, Route route, String depDate) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BusTripFragment.BUS_TRIP_KEY, busTrip);
-        bundle.putSerializable(BusTripFragment.BUS_STOP_KEY, departureCity);
-        bundle.putString(BusTripFragment.BUS_DATE_KEY, departureDate);
+        bundle.putSerializable(BusTripFragment.BUS_ROUTE_KEY, route);
+        bundle.putString(BusTripFragment.BUS_DATE_KEY, depDate);
 
         super.openDialogFragment(BusTripFragment.newInstance(), BusTripFragment.REQ_CODE, bundle);
     }

@@ -99,8 +99,8 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
 
             textDepartureTime.setText(booking.getSelectedBusTrip().getDepartureTime());
             textDepartureCity.setText(booking.getCity().getName());
-            textDepartureBusStop.setText(context.getResources()
-                    .getString(R.string.label_bus_stop_prefix, booking.getCity().getName()));
+//            textDepartureBusStop.setText(context.getResources()
+//                    .getString(R.string.label_bus_stop_prefix, booking.getCity().getName()));
 
             textArrivalTime.setText(booking.getSelectedBusTrip().getArrivalTime());
             textArrivalCity.setText(booking.getCity().getName());

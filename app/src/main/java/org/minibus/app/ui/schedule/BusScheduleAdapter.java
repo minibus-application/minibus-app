@@ -78,7 +78,7 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
 
     @Override
     public long getItemId(int position) {
-        return busTrips.get(position).getId();
+        return busTrips.get(position).getLongId();
     }
 
     @Override
@@ -107,9 +107,9 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
         @BindView(R.id.tv_dep_station) TextView textDepartureStation;
         @BindView(R.id.tv_arr_station) TextView textArrivalStation;
         @BindView(R.id.tv_available_seats) TextView textSeatsAvailable;
-        @BindView(R.id.tv_trip_cost) TextView textCost;
-        @BindView(R.id.btn_select_trip) ProgressMaterialButton btnSelectTrip;
-        @BindView(R.id.ll_bus_trip) CardView layoutBusTrip;
+        @BindView(R.id.tv_cost) TextView textCost;
+        @BindView(R.id.btn_select) ProgressMaterialButton btnSelectTrip;
+        @BindView(R.id.ll_trip) CardView layoutBusTrip;
 
         private long itemId;
         private String routeId;
@@ -120,20 +120,20 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
         }
 
         public void bind(BusTrip busTrip, Route route) {
-            itemId = busTrip.getId();
+            itemId = busTrip.getLongId();
             routeId = route.getId();
 
-            textCarrierName.setText(busTrip.getTransport().getCarrier().getName());
-            textCarrierRating.setText(busTrip.getTransport().getCarrier().getRating());
+            textCarrierName.setText(busTrip.getVehicle().getCarrier().getName());
+            textCarrierRating.setText(busTrip.getVehicle().getCarrier().getRating());
             textDepartureTime.setText(busTrip.getDepartureTime());
             textDepartureStation.setText(route.getDepartureCity().getStation());
             textArrivalTime.setText(busTrip.getArrivalTime());
             textArrivalStation.setText(route.getArrivalCity().getStation());
             textDuration.setText(busTrip.getDuration());
-            textSeatsAvailable.setText(context.getResources().getString(R.string.label_seats_count, busTrip.getSeatsAvailable()));
+            textSeatsAvailable.setText(context.getResources().getString(R.string.label_available_seats_count, busTrip.getAvailableSeats()));
             textCost.setText(String.format("%s %s", busTrip.getCost(), busTrip.getCurrency()));
 
-            if (busTrip.getSeatsAvailable() == 0) {
+            if (busTrip.getAvailableSeats() == 0) {
                 textSeatsAvailable.setTextColor(ContextCompat.getColor(context, R.color.colorError));
                 layoutBusTrip.setEnabled(false);
             } else {
@@ -142,7 +142,7 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
             }
         }
 
-        @OnClick(R.id.btn_select_trip)
+        @OnClick(R.id.btn_select)
         public void onSelectButtonClick(View itemView) {
             // have to get position by invoking getAdapterPosition()
             // because this is where sometimes the "position" value is not the proper one
