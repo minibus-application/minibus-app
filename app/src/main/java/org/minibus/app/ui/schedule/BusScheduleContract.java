@@ -3,9 +3,12 @@ package org.minibus.app.ui.schedule;
 import androidx.annotation.StringRes;
 
 import org.minibus.app.data.network.pojo.city.City;
+import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
 import org.minibus.app.ui.base.Contract;
+
+import java.util.List;
 
 public interface BusScheduleContract {
 
@@ -24,12 +27,13 @@ public interface BusScheduleContract {
         void toggleFilter();
         void updateProfileBadge();
         void setProfileBadge(int bookingsQuantity);
-        void setBusScheduleData(BusScheduleResponse busSchedule);
-        void setToolbarSubtitle(String text);
-        void setToolbarSubtitle(@StringRes int resId);
+        void setBusScheduleData(List<BusTrip> busTrips, Route route);
+        void setDirectionDescription(String text);
+        void setDirectionDescription(@StringRes int resId);
         void setDepartureCity(String departureBusStop);
         void setArrivalCity(String arrivalBusStop);
-        void setDirection(String departureBusStop, String destinationCity);
+        void setDirection(String fromCity, String toCity);
+        void setOperationalDays(List<Integer> daysOfWeek);
         void openProfile();
         void openLogin();
         void openDepartureCities();
@@ -61,6 +65,6 @@ public interface BusScheduleContract {
         void onProfileIconClick();
         void onFilterFabClick();
         void onJumpTopFabClick();
-        void onBusTripClick(String departureDate, int id, int pos);
+        void onBusTripSelectButtonClick(String departureDate, long id, int pos, String routeId);
     }
 }

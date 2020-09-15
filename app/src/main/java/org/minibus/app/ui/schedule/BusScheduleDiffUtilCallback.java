@@ -39,7 +39,7 @@ public class BusScheduleDiffUtilCallback extends DiffUtil.Callback {
         BusTrip oldBusTrip = oldList.get(oldItemPosition);
         BusTrip newBusTrip = newList.get(newItemPosition);
         return oldBusTrip.getId() == newBusTrip.getId()
-                && oldBusTrip.getSeatsCount() == newBusTrip.getSeatsCount()
+                && oldBusTrip.getSeatsAvailable() == newBusTrip.getSeatsAvailable()
                 && oldBusTrip.getDepartureTime().equals(newBusTrip.getDepartureTime());
     }
 

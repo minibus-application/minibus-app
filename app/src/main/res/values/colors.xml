@@ -7,8 +7,8 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryVariant">#FAFAFA</color>
     <color name="colorOnPrimary">#121212</color>
-    <color name="colorSecondary">#1976D2</color>
-    <color name="colorSecondaryVariant">#FBF7F0</color>
+    <color name="colorSecondary">#1E88E5</color>
+    <color name="colorSecondaryVariant">#90CAF9</color>
     <color name="colorOnSecondary">#FFFFFF</color>
     <color name="colorBackground">#F5F5F5</color>
     <color name="colorOnBackground">#9E9E9E</color>
@@ -17,6 +17,8 @@
     <color name="colorError">#FF1744</color>
     <color name="colorErrorVariant">#FF5252</color>
     <color name="colorOnError">#FFFFFF</color>
+    <color name="colorYellow">#FFAB00</color>
+    <color name="colorGreen">#00C853</color>
 
     <color name="colorTextPrimary">#121212</color>
     <color name="colorTextSecondary">#9E9E9E</color>

@@ -66,7 +66,7 @@ public class BusTripPresenter<V extends BusTripContract.View> extends BasePresen
     public void onBookClick(String departureDate, BusTrip busTrip, City departureCity, int seatsCount) {
         if (storage.isUserLoggedIn()) {
             BookingRequest booking = new BookingRequest(storage.getUserData(),
-                    departureCity, busTrip.getSelected(), seatsCount, departureDate);
+                    departureCity, busTrip, seatsCount, departureDate);
 
             addSubscription(getBusTripBookingObservable(storage.getUserAuthToken(), booking)
                     .doOnSubscribe(disposable -> {

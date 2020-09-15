@@ -2,6 +2,7 @@ package org.minibus.app.ui.schedule;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,13 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.ui.R;
 import org.minibus.app.data.network.pojo.schedule.BusTrip;
+import org.minibus.app.ui.custom.ProgressMaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +28,12 @@ import timber.log.Timber;
 public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.BusScheduleViewHolder> {
 
     public interface OnItemClickListener {
-        void onBusTripClick(View view, int id, int pos);
+        void onBusTripSelect(View view, long id, int pos, String routeId);
     }
 
     private Context context;
     private List<BusTrip> busTrips = new ArrayList<>();
+    private Route route = null;
     private OnItemClickListener clickListener;
     private boolean isItemClickable = true;
     private boolean isItemLoading = false;
@@ -46,10 +47,11 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
         this.clickListener = clickListener;
     }
 
-    public void setData(List<BusTrip> newBusTrips) {
+    public void setData(List<BusTrip> newBusTrips, Route route) {
         DiffUtil.DiffResult diffResult =
                 DiffUtil.calculateDiff(new BusScheduleDiffUtilCallback(this.busTrips, newBusTrips), true);
 
+        this.route = route;
         this.busTrips.clear();
         this.busTrips.addAll(newBusTrips);
 
@@ -87,13 +89,9 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
     @Override
     public void onBindViewHolder(@NonNull final BusScheduleViewHolder viewHolder, final int position) {
         BusTrip busTrip = busTrips.get(position);
-        viewHolder.bind(busTrip);
+        viewHolder.bind(busTrip, this.route);
 
         Timber.d("Bind bus trip with id = %d, position = %d", getItemId(position), position);
-
-        // if not first item, check if item above has the same header
-        viewHolder.showHeader(position > 0
-                && busTrips.get(position - 1).getDepartureHours().equals(busTrip.getDepartureHours()));
 
         // set loading indicator only for clicked item
         viewHolder.setLoading(lastClickedItemPos == position && isItemLoading);
@@ -101,41 +99,51 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
 
     class BusScheduleViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.text_bus_trip_dep_time) TextView textDepartureTime;
-        @BindView(R.id.text_bus_trip_arr_time) TextView textArrivalTime;
-        @BindView(R.id.text_bus_trip_seats_count) TextView textSeatsCount;
-        @BindView(R.id.text_bus_trip_header) TextView textHeader;
-        @BindView(R.id.layout_bus_trip) RelativeLayout layoutBusTrip;
-        @BindView(R.id.progress_bus_trip) ProgressBar progress;
-        @BindView(R.id.image_bus_trip_forward) ImageView imageForward;
+        @BindView(R.id.tv_carrier) TextView textCarrierName;
+        @BindView(R.id.tv_carrier_rating) TextView textCarrierRating;
+        @BindView(R.id.tv_dep_time) TextView textDepartureTime;
+        @BindView(R.id.tv_duration) TextView textDuration;
+        @BindView(R.id.tv_arr_time) TextView textArrivalTime;
+        @BindView(R.id.tv_dep_station) TextView textDepartureStation;
+        @BindView(R.id.tv_arr_station) TextView textArrivalStation;
+        @BindView(R.id.tv_available_seats) TextView textSeatsAvailable;
+        @BindView(R.id.tv_trip_cost) TextView textCost;
+        @BindView(R.id.btn_select_trip) ProgressMaterialButton btnSelectTrip;
+        @BindView(R.id.ll_bus_trip) CardView layoutBusTrip;
 
-        private int itemId;
+        private long itemId;
+        private String routeId;
 
         public BusScheduleViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(BusTrip busTrip) {
+        public void bind(BusTrip busTrip, Route route) {
             itemId = busTrip.getId();
+            routeId = route.getId();
 
+            textCarrierName.setText(busTrip.getTransport().getCarrier().getName());
+            textCarrierRating.setText(busTrip.getTransport().getCarrier().getRating());
             textDepartureTime.setText(busTrip.getDepartureTime());
+            textDepartureStation.setText(route.getDepartureCity().getStation());
             textArrivalTime.setText(busTrip.getArrivalTime());
-            textHeader.setText(busTrip.getDepartureHours());
-            textSeatsCount.setText(context.getResources()
-                    .getString(R.string.label_available_seats_count, busTrip.getSeatsCount()));
+            textArrivalStation.setText(route.getArrivalCity().getStation());
+            textDuration.setText(busTrip.getDuration());
+            textSeatsAvailable.setText(context.getResources().getString(R.string.label_seats_count, busTrip.getSeatsAvailable()));
+            textCost.setText(String.format("%s %s", busTrip.getCost(), busTrip.getCurrency()));
 
-            if (busTrip.getSeatsCount() == 0) {
-                textSeatsCount.setTextColor(ContextCompat.getColor(context, R.color.colorError));
+            if (busTrip.getSeatsAvailable() == 0) {
+                textSeatsAvailable.setTextColor(ContextCompat.getColor(context, R.color.colorError));
                 layoutBusTrip.setEnabled(false);
             } else {
-                textSeatsCount.setTextColor(ContextCompat.getColor(context, R.color.colorTextSecondary));
+                textSeatsAvailable.setTextColor(ContextCompat.getColor(context, R.color.colorGreen));
                 layoutBusTrip.setEnabled(true);
             }
         }
 
-        @OnClick
-        public void onItemClick(View itemView) {
+        @OnClick(R.id.btn_select_trip)
+        public void onSelectButtonClick(View itemView) {
             // have to get position by invoking getAdapterPosition()
             // because this is where sometimes the "position" value is not the proper one
             // and sometimes returns an exception regarding inconsistent items state.
@@ -143,19 +151,15 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
 
             if (isItemClickable && itemPos >= 0) {
                 lastClickedItemPos = itemPos;
-                clickListener.onBusTripClick(itemView, itemId, itemPos);
+                clickListener.onBusTripSelect(itemView, itemId, itemPos, routeId);
 
                 Timber.d("Select bus trip with id = %d, position = %d", itemId, itemPos);
             }
         }
 
         protected void setLoading(boolean isLoading) {
-            progress.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-            imageForward.setVisibility(isLoading ? View.GONE : View.VISIBLE);
-        }
-
-        protected void showHeader(boolean isAboveTheSame) {
-            textHeader.setVisibility(isAboveTheSame ? View.GONE : View.VISIBLE);
+            btnSelectTrip.setLoading(isLoading);
+            btnSelectTrip.setEnabled(!isLoading);
         }
     }
 }

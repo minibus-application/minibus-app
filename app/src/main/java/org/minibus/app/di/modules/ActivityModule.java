@@ -8,6 +8,7 @@ import org.minibus.app.data.network.AppApiClient;
 import org.minibus.app.data.network.model.BookingModel;
 import org.minibus.app.data.network.model.CitiesModel;
 import org.minibus.app.data.network.model.BusScheduleModel;
+import org.minibus.app.data.network.model.RoutesModel;
 import org.minibus.app.data.network.model.UserModel;
 import org.minibus.app.di.ActivityContext;
 import org.minibus.app.ui.cities.arrival.ArrivalCitiesContract;
@@ -22,8 +23,8 @@ import org.minibus.app.ui.schedule.BusScheduleContract;
 import org.minibus.app.ui.schedule.BusSchedulePresenter;
 import org.minibus.app.ui.schedule.trip.BusTripContract;
 import org.minibus.app.ui.schedule.trip.BusTripPresenter;
-import org.minibus.app.ui.cities.CitiesContract;
-import org.minibus.app.ui.cities.CitiesPresenter;
+import org.minibus.app.ui.cities.BaseCitiesContract;
+import org.minibus.app.ui.cities.BaseCitiesPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -55,8 +56,8 @@ public class ActivityModule {
     }
 
     @Provides
-    CitiesContract.Presenter<CitiesContract.View> provideCitiesPresenter
-            (CitiesPresenter<CitiesContract.View> presenter) {
+    BaseCitiesContract.Presenter<BaseCitiesContract.View> provideCitiesPresenter
+            (BaseCitiesPresenter<BaseCitiesContract.View> presenter) {
         return presenter;
     }
 
@@ -98,6 +99,11 @@ public class ActivityModule {
     @Provides
     CitiesModel provideCitiesModel(AppApiClient appApiClient) {
         return new CitiesModel(appApiClient);
+    }
+
+    @Provides
+    RoutesModel provideRoutesModel(AppApiClient appApiClient) {
+        return new RoutesModel(appApiClient);
     }
 
     @Provides

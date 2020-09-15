@@ -11,7 +11,7 @@ public class BusScheduleModel extends BaseModel {
         super(appApiClient);
     }
 
-    public Single<BusScheduleResponse> doGetBusScheduleData(long cityId, String date) {
-        return getClient().getApiService().getScheduleData(String.valueOf(cityId), date);
+    public Single<BusScheduleResponse> doGetBusScheduleData(String date, String routeId) {
+        return getClient().getApiService().getScheduleData(date, routeId);
     }
 }

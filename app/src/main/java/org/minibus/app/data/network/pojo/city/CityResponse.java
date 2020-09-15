@@ -25,6 +25,6 @@ public class CityResponse extends BaseResponse<ArrayList<City>> {
     }
 
     public List<Long> getCitiesIds() {
-        return getCities().stream().map(City::getId).collect(Collectors.toList());
+        return getCities().stream().map(City::getLongId).collect(Collectors.toList());
     }
 }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.network.pojo.city.City;
+import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.user.User;
 import org.minibus.app.di.ApplicationContext;
 import com.google.gson.Gson;
@@ -23,6 +24,7 @@ public class AppStorageManager {
     private static final String KEY_USER_BOOKINGS_LEFT = "key_user_bookings_left";
     private static final String KEY_USER_AUTH_TOKEN = "key_user_auth_token";
     private static final String KEY_USER_DATA = "key_user_data";
+    private static final String KEY_ROUTE = "key_route";
     private static final String KEY_DEPARTURE_CITY = "key_departure_city";
     private static final String KEY_DEPARTURE_START_BUS_STOP = "key_departure_start_bus_stop";
     private static final String KEY_ARRIVAL_CITY = "key_arrival_city";
@@ -39,11 +41,11 @@ public class AppStorageManager {
     }
 
     public boolean isEmpty() {
-        return !isUserLoggedIn() && !isDirectionStored();
+        return !isUserLoggedIn() && !isRouteStored();
     }
 
-    public boolean isDirectionStored() {
-        return isArrivalCityStored() && isDepartureCityStored();
+    public boolean isRouteStored() {
+        return contains(KEY_ROUTE);
     }
 
     public boolean isArrivalCityStored() {
@@ -52,6 +54,12 @@ public class AppStorageManager {
 
     public boolean isDepartureCityStored() {
         return contains(KEY_DEPARTURE_CITY);
+    }
+
+    public void setRoute(Route route) {
+        setDepartureCity(route.getDepartureCity());
+        setArrivalCity(route.getArrivalCity());
+        put(KEY_ROUTE, route);
     }
 
     public void setDepartureCity(City city) {
@@ -123,6 +131,10 @@ public class AppStorageManager {
 
     public User getUserData() {
         return new Gson().fromJson(get(KEY_USER_DATA, null), User.class);
+    }
+
+    public Route getRoute() {
+        return new Gson().fromJson(get(KEY_ROUTE, null), Route.class);
     }
 
     public City getArrivalCity() {

@@ -1,5 +1,6 @@
 package org.minibus.app.ui.schedule;
 
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.minibus.app.data.network.pojo.city.City;
+import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
 import org.minibus.app.ui.cities.arrival.ArrivalCitiesFragment;
 import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
@@ -21,6 +23,7 @@ import org.minibus.app.helpers.AppAnimHelper;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -50,6 +53,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kennyc.view.MultiStateView;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -69,6 +74,7 @@ public class BusScheduleFragment extends BaseFragment implements
         UserProfileFragment.UserProfileFragmentCallback,
         BackButtonListener {
 
+    @BindView(R.id.cl_schedule_content) CoordinatorLayout layoutContent;
     @BindView(R.id.recycler_calendar) RecyclerView recyclerCalendar;
     @BindView(R.id.recycler_bus_schedule) RecyclerView recyclerBusSchedule;
     @BindView(R.id.swipe_refresh_bus_schedule) SwipeRefreshLayout swipeRefresh;
@@ -135,9 +141,9 @@ public class BusScheduleFragment extends BaseFragment implements
         adapterBusSchedule = new BusScheduleAdapter(getMainActivity());
         adapterBusSchedule.setOnItemClickListener(this);
 
-        DividerItemDecoration itemDecorator = new DividerItemDecoration(getMainActivity(), DividerItemDecoration.VERTICAL);
-        itemDecorator.setDrawable(ContextCompat.getDrawable(getMainActivity(), R.drawable.item_divider));
-        recyclerBusSchedule.addItemDecoration(itemDecorator);
+//        DividerItemDecoration itemDecorator = new DividerItemDecoration(getMainActivity(), DividerItemDecoration.VERTICAL);
+//        itemDecorator.setDrawable(ContextCompat.getDrawable(getMainActivity(), R.drawable.item_divider));
+//        recyclerBusSchedule.addItemDecoration(itemDecorator);
         recyclerBusSchedule.setAdapter(adapterBusSchedule);
         recyclerBusSchedule.setLayoutManager(layoutManagerBusSchedule);
         recyclerBusSchedule.setHasFixedSize(false);
@@ -260,12 +266,12 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void setToolbarSubtitle(String text) {
+    public void setDirectionDescription(String text) {
         AppAnimHelper.textFadeInOut(textToolbarSubtitle, text);
     }
 
     @Override
-    public void setToolbarSubtitle(int resId) {
+    public void setDirectionDescription(int resId) {
         AppAnimHelper.textFadeInOut(textToolbarSubtitle, getResources().getString(resId));
     }
 
@@ -362,6 +368,11 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
+    public void setOperationalDays(List<Integer> daysOfWeek) {
+
+    }
+
+    @Override
     public void setDepartureCity(String city) {
         inputDepartureBusStop.setText(city);
     }
@@ -392,9 +403,22 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void setBusScheduleData(BusScheduleResponse busSchedule) {
-        adapterBusSchedule.setData(busSchedule.getBusTrips());
-        multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
+    public void setBusScheduleData(List<BusTrip> busTrips, Route route) {
+        Drawable background;
+
+        if (busTrips == null || busTrips.isEmpty()) {
+            multiStateView.setViewState(MultiStateView.ViewState.EMPTY);
+            background = multiStateView.getBackground();
+        } else {
+            adapterBusSchedule.setData(busTrips, route);
+            multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
+            background = recyclerBusSchedule.getBackground();
+        }
+
+        // hack due to the custom rounded filter background drawable
+        if (background instanceof ColorDrawable) {
+            layoutContent.setBackgroundColor(((ColorDrawable) background).getColor());
+        }
     }
 
     @Override
@@ -439,8 +463,8 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void onBusTripClick(View view, int id, int pos) {
-        presenter.onBusTripClick(adapterCalendar.getSelectedDate(), id, pos);
+    public void onBusTripSelect(View view, long id, int pos, String routeId) {
+        presenter.onBusTripSelectButtonClick(adapterCalendar.getSelectedDate(), id, pos, routeId);
     }
 
     @Override

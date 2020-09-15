@@ -33,7 +33,7 @@ import butterknife.OnClick;
 
 public abstract class BaseCitiesFragment extends BaseDialogFragment implements
         CitiesAdapter.OnItemClickListener,
-        CitiesContract.View {
+        BaseCitiesContract.View {
 
     @BindView(R.id.msv_cities) MultiStateView multiStateView;
     @BindView(R.id.rv_cities) RecyclerView recyclerCities;
@@ -41,7 +41,8 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title) TextView toolbarTitle;
 
-    @Inject CitiesPresenter<CitiesContract.View> presenter;
+    @Inject
+    BaseCitiesPresenter<BaseCitiesContract.View> presenter;
 
     protected LinearLayoutManager layoutManager;
     protected CitiesAdapter adapter;

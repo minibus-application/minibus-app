@@ -1,8 +1,9 @@
 package org.minibus.app.data.network.pojo.booking;
 
 import org.minibus.app.data.network.pojo.city.City;
+import org.minibus.app.data.network.pojo.schedule.BusTrip;
 import org.minibus.app.data.network.pojo.user.User;
-import org.minibus.app.data.network.pojo.schedule.SelectedBusTrip;
+
 import com.google.gson.annotations.SerializedName;
 
 public class BookingResponse extends Booking {
@@ -16,7 +17,7 @@ public class BookingResponse extends Booking {
     public BookingResponse(int id,
                            User user,
                            City city,
-                           SelectedBusTrip selectedBusTrip,
+                           BusTrip selectedBusTrip,
                            String departureDate,
                            Double price,
                            String status,

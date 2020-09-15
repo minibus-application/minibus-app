@@ -2,7 +2,7 @@ package org.minibus.app;
 
 public class AppConstants {
 
-    public static final String BASE_URL = "http://192.168.3.8:3000";
+    public static final String BASE_URL = "http://localhost:3000";
     public static final String DEFAULT_APP_LOCALE = "en";
     public static final String STORAGE_NAME = "app-prefs";
     public static final int DEFAULT_TIMEOUT_SEC = 15;

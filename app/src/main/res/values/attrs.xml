@@ -6,4 +6,8 @@
     <attr name="colorIconSecondary" format="color|reference" />
     <attr name="colorControls" format="color|reference" />
     <attr name="colorErrorVariant" format="color|reference" />
+
+    <declare-styleable name="ProgressMaterialButton">
+        <attr name="progressColor" format="color" />
+    </declare-styleable>
 </resources>

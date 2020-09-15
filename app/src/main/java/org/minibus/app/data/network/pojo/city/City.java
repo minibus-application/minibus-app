@@ -51,8 +51,12 @@ public class City implements Serializable {
         return name;
     }
 
-    public long getId() {
+    public long getLongId() {
         return new BigInteger(id, 16).longValue();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getRegion() {

@@ -1,7 +1,8 @@
 package org.minibus.app.data.network.pojo.booking;
 
 import org.minibus.app.data.network.pojo.city.City;
-import org.minibus.app.data.network.pojo.schedule.SelectedBusTrip;
+import org.minibus.app.data.network.pojo.schedule.BusTrip;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Booking {
@@ -13,7 +14,7 @@ public class Booking {
     private City city;
 
     @SerializedName("selectedSchedule")
-    private SelectedBusTrip selectedBusTrip;
+    private BusTrip selectedBusTrip;
 
     @SerializedName("departureDate")
     private String departureDate;
@@ -26,7 +27,7 @@ public class Booking {
 
     public Booking(int id,
                    City city,
-                   SelectedBusTrip selectedBusTrip,
+                   BusTrip selectedBusTrip,
                    String departureDate,
                    Double price,
                    String status) {
@@ -54,11 +55,11 @@ public class Booking {
         this.city = city;
     }
 
-    public SelectedBusTrip getSelectedBusTrip() {
+    public BusTrip getSelectedBusTrip() {
         return selectedBusTrip;
     }
 
-    public void setSelectedBusTrip(SelectedBusTrip selectedBusTrip) {
+    public void setSelectedBusTrip(BusTrip selectedBusTrip) {
         this.selectedBusTrip = selectedBusTrip;
     }
 

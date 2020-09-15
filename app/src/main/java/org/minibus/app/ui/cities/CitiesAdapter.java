@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -61,7 +60,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.BusStopsVi
 
     @Override
     public long getItemId(int position) {
-        return cities.get(position).getId();
+        return cities.get(position).getLongId();
     }
 
     @Override
@@ -73,7 +72,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.BusStopsVi
     public void onBindViewHolder(@NonNull final CitiesAdapter.BusStopsViewHolder viewHolder, final int position) {
         City city = cities.get(position);
         viewHolder.bind(city, lastSelectedItemId == AppConstants.DEFAULT_SELECTED_CITY_ID
-                ? cities.get(0).getId()
+                ? cities.get(0).getLongId()
                 : lastSelectedItemId);
     }
 
@@ -93,7 +92,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.BusStopsVi
 
         public void bind(City city, long lastSelectedCityId) {
             this.city = city;
-            this.cityId = city.getId();
+            this.cityId = city.getLongId();
 
             textCityRegionName.setText(city.getRegion());
             textCityName.setText(city.getName());

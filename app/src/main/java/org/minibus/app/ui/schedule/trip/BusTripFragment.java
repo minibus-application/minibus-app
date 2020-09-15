@@ -75,7 +75,7 @@ public class BusTripFragment extends BaseDialogFragment implements BusTripContra
             busTrip = (BusTrip) getArguments().getSerializable(BUS_TRIP_KEY);
             departureCity = (City) getArguments().getSerializable(BUS_STOP_KEY);
             departureDate = getArguments().getString(BUS_DATE_KEY);
-            seatsCount = busTrip.getSeatsCount();
+            seatsCount = busTrip.getSeatsAvailable();
         } else {
             dismiss();
         }

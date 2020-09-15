@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/schedule_content"
+    android:id="@+id/cl_schedule_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorSurface">
@@ -93,8 +93,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp" />
+                android:background="#fafafa"
+                android:padding="8dp" />
         </com.kennyc.view.MultiStateView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -125,8 +125,7 @@
         android:layout_gravity="end|top"
         android:layout_margin="16dp"
         android:src="@drawable/ic_arrow_top_light_24dp"
-        android:backgroundTint="@color/colorSurface"
-        app:tint="@color/colorTextPrimary"
+        android:backgroundTint="@color/colorGreen"
         app:layout_anchor="@id/dummy"
         app:layout_anchorGravity="top|right|end"
         app:borderWidth="0dp"

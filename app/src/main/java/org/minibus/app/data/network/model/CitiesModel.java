@@ -1,6 +1,8 @@
 package org.minibus.app.data.network.model;
 
 import org.minibus.app.data.network.AppApiClient;
+import org.minibus.app.data.network.pojo.BaseResponse;
+import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.city.CityResponse;
 
 import java.util.List;
@@ -13,7 +15,11 @@ public class CitiesModel extends BaseModel {
         super(appApiClient);
     }
 
-    public Single<CityResponse> doGetCitiesData() {
-        return getClient().getApiService().getCitiesData();
+    public Single<BaseResponse<List<City>>> doGetAllCitiesData() {
+        return getClient().getApiService().getAllCitiesData();
+    }
+
+    public Single<BaseResponse<List<City>>> doGetFilteredCitiesData(String cityId) {
+        return getClient().getApiService().getArrivalCitiesData(cityId);
     }
 }
