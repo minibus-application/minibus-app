@@ -3,12 +3,12 @@ package org.minibus.app.data.network.pojo.schedule;
 import com.google.gson.annotations.SerializedName;
 
 import org.minibus.app.data.network.pojo.route.Route;
-import org.minibus.app.data.network.pojo.transport.Vehicle;
+import org.minibus.app.data.network.pojo.vehicle.Vehicle;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 
-public class BusTrip implements Serializable {
+public class RouteTrip implements Serializable {
 
     @SerializedName("_id")
     private String id;
@@ -31,20 +31,19 @@ public class BusTrip implements Serializable {
     @SerializedName("vehicle")
     private Vehicle vehicle;
 
-    @SerializedName("route")
-    private Route route;
-
     @SerializedName("seatsBooked")
     private int seatsBooked;
 
-    public BusTrip(String cost,
-                   String currency,
-                   String departureTime,
-                   String arrivalTime,
-                   String duration,
-                   Vehicle vehicle,
-                   Route route,
-                   int seatsBooked) {
+    private Route route;
+
+    public RouteTrip(String cost,
+                     String currency,
+                     String departureTime,
+                     String arrivalTime,
+                     String duration,
+                     Vehicle vehicle,
+                     Route route,
+                     int seatsBooked) {
         this.cost = cost;
         this.currency = currency;
         this.departureTime = departureTime;
@@ -57,6 +56,10 @@ public class BusTrip implements Serializable {
 
     public long getLongId() {
         return new BigInteger(id, 16).longValue();
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
     }
 
     public String getId() {

@@ -1,14 +1,13 @@
 package org.minibus.app.ui.schedule;
 
 import org.minibus.app.data.local.AppStorageManager;
-import org.minibus.app.data.network.model.BusScheduleModel;
+import org.minibus.app.data.network.model.RouteScheduleModel;
 import org.minibus.app.data.network.model.CitiesModel;
 import org.minibus.app.data.network.model.RoutesModel;
-import org.minibus.app.data.network.pojo.BaseResponse;
 import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.route.Route;
-import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
-import org.minibus.app.data.network.pojo.schedule.BusTrip;
+import org.minibus.app.data.network.pojo.schedule.RouteScheduleResponse;
+import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.base.BasePresenter;
 import org.minibus.app.helpers.ApiErrorHelper;
@@ -24,10 +23,10 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class BusSchedulePresenter<V extends BusScheduleContract.View> extends BasePresenter<V>
-        implements BusScheduleContract.Presenter<V> {
+public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extends BasePresenter<V>
+        implements RouteScheduleContract.Presenter<V> {
 
-    private BusScheduleModel busScheduleModel;
+    private RouteScheduleModel routeScheduleModel;
     private CitiesModel citiesModel;
     private RoutesModel routesModel;
 
@@ -35,8 +34,8 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
     AppStorageManager storage;
 
     @Inject
-    public BusSchedulePresenter(BusScheduleModel busScheduleModel, CitiesModel citiesModel, RoutesModel routesModel) {
-        this.busScheduleModel = busScheduleModel;
+    public RouteSchedulePresenter(RouteScheduleModel routeScheduleModel, CitiesModel citiesModel, RoutesModel routesModel) {
+        this.routeScheduleModel = routeScheduleModel;
         this.citiesModel = citiesModel;
         this.routesModel = routesModel;
     }
@@ -142,8 +141,8 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showLoadingDataDialog))
                     .doFinally(() -> getView().ifAlive(V::hideLoadingDataDialog))
                     .flatMap(response -> {
-                        if (response.getResult() != null && !response.getResult().isEmpty()) {
-                            Route defaultRoute = response.getResult().get(0);
+                        if (response != null && !response.isEmpty()) {
+                            Route defaultRoute = response.get(0);
                             City depCity = defaultRoute.getDepartureCity();
                             City arrCity = defaultRoute.getArrivalCity();
 
@@ -263,12 +262,13 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
         addSubscription(getBusScheduleObservable(depDate, routeId)
                 .doOnSubscribe(disposable -> getView().ifAlive(V::showBusTripLoading))
                 .doFinally(() -> getView().ifAlive(V::hideBusTripLoading))
-                .subscribeWith(new DisposableSingleObserver<BusScheduleResponse>() {
+                .subscribeWith(new DisposableSingleObserver<RouteScheduleResponse>() {
                     @Override
-                    public void onSuccess(BusScheduleResponse response) {
-                        getView().ifAlive(v -> v.setBusScheduleData(response.getBusTrips(), response.getRoute()));
+                    public void onSuccess(RouteScheduleResponse response) {
+                        getView().ifAlive(v -> v.setBusScheduleData(response.getRouteTrips(), response.getRoute()));
 
-                        Optional<BusTrip> optBusTrip = response.getBusTripById(id);
+                        Optional<RouteTrip> optBusTrip = response.getRouteTrips().stream()
+                                .filter(busTrip -> busTrip.getLongId() == id).findFirst();
 
                         if (optBusTrip.isPresent()) {
                             String date = AppDatesHelper.formatDate(depDate,
@@ -288,11 +288,11 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
                 }));
     }
 
-    private DisposableSingleObserver<BusScheduleResponse> getBusScheduleObserver() {
-        return new DisposableSingleObserver<BusScheduleResponse>() {
+    private DisposableSingleObserver<RouteScheduleResponse> getBusScheduleObserver() {
+        return new DisposableSingleObserver<RouteScheduleResponse>() {
             @Override
-            public void onSuccess(BusScheduleResponse response) {
-                getView().ifAlive(v -> v.setBusScheduleData(response.getBusTrips(), response.getRoute()));
+            public void onSuccess(RouteScheduleResponse response) {
+                getView().ifAlive(v -> v.setBusScheduleData(response.getRouteTrips(), response.getRoute()));
             }
 
             @Override
@@ -303,31 +303,31 @@ public class BusSchedulePresenter<V extends BusScheduleContract.View> extends Ba
         };
     }
 
-    private DisposableSingleObserver<BusScheduleResponse> getCompleteBusScheduleObserver(String depCityId, String arrCityId, String depDate) {
-        return getRoutesDataObservable(depCityId, arrCityId)
+    private DisposableSingleObserver<RouteScheduleResponse> getCompleteBusScheduleObserver(String depCityId, String arrCityId, String depDate) {
+        return getRouteDataObservable(depCityId, arrCityId)
                 .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
                 .doFinally(() -> getView().ifAlive(V::jumpTop))
-                .flatMap(routesResponse -> {
-                    Route route = routesResponse.getResult();
+                .flatMap(response -> {
+                    Route route = response;
                     storage.setRoute(route);
-                    return getBusScheduleObservable(depDate, routesResponse.getResult().getId());
+                    return getBusScheduleObservable(depDate, route.getId());
                 })
                 .subscribeWith(getBusScheduleObserver());
     }
 
-    private Single<BusScheduleResponse> getBusScheduleObservable(String date, String routeId) {
-        return busScheduleModel.doGetBusScheduleData(date, routeId)
+    private Single<RouteScheduleResponse> getBusScheduleObservable(String date, String routeId) {
+        return routeScheduleModel.doGetRouteScheduleData(date, routeId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<BaseResponse<Route>> getRoutesDataObservable(String depCityId, String arrCityId) {
+    private Single<Route> getRouteDataObservable(String depCityId, String arrCityId) {
         return routesModel.doGetRoutesData(depCityId, arrCityId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<BaseResponse<List<Route>>> getAllRoutesDataObservable() {
+    private Single<List<Route>> getAllRoutesDataObservable() {
         return routesModel.doGetAllRoutesData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

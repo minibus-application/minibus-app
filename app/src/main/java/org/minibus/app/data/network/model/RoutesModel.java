@@ -14,11 +14,12 @@ public class RoutesModel extends BaseModel {
         super(appApiClient);
     }
 
-    public Single<BaseResponse<Route>> doGetRoutesData(String depCityId, String arrCityId) {
+    public Single<Route> doGetRoutesData(String depCityId, String arrCityId) {
         return getClient().getApiService().getRoutesData(depCityId, arrCityId);
     }
 
-    public Single<BaseResponse<List<Route>>> doGetAllRoutesData() {
+    public Single<List<Route>> doGetAllRoutesData() {
         return getClient().getApiService().getAllRoutesData();
     }
+
 }

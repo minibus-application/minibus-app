@@ -1,11 +1,15 @@
 package org.minibus.app.data.network.pojo.user;
 
 import com.google.gson.annotations.SerializedName;
+import java.math.BigInteger;
 
 public class User {
 
-    @SerializedName("id")
-    private int id;
+    @SerializedName("_id")
+    private String id;
+
+    @SerializedName("driver")
+    private boolean isDriver;
 
     @SerializedName("name")
     private String name;
@@ -13,33 +17,35 @@ public class User {
     @SerializedName("phone")
     private String phone;
 
-    public User(int id, String name, String phone) {
+    @SerializedName("createdAt")
+    private String createdAt;
+
+    @SerializedName("updatedAt")
+    private String updatedAt;
+
+    public User(String id, String name, String phone) {
         this.id = id;
         this.name = name;
         this.phone = phone;
     }
 
-    public int getId() {
-        return id;
+    public long getLongId() {
+        return new BigInteger(id, 16).longValue();
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public boolean isDriver() {
+        return isDriver;
     }
 }

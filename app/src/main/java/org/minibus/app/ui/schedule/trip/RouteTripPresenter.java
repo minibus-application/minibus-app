@@ -2,33 +2,28 @@ package org.minibus.app.ui.schedule.trip;
 
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.local.AppStorageManager;
-import org.minibus.app.data.network.pojo.booking.BookingRequest;
-import org.minibus.app.data.network.model.BookingModel;
-import org.minibus.app.data.network.pojo.booking.BookingResponse;
-import org.minibus.app.data.network.pojo.city.City;
-import org.minibus.app.data.network.pojo.schedule.BusTrip;
-import org.minibus.app.ui.R;
+import org.minibus.app.data.network.model.RouteScheduleModel;
+import org.minibus.app.data.network.pojo.user.UserRequest;
+import org.minibus.app.data.network.pojo.user.UserResponse;
 import org.minibus.app.ui.base.BasePresenter;
-import org.minibus.app.helpers.ApiErrorHelper;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class BusTripPresenter<V extends BusTripContract.View> extends BasePresenter<V>
-        implements BusTripContract.Presenter<V> {
+public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePresenter<V>
+        implements RouteTripContract.Presenter<V> {
 
-    private BookingModel bookingModel;
+    private RouteScheduleModel routeScheduleModel;
 
     @Inject
     AppStorageManager storage;
 
     @Inject
-    public BusTripPresenter(BookingModel bookingModel) {
-        this.bookingModel = bookingModel;
+    public RouteTripPresenter(RouteScheduleModel routeScheduleModel) {
+        this.routeScheduleModel = routeScheduleModel;
     }
 
     @Override
@@ -70,12 +65,12 @@ public class BusTripPresenter<V extends BusTripContract.View> extends BasePresen
 
     }
 
-    //    private Single<BookingResponse> getBusTripBookingObservable(String authToken,
-//                                                                String depDate,
-//                                                                String busTripId,
-//                                                                int seatsToReserve) {
-//        return bookingModel.doPostBookingData(authToken, depDate, busTripId, seatsToReserve)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread());
-//    }
+    private Single<UserResponse> getRouteTripBookingObservable(String authToken,
+                                                               String depDate,
+                                                               String id,
+                                                               int seatsCount) {
+        return routeScheduleModel.doPostRouteTripData(authToken, depDate, id, seatsCount)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

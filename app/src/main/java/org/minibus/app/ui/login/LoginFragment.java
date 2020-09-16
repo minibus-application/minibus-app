@@ -30,6 +30,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -50,7 +52,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @BindView(R.id.input_user_pass) TextInputEditText inputUserPass;
     @BindView(R.id.input_user_conf_pass) TextInputEditText inputUserConfirmPass;
     @BindView(R.id.button_login) MaterialButton buttonLogin;
-    @BindView(R.id.button_form_expand) MaterialButton buttonFormExpand;
+    @BindView(R.id.btn_form_switcher) MaterialButton buttonFormExpand;
     @BindView(R.id.appbar_login) AppBarLayout appbar;
     @BindView(R.id.toolbar_custom) Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title) TextView textToolbarTitle;
@@ -104,10 +106,10 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String countryCode = getString(R.string.user_phone_country_code);
+        String countryCode = AppConstants.COUNTRY_CODE;
 
         inputUserPhone.setText(countryCode);
-        Selection.setSelection(inputUserPhone.getText(), inputUserPhone.getText().length());
+        Selection.setSelection(inputUserPhone.getText(), Objects.requireNonNull(inputUserPhone.getText()).length());
 
         inputUserPhone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -139,14 +141,14 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @OnClick(R.id.button_login)
     public void onLoginClick() {
         hideKeyboard();
-        presenter.onLoginButtonClick(getFieldText(inputUserName),
-                getFieldText(inputUserPhone),
-                getFieldText(inputUserPass),
-                getFieldText(inputUserConfirmPass),
+        presenter.onLoginButtonClick(inputUserName.getEditableText().toString(),
+                inputUserPhone.getEditableText().toString(),
+                inputUserPass.getEditableText().toString(),
+                inputUserConfirmPass.getEditableText().toString(),
                 isLoginForm);
     }
 
-    @OnClick(R.id.button_form_expand)
+    @OnClick(R.id.btn_form_switcher)
     public void onFormSwitcherClick() {
         if (isLoginForm) {
             isLoginForm = false;
@@ -202,17 +204,19 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         inputContainerUserPass.setError(null);
     }
 
+    @Override
+    public void hideConfirmPasswordFieldError() {
+        inputContainerUserConfirmPass.setError(null);
+    }
+
     private void hideKeyboard() {
         try {
             final InputMethodManager inputManager =
                     (InputMethodManager) getMainActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-        } catch (NullPointerException e) {}
-    }
-
-    @Override
-    public void hideConfirmPasswordFieldError() {
-        inputContainerUserConfirmPass.setError(null);
+            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
+        } catch (NullPointerException ignore) {
+            // ignore
+        }
     }
 
     @Override
@@ -233,11 +237,5 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @Override
     protected void onBack() {
         presenter.onCloseButtonClick();
-    }
-
-    private String getFieldText(TextInputEditText editText) {
-        Editable editable = editText.getText();
-        if (editable == null) return "";
-        else return editable.toString();
     }
 }

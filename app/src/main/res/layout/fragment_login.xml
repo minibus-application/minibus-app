@@ -118,7 +118,7 @@
                 android:text="@string/login" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_form_expand"
+                android:id="@+id/btn_form_switcher"
                 style="@style/Widget.AppTheme.Button.TextButton"
                 android:layout_width="240dp"
                 android:layout_height="56dp"

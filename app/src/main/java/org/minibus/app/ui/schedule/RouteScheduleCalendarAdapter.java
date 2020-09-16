@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class BusScheduleCalendarAdapter extends RecyclerView.Adapter<BusScheduleCalendarAdapter.BusScheduleCalendarViewHolder> {
+public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteScheduleCalendarAdapter.BusScheduleCalendarViewHolder> {
 
     public interface OnItemClickListener {
         void onDateClick(View view, int position);
@@ -37,7 +37,7 @@ public class BusScheduleCalendarAdapter extends RecyclerView.Adapter<BusSchedule
     private int selectedPos;
     private OnItemClickListener clickListener;
 
-    public BusScheduleCalendarAdapter(Context context) {
+    public RouteScheduleCalendarAdapter(Context context) {
         this.context = context;
         setupSelectedDatePosition(DEFAULT_CALENDAR_DATE_POSITION);
         setupCalendar(DEFAULT_CALENDAR_SIZE);

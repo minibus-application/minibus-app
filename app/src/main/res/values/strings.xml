@@ -40,7 +40,6 @@
     <string name="label_available_seats_count">%1$d seats</string>
 
     <!-- Auth form -->
-    <string name="user_phone_country_code">+375</string>
     <string name="user_name_empty_error">Enter your name</string>
     <string name="user_phone_format_error">Wrong phone number format</string>
     <string name="user_pass_empty_error">Please enter the password</string>
@@ -50,7 +49,7 @@
     <string name="login_no_account">I don`t have an account yet</string>
 
     <!-- Titles -->
-    <string name="login_title">Sign in</string>
+    <string name="login_title">Login</string>
     <string name="profile_title">Profile</string>
     <string name="profile_active_user_bookings">Active bookings:</string>
     <string name="departure_cities_title">Departure</string>

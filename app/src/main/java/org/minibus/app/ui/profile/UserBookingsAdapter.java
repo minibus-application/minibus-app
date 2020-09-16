@@ -26,7 +26,7 @@ import butterknife.OnClick;
 public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapter.BookingsViewHolder> {
 
     public interface OnItemClickListener {
-        void onBookingCancelButtonClick(View view, int id);
+        void onBookingCancelButtonClick(View view, String id);
     }
 
     private Context context;
@@ -57,7 +57,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
 
     @Override
     public long getItemId(int position) {
-        return bookings.get(position).getId();
+        return bookings.get(position).getLongId();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
         @BindView(R.id.text_booking_arr_city) TextView textArrivalCity;
         @BindView(R.id.button_booking_cancel) MaterialButton buttonCancel;
 
-        private int itemId;
+        private String itemId;
 
         private BookingsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,13 +97,13 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
 
             textDepartureDate.setText(date.substring(0, 1).toUpperCase().concat(date.substring(1)));
 
-            textDepartureTime.setText(booking.getSelectedBusTrip().getDepartureTime());
-            textDepartureCity.setText(booking.getCity().getName());
+            textDepartureTime.setText(booking.getRouteTrip().getDepartureTime());
+            textDepartureCity.setText(booking.getRouteTrip().getRoute().getDepartureCity().getName());
 //            textDepartureBusStop.setText(context.getResources()
 //                    .getString(R.string.label_bus_stop_prefix, booking.getCity().getName()));
 
-            textArrivalTime.setText(booking.getSelectedBusTrip().getArrivalTime());
-            textArrivalCity.setText(booking.getCity().getName());
+            textArrivalTime.setText(booking.getRouteTrip().getArrivalTime());
+            textArrivalCity.setText(booking.getRouteTrip().getRoute().getArrivalCity().getName());
         }
 
         @OnClick(R.id.button_booking_cancel)

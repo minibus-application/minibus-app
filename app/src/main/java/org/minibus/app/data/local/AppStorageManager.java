@@ -81,13 +81,13 @@ public class AppStorageManager {
 
     public void setUserData(UserResponse userResponse) {
         // have to cast to User because we don't need dynamic bookings list in storage
-        put(KEY_USER_DATA, (User) userResponse);
+        put(KEY_USER_DATA, userResponse.getUser());
 
         // setUserBookingsLimit(userResponse.getBookingsLimit());
         // TODO forced to replace bookings limit property value from user response with a constant
         //  because of the server bug when just registered user gets limit = 0 until update data
         setUserBookingsLimit(AppConstants.DEFAULT_PASSENGERS_COUNT_PER_BOOKING);
-        setUserBookingsCount(userResponse.getBookingsCount());
+        setUserBookingsCount(userResponse.getActiveBookings());
     }
 
     public void setUserAuthToken(String token) {

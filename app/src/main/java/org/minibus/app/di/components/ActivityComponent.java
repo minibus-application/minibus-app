@@ -8,8 +8,8 @@ import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
 import org.minibus.app.ui.login.LoginFragment;
 import org.minibus.app.ui.main.MainActivity;
 import org.minibus.app.ui.profile.UserProfileFragment;
-import org.minibus.app.ui.schedule.BusScheduleFragment;
-import org.minibus.app.ui.schedule.trip.BusTripFragment;
+import org.minibus.app.ui.schedule.RouteScheduleFragment;
+import org.minibus.app.ui.schedule.trip.RouteTripFragment;
 
 import dagger.Component;
 
@@ -19,9 +19,7 @@ public interface ActivityComponent {
 
     void inject(MainActivity activity);
 
-    void inject(BusScheduleFragment busScheduleFragment);
-
-    // void inject(CitiesFragment citiesFragment);
+    void inject(RouteScheduleFragment routeScheduleFragment);
 
     void inject(BaseCitiesFragment baseCitiesFragment);
 
@@ -29,7 +27,7 @@ public interface ActivityComponent {
 
     void inject(ArrivalCitiesFragment arrivalCitiesFragment);
 
-    void inject(BusTripFragment busTripFragment);
+    void inject(RouteTripFragment routeTripFragment);
 
     void inject(UserProfileFragment userProfileFragment);
 

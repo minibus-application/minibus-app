@@ -4,13 +4,12 @@ import androidx.annotation.StringRes;
 
 import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.route.Route;
-import org.minibus.app.data.network.pojo.schedule.BusScheduleResponse;
-import org.minibus.app.data.network.pojo.schedule.BusTrip;
+import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.base.Contract;
 
 import java.util.List;
 
-public interface BusScheduleContract {
+public interface RouteScheduleContract {
 
     interface View extends Contract.View {
 
@@ -27,7 +26,7 @@ public interface BusScheduleContract {
         void toggleFilter();
         void updateProfileBadge();
         void setProfileBadge(int bookingsCount);
-        void setBusScheduleData(List<BusTrip> busTrips, Route route);
+        void setBusScheduleData(List<RouteTrip> routeTrips, Route route);
         void setDirectionDescription(String text);
         void setDirectionDescription(@StringRes int resId);
         void setDepartureCity(String depCity);
@@ -38,12 +37,12 @@ public interface BusScheduleContract {
         void openLogin();
         void openDepartureCities();
         void openArrivalCities();
-        void openBusTripSummary(BusTrip busTrip, Route route, String depDate);
+        void openBusTripSummary(RouteTrip routeTrip, Route route, String depDate);
         void jumpTop();
         void finish();
     }
 
-    interface Presenter<V extends BusScheduleContract.View> extends Contract.Presenter<V> {
+    interface Presenter<V extends RouteScheduleContract.View> extends Contract.Presenter<V> {
 
         void onBackPressed();
         void onStart(String depDate);

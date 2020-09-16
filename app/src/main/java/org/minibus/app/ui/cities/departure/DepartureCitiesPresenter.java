@@ -29,22 +29,22 @@ public class DepartureCitiesPresenter<V extends DepartureCitiesContract.View> ex
 
     @Override
     public void onStart() {
-        Single<BaseResponse<List<City>>> observable;
+        Single<List<City>> observable;
 
         if (storage.isRouteStored()) observable = getFilteredCitiesDataObservable(storage.getArrivalCity().getId());
         else observable = getCitiesDataObservable();
 
         addSubscription(observable
                 .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
-                .subscribeWith(new DisposableSingleObserver<BaseResponse<List<City>>>() {
+                .subscribeWith(new DisposableSingleObserver<List<City>>() {
                     @Override
-                    public void onSuccess(BaseResponse<List<City>> response) {
-                        cities = response.getResult();
+                    public void onSuccess(List<City> response) {
+                        cities = response;
                         long prevSelectedCityId = storage.isRouteStored()
                                 ? storage.getDepartureCity().getLongId()
                                 : AppConstants.DEFAULT_SELECTED_CITY_ID;
 
-                        if (!response.getResult().isEmpty()) getView().ifAlive(v -> v.setCitiesData(cities, prevSelectedCityId));
+                        if (!response.isEmpty()) getView().ifAlive(v -> v.setCitiesData(cities, prevSelectedCityId));
                         else getView().ifAlive(V::showEmptyView);
                     }
 

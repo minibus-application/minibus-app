@@ -1,4 +1,4 @@
-package org.minibus.app.data.network.pojo.transport;
+package org.minibus.app.data.network.pojo.vehicle;
 
 import com.google.gson.annotations.SerializedName;
 

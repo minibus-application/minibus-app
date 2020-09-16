@@ -12,12 +12,12 @@ import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.ui.cities.arrival.ArrivalCitiesFragment;
 import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
+import org.minibus.app.ui.schedule.trip.RouteTripFragment;
 import org.minibus.app.utils.CommonUtil;
 import org.minibus.app.ui.base.BaseFragment;
 import org.minibus.app.ui.custom.BadgeDrawable;
 import org.minibus.app.ui.login.LoginFragment;
 import org.minibus.app.ui.profile.UserProfileFragment;
-import org.minibus.app.ui.schedule.trip.BusTripFragment;
 import org.minibus.app.helpers.AppAnimHelper;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -43,7 +43,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.minibus.app.ui.base.BackButtonListener;
-import org.minibus.app.data.network.pojo.schedule.BusTrip;
+import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.custom.SpanningLinearLayoutManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -59,14 +59,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class BusScheduleFragment extends BaseFragment implements
-        BusScheduleContract.View,
+public class RouteScheduleFragment extends BaseFragment implements
+        RouteScheduleContract.View,
         SwipeRefreshLayout.OnRefreshListener,
-        BusScheduleAdapter.OnItemClickListener,
-        BusScheduleCalendarAdapter.OnItemClickListener,
+        RouteScheduleAdapter.OnItemClickListener,
+        RouteScheduleCalendarAdapter.OnItemClickListener,
         DepartureCitiesFragment.OnCitySelectListener,
         ArrivalCitiesFragment.OnCitySelectListener,
-        BusTripFragment.OnBusTripBookingListener,
+        RouteTripFragment.OnBusTripBookingListener,
         LoginFragment.LoginFragmentCallback,
         UserProfileFragment.UserProfileFragmentCallback,
         BackButtonListener {
@@ -86,19 +86,20 @@ public class BusScheduleFragment extends BaseFragment implements
     @BindView(R.id.fab_filter) FloatingActionButton fabFilter;
     @BindView(R.id.fab_jump_top) FloatingActionButton fabJumpTop;
 
-    @Inject BusSchedulePresenter<BusScheduleContract.View> presenter;
+    @Inject
+    RouteSchedulePresenter<RouteScheduleContract.View> presenter;
 
     private MenuItem menuItemProfile;
     private LinearLayoutManager layoutManagerBusSchedule;
     private SpanningLinearLayoutManager layoutManagerCalendar;
-    private BusScheduleCalendarAdapter adapterCalendar;
-    private BusScheduleAdapter adapterBusSchedule;
+    private RouteScheduleCalendarAdapter adapterCalendar;
+    private RouteScheduleAdapter adapterBusSchedule;
     private BadgeDrawable drawableProfileBadge;
 
     private boolean isFilterExpanded = true;
 
-    public static BusScheduleFragment newInstance() {
-        return new BusScheduleFragment();
+    public static RouteScheduleFragment newInstance() {
+        return new RouteScheduleFragment();
     }
 
     @Override
@@ -128,14 +129,14 @@ public class BusScheduleFragment extends BaseFragment implements
         swipeRefresh.setColorSchemeResources(R.color.colorAccent);
 
         layoutManagerCalendar = new SpanningLinearLayoutManager(getMainActivity(), LinearLayoutManager.HORIZONTAL, false);
-        adapterCalendar = new BusScheduleCalendarAdapter(getMainActivity());
+        adapterCalendar = new RouteScheduleCalendarAdapter(getMainActivity());
         adapterCalendar.setOnItemClickListener(this);
         recyclerCalendar.setAdapter(adapterCalendar);
         recyclerCalendar.setLayoutManager(layoutManagerCalendar);
         recyclerCalendar.setHasFixedSize(true);
 
         layoutManagerBusSchedule = new LinearLayoutManager(getMainActivity());
-        adapterBusSchedule = new BusScheduleAdapter(getMainActivity());
+        adapterBusSchedule = new RouteScheduleAdapter(getMainActivity());
         adapterBusSchedule.setOnItemClickListener(this);
 
 //        DividerItemDecoration itemDecorator = new DividerItemDecoration(getMainActivity(), DividerItemDecoration.VERTICAL);
@@ -395,14 +396,14 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void setBusScheduleData(List<BusTrip> busTrips, Route route) {
+    public void setBusScheduleData(List<RouteTrip> routeTrips, Route route) {
         Drawable background;
 
-        if (busTrips == null || busTrips.isEmpty()) {
+        if (routeTrips == null || routeTrips.isEmpty()) {
             multiStateView.setViewState(MultiStateView.ViewState.EMPTY);
             background = multiStateView.getBackground();
         } else {
-            adapterBusSchedule.setData(busTrips, route);
+            adapterBusSchedule.setData(routeTrips, route);
             multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
             background = recyclerBusSchedule.getBackground();
         }
@@ -414,13 +415,13 @@ public class BusScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void openBusTripSummary(BusTrip busTrip, Route route, String depDate) {
+    public void openBusTripSummary(RouteTrip routeTrip, Route route, String depDate) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(BusTripFragment.BUS_TRIP_KEY, busTrip);
-        bundle.putSerializable(BusTripFragment.BUS_ROUTE_KEY, route);
-        bundle.putString(BusTripFragment.BUS_DATE_KEY, depDate);
+        bundle.putSerializable(RouteTripFragment.BUS_TRIP_KEY, routeTrip);
+        bundle.putSerializable(RouteTripFragment.BUS_ROUTE_KEY, route);
+        bundle.putString(RouteTripFragment.BUS_DATE_KEY, depDate);
 
-        super.openDialogFragment(BusTripFragment.newInstance(), BusTripFragment.REQ_CODE, bundle);
+        super.openDialogFragment(RouteTripFragment.newInstance(), RouteTripFragment.REQ_CODE, bundle);
     }
 
     @Override

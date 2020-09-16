@@ -68,23 +68,15 @@ public class LoginPresenter<V extends LoginContract.View> extends BasePresenter<
     }
 
     private Single<UserResponse> getUserDataObservable(String authToken) {
-        return doGetUserData(authToken)
+        return userModel.doGetUserData(authToken)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     private Single<UserResponse> getUserCreationObservable(String userName, String userPhone, String userPassword) {
-        return doPostUserData(userName, userPhone, userPassword)
+        return userModel.doAuthUserData(userName, userPhone, userPassword)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private Single<UserResponse> doGetUserData(String authToken) {
-        return userModel.doGetUserData(authToken);
-    }
-
-    private Single<UserResponse> doPostUserData(String userName, String userPhone, String userPassword) {
-        return userModel.doPostUserData(new UserRequest(userName, userPhone, userPassword));
     }
 
     private String encodeUserCredentials(String userPhone, String userPassword) {

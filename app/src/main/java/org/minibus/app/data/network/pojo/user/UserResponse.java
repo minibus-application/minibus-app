@@ -6,49 +6,51 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserResponse extends User implements Serializable {
+public class UserResponse implements Serializable {
+
+    @SerializedName("user")
+    private User user;
 
     @SerializedName("bookings")
     private List<Booking> bookings;
 
-    @SerializedName("totalBookingLimit")
-    private int bookingsLimit;
+    @SerializedName("activeBookings")
+    private int activeBookings;
 
-    public UserResponse(int id,
-                        String name,
-                        String phone,
-                        List<Booking> bookings,
-                        int bookingsLimit) {
-        super(id, name, phone);
+    @SerializedName("totalBookings")
+    private int totalBookings;
+
+    @SerializedName("token")
+    private String token;
+
+    public UserResponse(User user, List<Booking> bookings, int activeBookings, int totalBookings) {
+        this.user = user;
         this.bookings = bookings;
-        this.bookingsLimit = bookingsLimit;
+        this.activeBookings = activeBookings;
+        this.totalBookings = totalBookings;
     }
 
     public User getUser() {
-        return this;
+        return user;
     }
 
     public boolean isBookingsListEmpty() {
-        return getBookingsCount() == 0;
-    }
-
-    public int getBookingsCount() {
-        return bookings == null ? 0 : bookings.size();
+        return bookings == null || bookings.size() == 0;
     }
 
     public List<Booking> getBookings() {
         return bookings;
     }
 
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
+    public int getActiveBookings() {
+        return activeBookings;
     }
 
-    public int getBookingsLimit() {
-        return bookingsLimit;
+    public int getTotalBookings() {
+        return totalBookings;
     }
 
-    public void setBookingsLimit(int bookingsLimit) {
-        this.bookingsLimit = bookingsLimit;
+    public String getToken() {
+        return token;
     }
 }

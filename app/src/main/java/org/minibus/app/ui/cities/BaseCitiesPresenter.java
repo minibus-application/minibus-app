@@ -40,13 +40,13 @@ public class BaseCitiesPresenter<V extends BaseCitiesContract.View> extends Base
         getView().ifAlive(V::close);
     }
 
-    protected Single<BaseResponse<List<City>>> getCitiesDataObservable() {
+    protected Single<List<City>> getCitiesDataObservable() {
         return citiesModel.doGetAllCitiesData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    protected Single<BaseResponse<List<City>>> getFilteredCitiesDataObservable(String cityId) {
+    protected Single<List<City>> getFilteredCitiesDataObservable(String cityId) {
         return citiesModel.doGetFilteredCitiesData(cityId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

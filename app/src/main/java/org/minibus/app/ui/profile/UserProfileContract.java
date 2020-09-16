@@ -20,7 +20,7 @@ public interface UserProfileContract {
 
         void onStart();
         void onLogoutButtonClick();
-        void onBookingCancelButtonClick(int bookingId);
+        void onBookingCancelButtonClick(String bookingId);
         void onBusScheduleButtonClick();
     }
 }

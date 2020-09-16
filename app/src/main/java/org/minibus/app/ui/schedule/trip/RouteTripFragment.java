@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.network.pojo.route.Route;
-import org.minibus.app.data.network.pojo.schedule.BusTrip;
+import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.base.BaseSheetDialogFragment;
 import org.minibus.app.ui.custom.CounterLayout;
 import org.minibus.app.ui.R;
@@ -34,7 +34,7 @@ import butterknife.OnClick;
 import timber.log.Timber;
 
 
-public class BusTripFragment extends BaseSheetDialogFragment implements BusTripContract.View {
+public class RouteTripFragment extends BaseSheetDialogFragment implements RouteTripContract.View {
 
     public static final int REQ_CODE = AppConstants.BUS_TRIP_FRAGMENT_REQ_CODE;
 
@@ -52,7 +52,7 @@ public class BusTripFragment extends BaseSheetDialogFragment implements BusTripC
     @BindView(R.id.cl_trip_seats) CounterLayout counterSeats;
 
     @Inject
-    BusTripPresenter<BusTripContract.View> presenter;
+    RouteTripPresenter<RouteTripContract.View> presenter;
 
     public interface OnBusTripBookingListener {
         void onBusTripBooked();
@@ -63,13 +63,13 @@ public class BusTripFragment extends BaseSheetDialogFragment implements BusTripC
     public static final String BUS_DATE_KEY = "key_bus_date";
 
     private OnBusTripBookingListener listener;
-    private BusTrip busTrip;
+    private RouteTrip routeTrip;
     private Route route;
     private String departureDate;
     private int availableSeatsCount;
 
-    public static BusTripFragment newInstance() {
-        return new BusTripFragment();
+    public static RouteTripFragment newInstance() {
+        return new RouteTripFragment();
     }
 
     @Override
@@ -77,10 +77,10 @@ public class BusTripFragment extends BaseSheetDialogFragment implements BusTripC
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            busTrip = (BusTrip) getArguments().getSerializable(BUS_TRIP_KEY);
+            routeTrip = (RouteTrip) getArguments().getSerializable(BUS_TRIP_KEY);
             route = (Route) getArguments().getSerializable(BUS_ROUTE_KEY);
             departureDate = getArguments().getString(BUS_DATE_KEY);
-            availableSeatsCount = busTrip.getAvailableSeats();
+            availableSeatsCount = routeTrip.getAvailableSeats();
         } else {
             dismiss();
         }
@@ -99,21 +99,21 @@ public class BusTripFragment extends BaseSheetDialogFragment implements BusTripC
         presenter.attachView(this);
 
         textTitle.setText(departureDate);
-        textCost.setText(String.format("%s %s", busTrip.getCost(), busTrip.getCurrency()));
-        textTravelTime.setText(String.format("%s - %s (%s)", busTrip.getDepartureTime(), busTrip.getArrivalTime(), busTrip.getDuration()));
+        textCost.setText(String.format("%s %s", routeTrip.getCost(), routeTrip.getCurrency()));
+        textTravelTime.setText(String.format("%s - %s (%s)", routeTrip.getDepartureTime(), routeTrip.getArrivalTime(), routeTrip.getDuration()));
         textRoute.setText(route.getDescription());
         textDepartureStation.setText(route.getDepartureCity().getStation());
         textArrivalStation.setText(route.getArrivalCity().getStation());
         textVehicleColor.setText(Html.fromHtml("\u2B24"));
-        textVehicleColor.setTextColor(Color.parseColor(busTrip.getVehicle().getColor()));
-        textVehicle.setText(String.format("%s %s", busTrip.getVehicle().getMake(), busTrip.getVehicle().getModel()));
-        textVehiclePlateNumber.setText(busTrip.getVehicle().getPlateNumber());
+        textVehicleColor.setTextColor(Color.parseColor(routeTrip.getVehicle().getColor()));
+        textVehicle.setText(String.format("%s %s", routeTrip.getVehicle().getMake(), routeTrip.getVehicle().getModel()));
+        textVehiclePlateNumber.setText(routeTrip.getVehicle().getPlateNumber());
 
         counterSeats.setOnChangedValueListener(value -> {
             try {
-                float cost = Float.parseFloat(busTrip.getCost());
+                float cost = Float.parseFloat(routeTrip.getCost());
                 String newCost = String.format("%s %s",
-                        (double) Math.round(counterSeats.getValue() * cost * 10) / 10, busTrip.getCurrency());
+                        (double) Math.round(counterSeats.getValue() * cost * 10) / 10, routeTrip.getCurrency());
                 textCost.setText(newCost);
             } catch (Exception ignore) {
                 Timber.d("Can't parse to float: %s", textCost.getText());
@@ -152,7 +152,7 @@ public class BusTripFragment extends BaseSheetDialogFragment implements BusTripC
 
     @OnClick(R.id.btn_confirm_reservation)
     public void onConfirmReservationButtonClick() {
-        presenter.onConfirmReservationButtonClick(departureDate, busTrip.getId(), counterSeats.getValue());
+        presenter.onConfirmReservationButtonClick(departureDate, routeTrip.getId(), counterSeats.getValue());
     }
 
     @Override

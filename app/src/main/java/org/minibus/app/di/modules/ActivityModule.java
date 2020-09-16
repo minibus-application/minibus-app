@@ -5,9 +5,8 @@ import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.minibus.app.data.network.AppApiClient;
-import org.minibus.app.data.network.model.BookingModel;
 import org.minibus.app.data.network.model.CitiesModel;
-import org.minibus.app.data.network.model.BusScheduleModel;
+import org.minibus.app.data.network.model.RouteScheduleModel;
 import org.minibus.app.data.network.model.RoutesModel;
 import org.minibus.app.data.network.model.UserModel;
 import org.minibus.app.di.ActivityContext;
@@ -19,10 +18,10 @@ import org.minibus.app.ui.login.LoginContract;
 import org.minibus.app.ui.login.LoginPresenter;
 import org.minibus.app.ui.profile.UserProfileContract;
 import org.minibus.app.ui.profile.UserProfilePresenter;
-import org.minibus.app.ui.schedule.BusScheduleContract;
-import org.minibus.app.ui.schedule.BusSchedulePresenter;
-import org.minibus.app.ui.schedule.trip.BusTripContract;
-import org.minibus.app.ui.schedule.trip.BusTripPresenter;
+import org.minibus.app.ui.schedule.RouteScheduleContract;
+import org.minibus.app.ui.schedule.RouteSchedulePresenter;
+import org.minibus.app.ui.schedule.trip.RouteTripContract;
+import org.minibus.app.ui.schedule.trip.RouteTripPresenter;
 import org.minibus.app.ui.cities.BaseCitiesContract;
 import org.minibus.app.ui.cities.BaseCitiesPresenter;
 
@@ -50,8 +49,8 @@ public class ActivityModule {
     }
 
     @Provides
-    BusScheduleContract.Presenter<BusScheduleContract.View> provideBusSchedulePresenter
-            (BusSchedulePresenter<BusScheduleContract.View> presenter) {
+    RouteScheduleContract.Presenter<RouteScheduleContract.View> provideBusSchedulePresenter
+            (RouteSchedulePresenter<RouteScheduleContract.View> presenter) {
         return presenter;
     }
 
@@ -74,8 +73,8 @@ public class ActivityModule {
     }
 
     @Provides
-    BusTripContract.Presenter<BusTripContract.View> provideBusTripPresenter
-            (BusTripPresenter<BusTripContract.View> presenter) {
+    RouteTripContract.Presenter<RouteTripContract.View> provideBusTripPresenter
+            (RouteTripPresenter<RouteTripContract.View> presenter) {
         return presenter;
     }
 
@@ -92,8 +91,8 @@ public class ActivityModule {
     }
 
     @Provides
-    BusScheduleModel provideBusScheduleModel(AppApiClient appApiClient) {
-        return new BusScheduleModel(appApiClient);
+    RouteScheduleModel provideBusScheduleModel(AppApiClient appApiClient) {
+        return new RouteScheduleModel(appApiClient);
     }
 
     @Provides
@@ -104,11 +103,6 @@ public class ActivityModule {
     @Provides
     RoutesModel provideRoutesModel(AppApiClient appApiClient) {
         return new RoutesModel(appApiClient);
-    }
-
-    @Provides
-    BookingModel provideBookingModel(AppApiClient appApiClient) {
-        return new BookingModel(appApiClient);
     }
 
     @Provides

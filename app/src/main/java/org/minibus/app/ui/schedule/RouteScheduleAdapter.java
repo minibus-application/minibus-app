@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.ui.R;
-import org.minibus.app.data.network.pojo.schedule.BusTrip;
+import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.custom.ProgressMaterialButton;
 
 import java.util.ArrayList;
@@ -25,21 +25,21 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.BusScheduleViewHolder> {
+public class RouteScheduleAdapter extends RecyclerView.Adapter<RouteScheduleAdapter.BusScheduleViewHolder> {
 
     public interface OnItemClickListener {
         void onBusTripSelect(View view, long id, int pos, String routeId);
     }
 
     private Context context;
-    private List<BusTrip> busTrips = new ArrayList<>();
+    private List<RouteTrip> routeTrips = new ArrayList<>();
     private Route route = null;
     private OnItemClickListener clickListener;
     private boolean isItemClickable = true;
     private boolean isItemLoading = false;
     private int lastClickedItemPos = -1;
 
-    public BusScheduleAdapter(Context context) {
+    public RouteScheduleAdapter(Context context) {
         this.context = context;
     }
 
@@ -47,13 +47,13 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
         this.clickListener = clickListener;
     }
 
-    public void setData(List<BusTrip> newBusTrips, Route route) {
+    public void setData(List<RouteTrip> newRouteTrips, Route route) {
         DiffUtil.DiffResult diffResult =
-                DiffUtil.calculateDiff(new BusScheduleDiffUtilCallback(this.busTrips, newBusTrips), true);
+                DiffUtil.calculateDiff(new RouteScheduleDiffUtilCallback(this.routeTrips, newRouteTrips), true);
 
         this.route = route;
-        this.busTrips.clear();
-        this.busTrips.addAll(newBusTrips);
+        this.routeTrips.clear();
+        this.routeTrips.addAll(newRouteTrips);
 
         diffResult.dispatchUpdatesTo(this);
     }
@@ -78,18 +78,18 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
 
     @Override
     public long getItemId(int position) {
-        return busTrips.get(position).getLongId();
+        return routeTrips.get(position).getLongId();
     }
 
     @Override
     public int getItemCount() {
-        return busTrips == null ? 0 : busTrips.size();
+        return routeTrips == null ? 0 : routeTrips.size();
     }
 
     @Override
     public void onBindViewHolder(@NonNull final BusScheduleViewHolder viewHolder, final int position) {
-        BusTrip busTrip = busTrips.get(position);
-        viewHolder.bind(busTrip, this.route);
+        RouteTrip routeTrip = routeTrips.get(position);
+        viewHolder.bind(routeTrip, this.route);
 
         Timber.d("Bind bus trip with id = %d, position = %d", getItemId(position), position);
 
@@ -119,21 +119,21 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(BusTrip busTrip, Route route) {
-            itemId = busTrip.getLongId();
+        public void bind(RouteTrip routeTrip, Route route) {
+            itemId = routeTrip.getLongId();
             routeId = route.getId();
 
-            textCarrierName.setText(busTrip.getVehicle().getCarrier().getName());
-            textCarrierRating.setText(busTrip.getVehicle().getCarrier().getRating());
-            textDepartureTime.setText(busTrip.getDepartureTime());
+            textCarrierName.setText(routeTrip.getVehicle().getCarrier().getName());
+            textCarrierRating.setText(routeTrip.getVehicle().getCarrier().getRating());
+            textDepartureTime.setText(routeTrip.getDepartureTime());
             textDepartureStation.setText(route.getDepartureCity().getStation());
-            textArrivalTime.setText(busTrip.getArrivalTime());
+            textArrivalTime.setText(routeTrip.getArrivalTime());
             textArrivalStation.setText(route.getArrivalCity().getStation());
-            textDuration.setText(busTrip.getDuration());
-            textSeatsAvailable.setText(context.getResources().getString(R.string.label_available_seats_count, busTrip.getAvailableSeats()));
-            textCost.setText(String.format("%s %s", busTrip.getCost(), busTrip.getCurrency()));
+            textDuration.setText(routeTrip.getDuration());
+            textSeatsAvailable.setText(context.getResources().getString(R.string.label_available_seats_count, routeTrip.getAvailableSeats()));
+            textCost.setText(String.format("%s %s", routeTrip.getCost(), routeTrip.getCurrency()));
 
-            if (busTrip.getAvailableSeats() == 0) {
+            if (routeTrip.getAvailableSeats() == 0) {
                 textSeatsAvailable.setTextColor(ContextCompat.getColor(context, R.color.colorError));
                 layoutBusTrip.setEnabled(false);
             } else {

@@ -22,7 +22,7 @@ import org.minibus.app.di.components.ActivityComponent;
 import org.minibus.app.di.components.DaggerActivityComponent;
 import org.minibus.app.di.modules.ActivityModule;
 import org.minibus.app.ui.R;
-import org.minibus.app.ui.schedule.BusScheduleFragment;
+import org.minibus.app.ui.schedule.RouteScheduleFragment;
 import org.minibus.app.ui.base.BackButtonListener;
 import org.minibus.app.utils.CommonUtil;
 import org.minibus.app.utils.NetworkChangeReceiver;
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.main_container,
-                    BusScheduleFragment.newInstance(),
-                    BusScheduleFragment.class.getName());
+                    RouteScheduleFragment.newInstance(),
+                    RouteScheduleFragment.class.getName());
             transaction.commitNow();
         }
     }

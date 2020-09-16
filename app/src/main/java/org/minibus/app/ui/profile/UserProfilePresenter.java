@@ -1,8 +1,6 @@
 package org.minibus.app.ui.profile;
 
 import org.minibus.app.data.local.AppStorageManager;
-import org.minibus.app.data.network.model.BookingModel;
-import org.minibus.app.data.network.pojo.booking.BookingResponse;
 import org.minibus.app.data.network.pojo.user.UserResponse;
 import org.minibus.app.data.network.model.UserModel;
 import org.minibus.app.ui.R;
@@ -20,15 +18,13 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
         implements UserProfileContract.Presenter<V> {
 
     private UserModel userModel;
-    private BookingModel bookingModel;
 
     @Inject
     AppStorageManager storage;
 
     @Inject
-    public UserProfilePresenter(UserModel userModel, BookingModel bookingModel) {
+    public UserProfilePresenter(UserModel userModel) {
         this.userModel = userModel;
-        this.bookingModel = bookingModel;
     }
 
     @Override
@@ -37,14 +33,14 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
     }
 
     @Override
-    public void onBookingCancelButtonClick(int bookingId) {
+    public void onBookingCancelButtonClick(String bookingId) {
         getView().ifAlive(v -> v.showAsk(R.string.warning_booking_cancel_message, (dialogInterface, i) -> {
             dialogInterface.dismiss();
-            addSubscription(getCancelBookingObservable(storage.getUserAuthToken(), bookingId)
+            addSubscription(getRevokeBookingObservable(storage.getUserAuthToken(), bookingId)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
-                    .subscribeWith(new DisposableSingleObserver<BookingResponse>() {
+                    .subscribeWith(new DisposableSingleObserver<UserResponse>() {
                         @Override
-                        public void onSuccess(BookingResponse bookingResponse) {
+                        public void onSuccess(UserResponse response) {
                             refreshUserData();
                         }
 
@@ -80,7 +76,7 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
                     @Override
                     public void onSuccess(UserResponse userResponse) {
                         storage.setUserData(userResponse);
-                        getView().ifAlive(v -> v.setUserData(userResponse.getName(), userResponse.getPhone()));
+                        getView().ifAlive(v -> v.setUserData(userResponse.getUser().getName(), userResponse.getUser().getPhone()));
 
                         if (!userResponse.isBookingsListEmpty()) {
                             getView().ifAlive(v -> v.setUserBookingsData(userResponse.getBookings()));
@@ -99,22 +95,14 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
                 }));
     }
 
-    private Single<BookingResponse> doDeleteBookingData(String authToken, int bookingId) {
-        return bookingModel.doDeleteBookingData(authToken, bookingId);
-    }
-
-    private Single<UserResponse> doGetUserData(String authToken) {
-        return userModel.doGetUserData(authToken);
-    }
-
-    private Single<BookingResponse> getCancelBookingObservable(String authToken, int bookingId) {
-        return doDeleteBookingData(authToken, bookingId)
+    private Single<UserResponse> getRevokeBookingObservable(String authToken, String bookingId) {
+        return userModel.doDeleteUserBookingData(authToken, bookingId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     private Single<UserResponse> getUserDataObservable(String authToken) {
-        return doGetUserData(authToken)
+        return userModel.doGetUserData(authToken)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -1,89 +1,51 @@
 package org.minibus.app.data.network.pojo.booking;
 
-import org.minibus.app.data.network.pojo.city.City;
-import org.minibus.app.data.network.pojo.schedule.BusTrip;
+import org.minibus.app.data.network.pojo.schedule.RouteTrip;
+import org.minibus.app.data.network.pojo.user.User;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Booking {
+import java.io.Serializable;
+import java.math.BigInteger;
 
-    @SerializedName("id")
-    private int id;
+public class Booking implements Serializable {
 
-    @SerializedName("stop")
-    private City city;
+    @SerializedName("_id")
+    private String id;
 
-    @SerializedName("selectedSchedule")
-    private BusTrip selectedBusTrip;
+    @SerializedName("trip")
+    private RouteTrip routeTrip;
 
-    @SerializedName("departureDate")
+    @SerializedName("user")
+    private User user;
+
+    @SerializedName("tripDate")
     private String departureDate;
 
-    @SerializedName("price")
-    private Double price;
-
-    @SerializedName("status")
-    private String status;
-
-    public Booking(int id,
-                   City city,
-                   BusTrip selectedBusTrip,
-                   String departureDate,
-                   Double price,
-                   String status) {
+    public Booking(String id, RouteTrip routeTrip, User user, String departureDate) {
         this.id = id;
-        this.city = city;
-        this.selectedBusTrip = selectedBusTrip;
+        this.routeTrip = routeTrip;
+        this.user = user;
         this.departureDate = departureDate;
-        this.price = price;
-        this.status = status;
     }
 
-    public int getId() {
+    public long getLongId() {
+        return new BigInteger(id, 16).longValue();
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public RouteTrip getRouteTrip() {
+        return routeTrip;
     }
 
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
-    public BusTrip getSelectedBusTrip() {
-        return selectedBusTrip;
-    }
-
-    public void setSelectedBusTrip(BusTrip selectedBusTrip) {
-        this.selectedBusTrip = selectedBusTrip;
+    public User getUser() {
+        return user;
     }
 
     public String getDepartureDate() {
         return departureDate;
-    }
-
-    public void setDepartureDate(String departureDate) {
-        this.departureDate = departureDate;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }
