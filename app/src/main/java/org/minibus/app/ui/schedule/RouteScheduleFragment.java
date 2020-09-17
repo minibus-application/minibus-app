@@ -51,6 +51,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.kennyc.view.MultiStateView;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -67,7 +68,7 @@ public class RouteScheduleFragment extends BaseFragment implements
         DepartureCitiesFragment.OnCitySelectListener,
         ArrivalCitiesFragment.OnCitySelectListener,
         RouteTripFragment.OnBusTripBookingListener,
-        LoginFragment.LoginFragmentCallback,
+        LoginFragment.OnUserLoginListener,
         UserProfileFragment.UserProfileFragmentCallback,
         BackButtonListener {
 
@@ -83,7 +84,7 @@ public class RouteScheduleFragment extends BaseFragment implements
     @BindView(R.id.appbar) AppBarLayout appBar;
     @BindView(R.id.container_bus_schedule) MultiStateView multiStateView;
     @BindView(R.id.toolbar_custom) Toolbar toolbar;
-    @BindView(R.id.fab_filter) FloatingActionButton fabFilter;
+    @BindView(R.id.fab_route) FloatingActionButton fabRoute;
     @BindView(R.id.fab_jump_top) FloatingActionButton fabJumpTop;
 
     @Inject
@@ -139,9 +140,6 @@ public class RouteScheduleFragment extends BaseFragment implements
         adapterBusSchedule = new RouteScheduleAdapter(getMainActivity());
         adapterBusSchedule.setOnItemClickListener(this);
 
-//        DividerItemDecoration itemDecorator = new DividerItemDecoration(getMainActivity(), DividerItemDecoration.VERTICAL);
-//        itemDecorator.setDrawable(ContextCompat.getDrawable(getMainActivity(), R.drawable.item_divider));
-//        recyclerBusSchedule.addItemDecoration(itemDecorator);
         recyclerBusSchedule.setAdapter(adapterBusSchedule);
         recyclerBusSchedule.setLayoutManager(layoutManagerBusSchedule);
         recyclerBusSchedule.setHasFixedSize(false);
@@ -158,7 +156,7 @@ public class RouteScheduleFragment extends BaseFragment implements
         });
 
         (getMainActivity()).setSupportActionBar(toolbar);
-        (getMainActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull((getMainActivity()).getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         appBar.setOutlineProvider(null);
         appBar.addOnOffsetChangedListener(new AppBarStateChangeListener() {
@@ -198,9 +196,9 @@ public class RouteScheduleFragment extends BaseFragment implements
         presenter.onDepartureCityClick();
     }
 
-    @OnClick(R.id.fab_filter)
-    public void onFilterFabClick() {
-        presenter.onFilterFabClick();
+    @OnClick(R.id.fab_route)
+    public void onRouteFabClick() {
+        presenter.onRouteFabClick();
     }
 
     @OnClick(R.id.fab_jump_top)
@@ -376,7 +374,7 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void setProfileBadge(int bookingsQuantity) {
+    public void setProfileBadge(int bookingsCount) {
         LayerDrawable profileIcon = (LayerDrawable) menuItemProfile.getIcon();
         Drawable drawable = profileIcon.findDrawableByLayerId(R.id.ic_profile_badge);
 
@@ -384,12 +382,12 @@ public class RouteScheduleFragment extends BaseFragment implements
             drawableProfileBadge = (BadgeDrawable) drawable;
         } else {
             drawableProfileBadge = new BadgeDrawable.Builder()
-                    .withCounter(true)
+                    .withCounter(false)
                     .withColor(R.color.colorError)
                     .build();
         }
 
-        drawableProfileBadge.setCount(bookingsQuantity);
+        drawableProfileBadge.setCount(bookingsCount);
 
         profileIcon.mutate();
         profileIcon.setDrawableByLayerId(R.id.ic_profile_badge, drawableProfileBadge);
@@ -479,7 +477,7 @@ public class RouteScheduleFragment extends BaseFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_bus_schedule, menu);
+        inflater.inflate(R.menu.menu_route_schedule, menu);
         menuItemProfile = menu.findItem(R.id.menu_item_profile);
 
         presenter.onCreateProfileBadge();

@@ -1,7 +1,6 @@
 package org.minibus.app.data.network.model;
 
 import org.minibus.app.data.network.AppApiClient;
-import org.minibus.app.data.network.pojo.BaseResponse;
 import org.minibus.app.data.network.pojo.route.Route;
 
 import java.util.List;
@@ -14,8 +13,8 @@ public class RoutesModel extends BaseModel {
         super(appApiClient);
     }
 
-    public Single<Route> doGetRoutesData(String depCityId, String arrCityId) {
-        return getClient().getApiService().getRoutesData(depCityId, arrCityId);
+    public Single<Route> doGetRouteData(String depCityId, String arrCityId) {
+        return getClient().getApiService().getRouteData(depCityId, arrCityId);
     }
 
     public Single<List<Route>> doGetAllRoutesData() {

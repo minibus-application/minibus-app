@@ -22,19 +22,19 @@ public interface AppApiService {
     @GET("/cities")
     Single<List<City>> getAllCitiesData();
 
-    @GET("/cities/filterBy")
+    @GET("/cities/exclude")
     Single<List<City>> getFilteredCitiesData(@Query("id") String cityId);
 
     @GET("/routes")
     Single<List<Route>> getAllRoutesData();
 
     @GET("/routes/filterBy")
-    Single<Route> getRoutesData(@Query("fromId") String depCityId, @Query("toId") String arrCityId);
+    Single<Route> getRouteData(@Query("fromId") String depCityId, @Query("toId") String arrCityId);
 
     @GET("/user")
     Single<UserResponse> getUserData(@Header("Authorization") String authToken);
 
-    @POST("/user/login")
+    @POST("/user/auth")
     Single<UserResponse> authUserData(@Body HashMap<String, Object> body);
 
     @POST("/user/create")

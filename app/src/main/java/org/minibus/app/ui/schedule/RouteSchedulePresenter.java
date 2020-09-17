@@ -61,7 +61,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onFilterFabClick() {
+    public void onRouteFabClick() {
         getView().ifAlive(V::toggleFilter);
     }
 
@@ -322,7 +322,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     private Single<Route> getRouteDataObservable(String depCityId, String arrCityId) {
-        return routesModel.doGetRoutesData(depCityId, arrCityId)
+        return routesModel.doGetRouteData(depCityId, arrCityId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

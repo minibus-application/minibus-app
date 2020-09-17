@@ -1,7 +1,6 @@
 package org.minibus.app.data.network.model;
 
 import org.minibus.app.data.network.AppApiClient;
-import org.minibus.app.data.network.pojo.user.UserRequest;
 import org.minibus.app.data.network.pojo.user.UserResponse;
 
 import java.util.HashMap;

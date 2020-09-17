@@ -9,7 +9,8 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
 
         <include
             layout="@layout/view_toolbar"
@@ -17,6 +18,13 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_collapseMode="pin" />
+
+        <View
+            android:id="@+id/view_delimiter"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="bottom"
+            android:background="@color/colorBackground" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -36,7 +44,7 @@
             android:padding="16dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_user_name_container"
+                android:id="@+id/et_user_name_container"
                 style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
@@ -45,76 +53,78 @@
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_user_name"
+                    android:id="@+id/et_user_name"
                     style="@style/Widget.AppTheme.TextInputEditText.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_enter_name"
+                    android:hint="@string/label_enter_name"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_user_phone_container"
+                android:id="@+id/et_user_phone_container"
                 style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/input_user_name_container"
+                android:layout_below="@id/et_user_name_container"
                 android:layout_margin="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_user_phone"
+                    android:id="@+id/et_user_phone"
                     style="@style/Widget.AppTheme.TextInputEditText.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_enter_phone"
+                    android:hint="@string/label_enter_phone"
                     android:inputType="phone"
                     android:maxLength="13" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_user_pass_container"
+                android:id="@+id/et_user_pass_container"
                 style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/input_user_phone_container"
+                android:layout_below="@id/et_user_phone_container"
                 android:layout_margin="8dp"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_user_pass"
+                    android:id="@+id/et_user_pass"
                     style="@style/Widget.AppTheme.TextInputEditText.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_enter_pass"
+                    android:hint="@string/label_enter_pass"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_user_conf_pass_container"
+                android:id="@+id/et_user_conf_pass_container"
                 style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/input_user_pass_container"
+                android:layout_below="@id/et_user_pass_container"
                 android:layout_margin="8dp"
                 android:visibility="gone"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_user_conf_pass"
+                    android:id="@+id/et_user_conf_pass"
                     style="@style/Widget.AppTheme.TextInputEditText.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_confirm_pass"
+                    android:hint="@string/label_confirm_pass"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_login"
+                android:id="@+id/btn_confirm"
                 style="@style/Widget.AppTheme.Button.UnelevatedButton"
                 android:layout_width="240dp"
                 android:layout_height="56dp"
-                android:layout_below="@id/input_user_conf_pass_container"
-                android:layout_margin="8dp"
+                android:layout_below="@id/et_user_conf_pass_container"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/login" />
 
             <com.google.android.material.button.MaterialButton
@@ -122,8 +132,10 @@
                 style="@style/Widget.AppTheme.Button.TextButton"
                 android:layout_width="240dp"
                 android:layout_height="56dp"
-                android:layout_below="@id/button_login"
+                android:layout_below="@id/btn_confirm"
                 android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/login_no_account" />
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>

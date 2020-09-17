@@ -36,12 +36,12 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
     public void onBookingCancelButtonClick(String bookingId) {
         getView().ifAlive(v -> v.showAsk(R.string.warning_booking_cancel_message, (dialogInterface, i) -> {
             dialogInterface.dismiss();
-            addSubscription(getRevokeBookingObservable(storage.getUserAuthToken(), bookingId)
+            addSubscription(getRevokeBookingObservable(storage.getAuthToken(), bookingId)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
                     .subscribeWith(new DisposableSingleObserver<UserResponse>() {
                         @Override
                         public void onSuccess(UserResponse response) {
-                            refreshUserData();
+                            getView().ifAlive(v -> v.setUserBookingsData(response.getBookings()));
                         }
 
                         @Override
@@ -70,20 +70,15 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
     }
 
     private void refreshUserData() {
-        addSubscription(getUserDataObservable(storage.getUserAuthToken())
+        addSubscription(getUserDataObservable(storage.getAuthToken())
                 .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
                 .subscribeWith(new DisposableSingleObserver<UserResponse>() {
                     @Override
-                    public void onSuccess(UserResponse userResponse) {
-                        storage.setUserData(userResponse);
-                        getView().ifAlive(v -> v.setUserData(userResponse.getUser().getName(), userResponse.getUser().getPhone()));
+                    public void onSuccess(UserResponse response) {
+                        storage.setUserData(response.getUser());
 
-                        if (!userResponse.isBookingsListEmpty()) {
-                            getView().ifAlive(v -> v.setUserBookingsData(userResponse.getBookings()));
-                        } else {
-                            getView().ifAlive(V::showEmptyView);
-                        }
-
+                        getView().ifAlive(v -> v.setUserData(response.getUser().getName(), response.getUser().getPhone()));
+                        getView().ifAlive(v -> v.setUserBookingsData(response.getBookings()));
                         getView().ifAlive(V::updateUserBookingsBadge);
                     }
 

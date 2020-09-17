@@ -12,6 +12,7 @@ import org.minibus.app.ui.base.BaseDialogFragment;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.os.Handler;
@@ -43,27 +44,27 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
 
     public static final int REQ_CODE = AppConstants.LOGIN_FRAGMENT_REQ_CODE;
 
-    @BindView(R.id.input_user_name_container) TextInputLayout inputContainerUserName;
-    @BindView(R.id.input_user_phone_container) TextInputLayout inputContainerUserPhone;
-    @BindView(R.id.input_user_pass_container) TextInputLayout inputContainerUserPass;
-    @BindView(R.id.input_user_conf_pass_container) TextInputLayout inputContainerUserConfirmPass;
-    @BindView(R.id.input_user_name) TextInputEditText inputUserName;
-    @BindView(R.id.input_user_phone) TextInputEditText inputUserPhone;
-    @BindView(R.id.input_user_pass) TextInputEditText inputUserPass;
-    @BindView(R.id.input_user_conf_pass) TextInputEditText inputUserConfirmPass;
-    @BindView(R.id.button_login) MaterialButton buttonLogin;
-    @BindView(R.id.btn_form_switcher) MaterialButton buttonFormExpand;
+    @BindView(R.id.et_user_name_container) TextInputLayout inputContainerUserName;
+    @BindView(R.id.et_user_phone_container) TextInputLayout inputContainerUserPhone;
+    @BindView(R.id.et_user_pass_container) TextInputLayout inputContainerUserPass;
+    @BindView(R.id.et_user_conf_pass_container) TextInputLayout inputContainerUserConfirmPass;
+    @BindView(R.id.et_user_name) TextInputEditText inputUserName;
+    @BindView(R.id.et_user_phone) TextInputEditText inputUserPhone;
+    @BindView(R.id.et_user_pass) TextInputEditText inputUserPass;
+    @BindView(R.id.et_user_conf_pass) TextInputEditText inputUserConfirmPass;
+    @BindView(R.id.btn_confirm) MaterialButton buttonLogin;
+    @BindView(R.id.btn_form_switcher) MaterialButton buttonFormSwitcher;
     @BindView(R.id.appbar_login) AppBarLayout appbar;
     @BindView(R.id.toolbar_custom) Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title) TextView textToolbarTitle;
 
     @Inject LoginPresenter<LoginContract.View> presenter;
 
-    public interface LoginFragmentCallback {
+    public interface OnUserLoginListener {
         void onLoggedIn();
     }
 
-    private LoginFragmentCallback callback;
+    private OnUserLoginListener listener;
     private boolean isLoginForm = true;
 
     public static LoginFragment newInstance() {
@@ -90,7 +91,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        callback = (LoginFragmentCallback) getTargetFragment();
+        listener = (OnUserLoginListener) getTargetFragment();
         setUnbinder(ButterKnife.bind(this, view));
         getActivityComponent().inject(this);
         presenter.attachView(this);
@@ -138,7 +139,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         super.onDestroyView();
     }
 
-    @OnClick(R.id.button_login)
+    @OnClick(R.id.btn_confirm)
     public void onLoginClick() {
         hideKeyboard();
         presenter.onLoginButtonClick(inputUserName.getEditableText().toString(),
@@ -154,19 +155,23 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
             isLoginForm = false;
             inputContainerUserName.setVisibility(View.VISIBLE);
             inputContainerUserConfirmPass.setVisibility(View.VISIBLE);
-            buttonFormExpand.setText(getResources().getString(R.string.login_account_exists));
+            buttonLogin.setBackgroundColor(ContextCompat.getColor(getMainActivity(), R.color.colorGreen));
+            buttonLogin.setText(R.string.sign_up);
+            buttonFormSwitcher.setText(getResources().getString(R.string.login_account_exists));
         } else {
             isLoginForm = true;
             inputContainerUserName.setVisibility(View.GONE);
             inputContainerUserConfirmPass.setVisibility(View.GONE);
-            buttonFormExpand.setText(getResources().getString(R.string.login_no_account));
+            buttonLogin.setBackgroundColor(ContextCompat.getColor(getMainActivity(), R.color.colorAccent));
+            buttonLogin.setText(R.string.login);
+            buttonFormSwitcher.setText(getResources().getString(R.string.login_no_account));
         }
     }
 
     @Override
     public void showWelcomeMessage(@StringRes int msgResId, String userName) {
         showInfo(getResources().getString(msgResId, userName));
-        callback.onLoggedIn();
+        listener.onLoggedIn();
     }
 
     @Override

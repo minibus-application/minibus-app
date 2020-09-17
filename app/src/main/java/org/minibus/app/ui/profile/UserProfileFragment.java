@@ -159,7 +159,10 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
     @Override
     public void setUserBookingsData(List<Booking> bookings) {
         adapter.setData(bookings);
-        multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
+
+        multiStateView.setViewState(bookings == null || bookings.isEmpty()
+                ? MultiStateView.ViewState.EMPTY
+                : MultiStateView.ViewState.CONTENT);
     }
 
     @Override

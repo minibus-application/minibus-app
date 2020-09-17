@@ -8,9 +8,6 @@ public class User {
     @SerializedName("_id")
     private String id;
 
-    @SerializedName("driver")
-    private boolean isDriver;
-
     @SerializedName("name")
     private String name;
 
@@ -20,13 +17,29 @@ public class User {
     @SerializedName("createdAt")
     private String createdAt;
 
-    @SerializedName("updatedAt")
-    private String updatedAt;
+    @SerializedName("enRouteBookingsCount")
+    private int enRouteBookingsCount;
 
-    public User(String id, String name, String phone) {
+    @SerializedName("activeBookingsCount")
+    private int activeBookingsCount;
+
+    @SerializedName("totalBookingsCount")
+    private int totalBookingsCount;
+
+    public User(String id,
+                String name,
+                String phone,
+                String createdAt,
+                int enRouteBookingsCount,
+                int activeBookingsCount,
+                int totalBookingsCount) {
         this.id = id;
         this.name = name;
         this.phone = phone;
+        this.createdAt = createdAt;
+        this.enRouteBookingsCount = enRouteBookingsCount;
+        this.activeBookingsCount = activeBookingsCount;
+        this.totalBookingsCount = totalBookingsCount;
     }
 
     public long getLongId() {
@@ -45,7 +58,19 @@ public class User {
         return phone;
     }
 
-    public boolean isDriver() {
-        return isDriver;
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public int getEnRouteBookingsCount() {
+        return enRouteBookingsCount;
+    }
+
+    public int getActiveBookingsCount() {
+        return activeBookingsCount;
+    }
+
+    public int getTotalBookingsCount() {
+        return totalBookingsCount;
     }
 }

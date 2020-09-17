@@ -3,7 +3,6 @@ package org.minibus.app.ui.schedule.trip;
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.data.network.model.RouteScheduleModel;
-import org.minibus.app.data.network.pojo.user.UserRequest;
 import org.minibus.app.data.network.pojo.user.UserResponse;
 import org.minibus.app.ui.base.BasePresenter;
 

@@ -3,6 +3,7 @@
 
     <!-- Buttons -->
     <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
     <string name="logout">Logout</string>
     <string name="close">Close</string>
     <string name="refresh">Refresh</string>
@@ -38,19 +39,26 @@
     <string name="label_plate_number">Plate number:</string>
     <string name="label_payment_on_boarding">*payment on boarding</string>
     <string name="label_available_seats_count">%1$d seats</string>
+    <string name="label_enter_name">Name</string>
+    <string name="label_enter_phone">Phone number</string>
+    <string name="label_enter_pass">Password</string>
+    <string name="label_confirm_pass">Confirm password</string>
+    <string name="label_departure">From</string>
+    <string name="label_arrival">To</string>
 
     <!-- Auth form -->
     <string name="user_name_empty_error">Enter your name</string>
     <string name="user_phone_format_error">Wrong phone number format</string>
     <string name="user_pass_empty_error">Please enter the password</string>
-    <string name="user_confirm_pass_error">Passwords don`t match</string>
-    <string name="user_confirm_pass_empty_error">Please confirm password</string>
+    <string name="user_confirm_pass_error">Passwords don\'t match</string>
+    <string name="user_confirm_pass_empty_error">Please confirm the password</string>
     <string name="login_account_exists">I already have an account</string>
-    <string name="login_no_account">I don`t have an account yet</string>
+    <string name="login_no_account">I don\'t have an account yet</string>
 
     <!-- Titles -->
     <string name="login_title">Login</string>
     <string name="profile_title">Profile</string>
+    <string name="filter_title">Filter</string>
     <string name="profile_active_user_bookings">Active bookings:</string>
     <string name="departure_cities_title">Departure</string>
     <string name="arrival_cities_title">Arrival</string>
@@ -82,14 +90,6 @@
     <string name="warning_booking_cancel_message">Do you really want to cancel your reservation?</string>
     <string name="warning_unauthorized_message">To continue, you must be logged in</string>
     <string name="warning_bad_connectivity_message">Loss of Internet connection</string>
-
-    <!-- Hints -->
-    <string name="hint_enter_name">Name</string>
-    <string name="hint_enter_phone">Phone number</string>
-    <string name="hint_enter_pass">Password</string>
-    <string name="hint_confirm_pass">Confirm password</string>
-    <string name="hint_departure">From</string>
-    <string name="hint_arrival">To</string>
 
     <!-- Welcome and goodbye -->
     <string name="welcome_user_message">Welcome, %1$s</string>

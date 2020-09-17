@@ -61,7 +61,7 @@ public interface RouteScheduleContract {
         void onDepartureCityClick();
         void onArrivalCityClick();
         void onProfileIconClick();
-        void onFilterFabClick();
+        void onRouteFabClick();
         void onJumpTopFabClick();
         void onBusTripSelectButtonClick(String depDate, long id, int pos, String routeId);
     }

@@ -5,7 +5,6 @@ import android.util.Base64;
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.data.network.model.UserModel;
-import org.minibus.app.data.network.pojo.user.UserRequest;
 import org.minibus.app.data.network.pojo.user.UserResponse;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.base.BasePresenter;
@@ -32,24 +31,21 @@ public class LoginPresenter<V extends LoginContract.View> extends BasePresenter<
     }
 
     @Override
-    public void onLoginButtonClick(String userName,
-                                   String userPhone,
-                                   String userPassword,
-                                   String userConfirmPassword,
-                                   boolean isLoginForm) {
-        if (isFormValid(userName, userPhone, userPassword, userConfirmPassword, isLoginForm)) {
-            String authToken = encodeUserCredentials(userPhone, userPassword);
+    public void onLoginButtonClick(String name, String phone, String password, String confirmedPassword, boolean isLoginForm) {
+        if (isFormValid(name, phone, password, confirmedPassword, isLoginForm)) {
 
             Single<UserResponse> observable = isLoginForm
-                    ? getUserDataObservable(authToken)
-                    : getUserCreationObservable(userName, userPhone, userPassword);
+                    ? getUserAuthObservable(name, phone, password)
+                    : getUserCreateObservable(name, phone, password);
 
-            addSubscription(observable.doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
+            addSubscription(observable
+                    .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
                     .subscribeWith(new DisposableSingleObserver<UserResponse>() {
                         @Override
                         public void onSuccess(UserResponse userResponse) {
-                            storage.setUserSession(authToken, userResponse);
+                            if (userResponse.getToken() == null) throw new RuntimeException("Can't retrieve user token");
 
+                            storage.setUserSession(userResponse.getToken(), userResponse.getUser());
                             getView().ifAlive(V::closeOnSuccessLogin);
                         }
 
@@ -67,21 +63,22 @@ public class LoginPresenter<V extends LoginContract.View> extends BasePresenter<
         getView().ifAlive(V::close);
     }
 
+    private Single<UserResponse> getUserAuthObservable(String name, String phone, String password) {
+        return userModel.doAuthUserData(name, phone, password)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     private Single<UserResponse> getUserDataObservable(String authToken) {
         return userModel.doGetUserData(authToken)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<UserResponse> getUserCreationObservable(String userName, String userPhone, String userPassword) {
-        return userModel.doAuthUserData(userName, userPhone, userPassword)
+    private Single<UserResponse> getUserCreateObservable(String userName, String userPhone, String userPassword) {
+        return userModel.doCreateUserData(userName, userPhone, userPassword)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private String encodeUserCredentials(String userPhone, String userPassword) {
-        String rawBasicAuthToken = userPhone.concat(":").concat(userPassword);
-        return Base64.encodeToString(rawBasicAuthToken.getBytes(), Base64.NO_WRAP);
     }
 
     private boolean isFormValid(String userName,

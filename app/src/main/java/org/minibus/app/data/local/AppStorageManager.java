@@ -9,7 +9,6 @@ import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.user.User;
 import org.minibus.app.di.ApplicationContext;
 import com.google.gson.Gson;
-import org.minibus.app.data.network.pojo.user.UserResponse;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -40,10 +39,6 @@ public class AppStorageManager {
         return contains(KEY_USER_AUTH_TOKEN) && !get(KEY_USER_AUTH_TOKEN, "").isEmpty();
     }
 
-    public boolean isEmpty() {
-        return !isAuthorised() && !isRouteStored();
-    }
-
     public boolean isRouteStored() {
         return contains(KEY_ROUTE);
     }
@@ -70,27 +65,11 @@ public class AppStorageManager {
         put(KEY_ARRIVAL_CITY, city);
     }
 
-    public void setDepartureCityStartBusStop(City city) {
-        put(KEY_DEPARTURE_START_BUS_STOP, city);
+    public void setUserData(User user) {
+        put(KEY_USER_DATA, user);
     }
 
-    public void setDirection(City departureCity, City arrivalCity) {
-        setDepartureCity(departureCity);
-        setArrivalCity(arrivalCity);
-    }
-
-    public void setUserData(UserResponse userResponse) {
-        // have to cast to User because we don't need dynamic bookings list in storage
-        put(KEY_USER_DATA, userResponse.getUser());
-
-        // setUserBookingsLimit(userResponse.getBookingsLimit());
-        // TODO forced to replace bookings limit property value from user response with a constant
-        //  because of the server bug when just registered user gets limit = 0 until update data
-        setUserBookingsLimit(AppConstants.DEFAULT_PASSENGERS_COUNT_PER_BOOKING);
-        setUserBookingsCount(userResponse.getActiveBookings());
-    }
-
-    public void setUserAuthToken(String token) {
+    public void setAuthToken(String token) {
         put(KEY_USER_AUTH_TOKEN, token);
     }
 
@@ -108,12 +87,12 @@ public class AppStorageManager {
         put(KEY_USER_BOOKINGS_LIMIT, limit);
     }
 
-    public void setUserSession(String token, UserResponse userResponse) {
-        setUserAuthToken(token);
-        setUserData(userResponse);
+    public void setUserSession(String token, User user) {
+        setAuthToken(token);
+        setUserData(user);
     }
 
-    public String getUserAuthToken() {
+    public String getAuthToken() {
         return get(KEY_USER_AUTH_TOKEN, null);
     }
 
@@ -143,10 +122,6 @@ public class AppStorageManager {
 
     public City getDepartureCity() {
         return new Gson().fromJson(get(KEY_DEPARTURE_CITY, null), City.class);
-    }
-
-    public City getDepartureCityStartBusStop() {
-        return new Gson().fromJson(get(KEY_DEPARTURE_START_BUS_STOP, null), City.class);
     }
 
     public void clearAll() {

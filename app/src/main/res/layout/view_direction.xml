@@ -34,7 +34,7 @@
                     style="@style/Widget.AppTheme.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_departure" />
+                    android:hint="@string/label_departure" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -64,7 +64,7 @@
                     style="@style/Widget.AppTheme.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_arrival" />
+                    android:hint="@string/label_arrival" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 

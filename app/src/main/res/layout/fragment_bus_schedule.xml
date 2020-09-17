@@ -94,21 +94,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:background="#fafafa"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:background="#fafafa" />
         </com.kennyc.view.MultiStateView>
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_filter"
+        android:id="@+id/fab_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorAccent"
-        android:src="@drawable/ic_filter_light_24dp"
-        app:tint="@color/colorOnSecondary"
+        android:src="@drawable/ic_direction_light_24dp"
         app:borderWidth="0dp"
         app:elevation="6dp" />
 
@@ -116,7 +114,7 @@
         android:id="@+id/dummy"
         android:layout_width="1dp"
         android:layout_height="16dp"
-        app:layout_anchor="@id/fab_filter"
+        app:layout_anchor="@id/fab_route"
         app:layout_anchorGravity="top|right|end" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

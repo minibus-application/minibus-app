@@ -8,5 +8,5 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_profile_icon"
         android:actionLayout="@layout/view_toolbar"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 </menu>

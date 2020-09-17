@@ -14,20 +14,12 @@ public class UserResponse implements Serializable {
     @SerializedName("bookings")
     private List<Booking> bookings;
 
-    @SerializedName("activeBookings")
-    private int activeBookings;
-
-    @SerializedName("totalBookings")
-    private int totalBookings;
-
     @SerializedName("token")
     private String token;
 
-    public UserResponse(User user, List<Booking> bookings, int activeBookings, int totalBookings) {
+    public UserResponse(User user, List<Booking> bookings) {
         this.user = user;
         this.bookings = bookings;
-        this.activeBookings = activeBookings;
-        this.totalBookings = totalBookings;
     }
 
     public User getUser() {
@@ -40,14 +32,6 @@ public class UserResponse implements Serializable {
 
     public List<Booking> getBookings() {
         return bookings;
-    }
-
-    public int getActiveBookings() {
-        return activeBookings;
-    }
-
-    public int getTotalBookings() {
-        return totalBookings;
     }
 
     public String getToken() {
