@@ -40,7 +40,7 @@
     <string name="label_plate_number">Plate number:</string>
     <string name="label_payment_on_boarding">*payment on boarding</string>
     <string name="label_available_seats_count">%1$d seats</string>
-    <string name="label_sorting_by">Sorting by %1$s</string>
+    <string name="label_sort_by_option">Sort by %1$s</string>
     <string name="label_enter_name">Name</string>
     <string name="label_enter_phone">Phone number</string>
     <string name="label_enter_pass">Password</string>
@@ -64,13 +64,15 @@
     <string name="profile_active_user_bookings">Active bookings:</string>
     <string name="departure_cities_title">Departure</string>
     <string name="arrival_cities_title">Arrival</string>
-    <string name="bus_schedule_title">Schedule</string>
-    <string name="bus_schedule_filter_title">Direction</string>
-    <string name="bus_trip_summary_title">Reservation</string>
+    <string name="route_schedule_title">Schedule</string>
+    <string name="route_schedule_direction_title">Direction</string>
+    <string name="route_trip_summary_title">Reservation</string>
 
     <!-- Success -->
     <string name="success_booking_title">Reserved!</string>
     <string name="success_booking_message">To view active bookings, go to your profile</string>
+    <string name="success_login_title">Welcome!</string>
+    <string name="success_login_message">Continue searching for a suitable route or open your profile?</string>
 
     <!-- Progress -->
     <string name="progress_default_title">Loading</string>
@@ -96,11 +98,4 @@
     <!-- Welcome and goodbye -->
     <string name="welcome_user_message">Welcome, %1$s</string>
     <string name="goodbye_user_message">Come back again, %1$s</string>
-    
-    <string-array name="route_trips_sorting_options">
-        <item>Departure time</item>
-        <item>Arrival time</item>
-        <item>Carrier rating</item>
-        <item>Price</item>
-    </string-array>
 </resources>

@@ -15,14 +15,14 @@ import java.util.ArrayList;
 
 public class SortingOptionsDialogFragment extends BaseDialogFragment {
 
-    public interface SortingOptionClickListener {
+    public interface OnSortingOptionClickListener {
         void onSortingOptionClick(int position);
     }
 
     public static final int REQ_CODE = AppConstants.SORT_BY_FRAGMENT_REQ_CODE;
     public static final String SORT_OPTIONS_KEY = "sort_options_key";
     public static final String SORT_OPTION_POS_KEY = "sort_option_pos_key";
-    private SortingOptionClickListener listener;
+    private OnSortingOptionClickListener listener;
     private ArrayList<String> options;
     private int lastPosition;
     private int position;
@@ -46,7 +46,7 @@ public class SortingOptionsDialogFragment extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        listener = (SortingOptionClickListener) getTargetFragment();
+        listener = (OnSortingOptionClickListener) getTargetFragment();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
         builder.setTitle(getResources().getString(R.string.sort_by));

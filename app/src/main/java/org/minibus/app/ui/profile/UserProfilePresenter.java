@@ -28,7 +28,7 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
     }
 
     @Override
-    public void onBusScheduleButtonClick() {
+    public void onRouteScheduleButtonClick() {
         getView().ifAlive(V::close);
     }
 
@@ -79,7 +79,6 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
 
                         getView().ifAlive(v -> v.setUserData(response.getUser().getName(), response.getUser().getPhone()));
                         getView().ifAlive(v -> v.setUserBookingsData(response.getBookings()));
-                        getView().ifAlive(V::updateUserBookingsBadge);
                     }
 
                     @Override

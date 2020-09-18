@@ -94,27 +94,36 @@ public class RouteTrip implements Serializable {
         return route;
     }
 
-    public int getAvailableSeats() {
-        return vehicle.getCapacity() - seatsBooked;
-    }
-
     public int getSeatsBooked() {
         return seatsBooked;
     }
 
-    public int getDepartureTimeToCompare() {
+    public int getAvailableSeats() {
+        return vehicle.getCapacity() - seatsBooked;
+    }
+
+    public int getComparableDepartureTimeHours() {
         return Integer.parseInt(departureTime.split(":")[0]);
     }
 
-    public int getArrivalTimeToCompare() {
+    public int getComparableDepartureTimeMinutes() {
+        return Integer.parseInt(departureTime.split(":")[1]);
+    }
+
+    public int getComparableArrivalTimeHours() {
         return Integer.parseInt(arrivalTime.split(":")[0]);
     }
 
-    public Double getPriceToCompare() {
-        return Double.parseDouble(price);
+    public int getComparableArrivalTimeMinutes() {
+        return Integer.parseInt(arrivalTime.split(":")[1]);
     }
 
-    public double getCarrierRatingToCompare() {
+
+    public double getComparableCarrierRating() {
         return Double.parseDouble(vehicle.getCarrier().getRating());
+    }
+
+    public double getComparablePrice() {
+        return Double.parseDouble(price);
     }
 }

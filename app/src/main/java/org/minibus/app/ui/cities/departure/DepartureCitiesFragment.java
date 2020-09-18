@@ -22,11 +22,11 @@ public class DepartureCitiesFragment extends BaseCitiesFragment implements Depar
     @Inject
     DepartureCitiesPresenter<DepartureCitiesContract.View> presenter;
 
-    public interface CityClickListener {
+    public interface OnCityClickListener {
         void onDepartureCityClicked(City city);
     }
 
-    private CityClickListener listener;
+    private OnCityClickListener listener;
 
     public static DepartureCitiesFragment newInstance() {
         return new DepartureCitiesFragment();
@@ -34,7 +34,7 @@ public class DepartureCitiesFragment extends BaseCitiesFragment implements Depar
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        listener = (CityClickListener) getTargetFragment();
+        listener = (OnCityClickListener) getTargetFragment();
         getActivityComponent().inject(this);
         presenter.attachView(this);
         return super.onCreateView(inflater, container, savedInstanceState);

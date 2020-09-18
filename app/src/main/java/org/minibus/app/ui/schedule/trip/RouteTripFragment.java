@@ -54,7 +54,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     @Inject
     RouteTripPresenter<RouteTripContract.View> presenter;
 
-    public interface RouteTripBookingListener {
+    public interface OnRouteTripBookingListener {
         void onRouteTripBooked();
     }
 
@@ -62,7 +62,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     public static final String ROUTE_TRIP_KEY = "key_route_trip";
     public static final String DEPARTURE_DATE_KEY = "key_departure_date";
 
-    private RouteTripBookingListener listener;
+    private OnRouteTripBookingListener listener;
     private RouteTrip routeTrip;
     private Route route;
     private String departureDate;
@@ -93,7 +93,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = getMainActivity().getLayoutInflater().inflate(R.layout.fragment_route_trip_summary, null);
 
-        listener = (RouteTripBookingListener) getTargetFragment();
+        listener = (OnRouteTripBookingListener) getTargetFragment();
         setUnbinder(ButterKnife.bind(this, view));
         getActivityComponent().inject(this);
         presenter.attachView(this);

@@ -36,12 +36,12 @@
         android:text="@string/bookings_empty_message" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_empty_bus_schedule"
+        android:id="@+id/button_empty_route_schedule"
         style="@style/Widget.AppTheme.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/text_empty_subtitle"
         android:layout_margin="8dp"
         android:layout_centerHorizontal="true"
-        android:text="@string/bus_schedule_title" />
+        android:text="@string/route_schedule_title" />
 </RelativeLayout>

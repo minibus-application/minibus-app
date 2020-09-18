@@ -42,8 +42,6 @@ import butterknife.OnClick;
 
 public class LoginFragment extends BaseDialogFragment implements LoginContract.View {
 
-    public static final int REQ_CODE = AppConstants.LOGIN_FRAGMENT_REQ_CODE;
-
     @BindView(R.id.et_user_name_container) TextInputLayout inputContainerUserName;
     @BindView(R.id.et_user_phone_container) TextInputLayout inputContainerUserPhone;
     @BindView(R.id.et_user_pass_container) TextInputLayout inputContainerUserPass;
@@ -60,11 +58,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
 
     @Inject LoginPresenter<LoginContract.View> presenter;
 
-    public interface OnUserLoginListener {
-        void onLoggedIn();
-    }
-
-    private OnUserLoginListener listener;
+    public static final int REQ_CODE = AppConstants.LOGIN_FRAGMENT_REQ_CODE;
     private boolean isLoginForm = true;
 
     public static LoginFragment newInstance() {
@@ -91,7 +85,6 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        listener = (OnUserLoginListener) getTargetFragment();
         setUnbinder(ButterKnife.bind(this, view));
         getActivityComponent().inject(this);
         presenter.attachView(this);
@@ -171,7 +164,6 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @Override
     public void showWelcomeMessage(@StringRes int msgResId, String userName) {
         showInfo(getResources().getString(msgResId, userName));
-        listener.onLoggedIn();
     }
 
     @Override

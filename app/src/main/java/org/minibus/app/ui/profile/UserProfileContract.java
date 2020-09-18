@@ -10,7 +10,6 @@ public interface UserProfileContract {
     interface View extends Contract.View {
 
         void setUserBookingsData(List<Booking> bookings);
-        void updateUserBookingsBadge();
         void setUserData(String userName, String userPhone);
         void logout();
         void close();
@@ -21,6 +20,6 @@ public interface UserProfileContract {
         void onStart();
         void onLogoutButtonClick();
         void onBookingCancelButtonClick(String bookingId);
-        void onBusScheduleButtonClick();
+        void onRouteScheduleButtonClick();
     }
 }

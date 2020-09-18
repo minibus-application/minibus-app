@@ -99,7 +99,7 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     }
 
     @OnClick(R.id.button_empty_cities)
-    public void onBusScheduleButtonClick() {
+    public void onRouteScheduleButtonClick() {
         presenter.onCloseButtonClick();
     }
 

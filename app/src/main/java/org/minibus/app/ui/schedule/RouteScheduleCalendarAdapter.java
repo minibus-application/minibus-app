@@ -22,9 +22,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteScheduleCalendarAdapter.BusScheduleCalendarViewHolder> {
+public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteScheduleCalendarAdapter.RouteScheduleCalendarViewHolder> {
 
-    public interface OnItemClickListener {
+    public interface OnCalendarItemClickListener {
         void onDateClick(View view, int position);
     }
 
@@ -35,7 +35,7 @@ public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteSche
     private List<String> dates = new ArrayList<>();
     private int lastSelectedPos;
     private int selectedPos;
-    private OnItemClickListener clickListener;
+    private OnCalendarItemClickListener onCalendarItemClickListener;
 
     public RouteScheduleCalendarAdapter(Context context) {
         this.context = context;
@@ -43,8 +43,8 @@ public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteSche
         setupCalendar(DEFAULT_CALENDAR_SIZE);
     }
 
-    public void setOnItemClickListener(OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
+    public void setOnItemClickListener(OnCalendarItemClickListener clickListener) {
+        this.onCalendarItemClickListener = clickListener;
     }
 
     private void setupSelectedDatePosition(int position) {
@@ -96,22 +96,22 @@ public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteSche
 
     @NonNull
     @Override
-    public BusScheduleCalendarViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public RouteScheduleCalendarViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         int layoutIdForDatePickerItem = R.layout.view_calendar_date;
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(layoutIdForDatePickerItem, viewGroup, false);
 
-        return new BusScheduleCalendarViewHolder(view);
+        return new RouteScheduleCalendarViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BusScheduleCalendarViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull RouteScheduleCalendarViewHolder viewHolder, int position) {
         viewHolder.bind(getDate(AppDatesHelper.DatePattern.CALENDAR, position).toUpperCase());
 
         viewHolder.itemView.setOnClickListener((View v) -> {
             lastSelectedPos = position;
-            clickListener.onDateClick(v, position);
+            onCalendarItemClickListener.onDateClick(v, position);
 
             notifyDataSetChanged();
         });
@@ -129,12 +129,12 @@ public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteSche
         return dates.size();
     }
 
-    class BusScheduleCalendarViewHolder extends RecyclerView.ViewHolder {
+    static class RouteScheduleCalendarViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.radio_button_month_day) RadioButton radioButtonMonthDay;
         @BindView(R.id.text_week_day) TextView textWeekDay;
 
-        public BusScheduleCalendarViewHolder(@NonNull View itemView) {
+        public RouteScheduleCalendarViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

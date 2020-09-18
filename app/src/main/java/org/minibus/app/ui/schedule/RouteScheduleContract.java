@@ -19,14 +19,12 @@ public interface RouteScheduleContract {
         void showLoadingDataDialog();
         void hideLoadingDataDialog();
         void showRefresh();
-        void showBusTripLoading();
-        void hideBusTripLoading();
+        void showRouteTripLoading();
+        void hideRouteTripLoading();
         void hideRefresh();
         void hideJumpTopFab();
         void toggleFilter();
-        void updateProfileBadge();
-        void setProfileBadge(int bookingsCount);
-        void setBusScheduleData(List<RouteTrip> routeTrips, Route route);
+        void setRouteScheduleData(List<RouteTrip> routeTrips, Route route);
         void setDirectionDescription(String text);
         void setDirectionDescription(@StringRes int resId);
         void setDepartureCity(String depCity);
@@ -47,12 +45,8 @@ public interface RouteScheduleContract {
 
         void onBackPressed();
         void onStart(String depDate);
-        void onCreateProfileBadge();
         void onRefresh(String depDate);
-        void onUserLoggedIn();
-        void onUserLoggedOut();
         void onUserBookedBusTrip(String depDate);
-        void onUserBookingsUpdate();
         void onFilterCollapsed();
         void onFilterExpanded();
         void onDirectionSwapButtonClick(String depDate);
@@ -65,6 +59,6 @@ public interface RouteScheduleContract {
         void onSortByItemClick(RouteScheduleAdapter.SortingOption selectedSortingOption);
         void onRouteFabClick();
         void onJumpTopFabClick();
-        void onRouteTripSelectButtonClick(String depDate, long id, int pos, String routeId);
+        void onRouteTripSelectButtonClick(String depDate, String itemId, String routeId);
     }
 }

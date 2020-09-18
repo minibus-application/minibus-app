@@ -41,8 +41,6 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
         UserProfileContract.View,
         UserBookingsAdapter.OnItemClickListener {
 
-    public static final int REQ_CODE = AppConstants.USER_PROFILE_FRAGMENT_REQ_CODE;
-
     @BindView(R.id.bottom_sheet_root) RelativeLayout layoutRoot;
     @BindView(R.id.image_user_avatar) ImageView imageUserAvatar;
     @BindView(R.id.text_user_name) TextView textUserName;
@@ -55,16 +53,11 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
 
     @Inject UserProfilePresenter<UserProfileContract.View> presenter;
 
-    public interface UserProfileFragmentCallback {
-        void onUserBookingsUpdate();
-        void onLoggedOut();
-    }
-
+    public static final int REQ_CODE = AppConstants.USER_PROFILE_FRAGMENT_REQ_CODE;
     private Unbinder unbinder;
     private MainActivity activity;
     private LinearLayoutManager layoutManager;
     private UserBookingsAdapter adapter;
-    private UserProfileFragmentCallback callback;
 
     public static UserProfileFragment newInstance() {
         return new UserProfileFragment();
@@ -89,7 +82,6 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        callback = (UserProfileFragment.UserProfileFragmentCallback) getTargetFragment();
         unbinder = ButterKnife.bind(this, view);
         getMainActivity().getActivityComponent().inject(this);
         presenter.attachView(this);
@@ -125,9 +117,9 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
         return view;
     }
 
-    @OnClick(R.id.button_empty_bus_schedule)
-    public void onBusScheduleButtonClick() {
-        presenter.onBusScheduleButtonClick();
+    @OnClick(R.id.button_empty_route_schedule)
+    public void onRouteScheduleButtonClick() {
+        presenter.onRouteScheduleButtonClick();
     }
 
     @OnClick(R.id.button_user_logout)
@@ -152,11 +144,6 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
     }
 
     @Override
-    public void updateUserBookingsBadge() {
-        callback.onUserBookingsUpdate();
-    }
-
-    @Override
     public void setUserBookingsData(List<Booking> bookings) {
         adapter.setData(bookings);
 
@@ -173,7 +160,6 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
 
     @Override
     public void logout() {
-        callback.onLoggedOut();
         close();
     }
 

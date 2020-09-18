@@ -19,10 +19,13 @@ import org.minibus.app.ui.R;
 import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.custom.ProgressMaterialButton;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import butterknife.BindView;
@@ -32,11 +35,131 @@ import timber.log.Timber;
 
 public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public interface ItemClickListener {
-        void onRouteTripItemClick(View view, long id, int pos, String routeId);
+    private Context context;
+    private Route route = null;
+    private OnItemClickListener onItemClickListener;
+    private OnSortByItemClickListener onSortByItemClickListener;
+    private List<RouteTrip> routeTrips = new ArrayList<>();
+    private SortingOption selectedSortingOption;
+    private static boolean isItemClickable = true;
+    private static boolean isItemLoading = false;
+    private static int lastClickedItemPos = -1;
+    private static final int SORT_BY_ITEM = 0;
+    private static final int ITEM = 1;
+
+    public RouteScheduleAdapter(Context context) {
+        this.context = context;
     }
 
-    public interface SortByItemClickListener {
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setOnSortByItemClickListener(OnSortByItemClickListener onSortByItemClickListener) {
+        this.onSortByItemClickListener = onSortByItemClickListener;
+    }
+
+    public void setData(List<RouteTrip> newRouteTrips, Route route) {
+        DiffUtil.DiffResult diffResult =
+                DiffUtil.calculateDiff(new RouteScheduleDiffUtilCallback(this.routeTrips, newRouteTrips), true);
+
+        this.route = route;
+        this.routeTrips.clear();
+        this.routeTrips.addAll(newRouteTrips);
+
+        diffResult.dispatchUpdatesTo(this);
+
+        sortBy(this.selectedSortingOption);
+    }
+
+    public void setSortingOption(SortingOption selectedSortingOption) {
+        this.selectedSortingOption = selectedSortingOption;
+        sortBy(selectedSortingOption);
+    }
+
+    public SortingOption getSortingOption() {
+        return selectedSortingOption;
+    }
+
+    public void setLoading(boolean isLoading) {
+        isItemLoading = isLoading;
+        isItemClickable = !isLoading;
+
+        if (lastClickedItemPos >= 0) notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        if (viewType == SORT_BY_ITEM) {
+            return new SortByViewHolder(inflater.inflate(R.layout.view_filter, viewGroup, false), onSortByItemClickListener);
+        }
+        return new RouteScheduleViewHolder(inflater.inflate(R.layout.view_bus_trip, viewGroup, false), onItemClickListener);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return new BigInteger(routeTrips.get(position - 1).getId(), 16).longValue();
+    }
+
+    @Override
+    public int getItemCount() {
+        return routeTrips == null ? 0 : routeTrips.size() + 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? SORT_BY_ITEM : ITEM;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int position) {
+        if (viewHolder.getItemViewType() == ITEM) {
+            Timber.d("Bind bus trip with id = %d, position = %d", getItemId(position), position);
+
+            RouteTrip routeTrip = routeTrips.get(position - 1);
+            ((RouteScheduleViewHolder) viewHolder).bind(context, routeTrip, this.route);
+
+            // set loading indicator only for clicked item
+            ((RouteScheduleViewHolder) viewHolder).setLoading(lastClickedItemPos == position && isItemLoading);
+        } else {
+            ((SortByViewHolder) viewHolder).bind(context, selectedSortingOption);
+        }
+    }
+
+    private void sortBy(SortingOption sortingOption) {
+        switch (sortingOption) {
+            default:
+            case DEPARTURE_TIME:
+                Collections.sort(routeTrips, Comparator.comparingInt(RouteTrip::getComparableDepartureTimeHours)
+                        .thenComparingInt(RouteTrip::getComparableDepartureTimeMinutes));
+                break;
+            case ARRIVAL_TIME:
+                Collections.sort(routeTrips, Comparator.comparingInt(RouteTrip::getComparableArrivalTimeHours)
+                        .thenComparingInt(RouteTrip::getComparableArrivalTimeMinutes).reversed());
+                break;
+            case CARRIER_RATING:
+                Collections.sort(routeTrips, Comparator.comparingDouble(RouteTrip::getComparableCarrierRating).reversed());
+                break;
+            case AVAILABLE_SEATS:
+                Collections.sort(routeTrips, Comparator.comparingInt(RouteTrip::getSeatsBooked));
+                break;
+            case PRICE:
+                Collections.sort(routeTrips, Comparator.comparingDouble(RouteTrip::getComparablePrice)
+                        .thenComparingDouble(RouteTrip::getComparableCarrierRating));
+                break;
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public interface OnItemClickListener {
+        void onRouteTripItemClick(View view, String itemId, String routeId);
+    }
+
+    public interface OnSortByItemClickListener {
         void onSortByItemClick(SortingOption selectedSortingOption);
     }
 
@@ -44,7 +167,8 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         DEPARTURE_TIME("Departure time", 0),
         ARRIVAL_TIME("Arrival time", 1),
         CARRIER_RATING("Carrier rating", 2),
-        PRICE("Pricing", 3);
+        AVAILABLE_SEATS("Available seats", 3),
+        PRICE("Price", 4);
 
         private String option;
         private int position;
@@ -68,121 +192,9 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         public static SortingOption getByPosition(int position) {
-            return Arrays.stream(SortingOption.values())
-                    .filter(o -> o.getPosition() == position).findFirst().get();
-        }
-    }
-
-    private Context context;
-    private Route route = null;
-    private ItemClickListener itemClickListener;
-    private SortByItemClickListener sortByItemClickListener;
-    private List<RouteTrip> routeTrips = new ArrayList<>();
-    private SortingOption selectedSortingOption;
-    private static boolean isItemClickable = true;
-    private static boolean isItemLoading = false;
-    private static int lastClickedItemPos = -1;
-    private static final int FILTER = 0;
-    private static final int ITEM = 1;
-
-    public RouteScheduleAdapter(Context context) {
-        this.context = context;
-    }
-
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
-
-    public void setSortByItemClickListener(SortByItemClickListener sortByItemClickListener) {
-        this.sortByItemClickListener = sortByItemClickListener;
-    }
-
-    public void setData(List<RouteTrip> newRouteTrips, Route route) {
-        DiffUtil.DiffResult diffResult =
-                DiffUtil.calculateDiff(new RouteScheduleDiffUtilCallback(this.routeTrips, newRouteTrips), true);
-
-        this.route = route;
-        this.routeTrips.clear();
-        this.routeTrips.addAll(newRouteTrips);
-
-        diffResult.dispatchUpdatesTo(this);
-    }
-
-    public void setSortingOption(SortingOption selectedSortingOption) {
-        this.selectedSortingOption = selectedSortingOption;
-        sortBy(selectedSortingOption);
-
-        notifyItemChanged(0);
-    }
-
-    private void sortBy(SortingOption sortingOption) {
-        switch (sortingOption) {
-            case DEPARTURE_TIME:
-
-                break;
-            case ARRIVAL_TIME:
-
-                break;
-            case CARRIER_RATING:
-
-                break;
-            case PRICE:
-                Collections.sort(routeTrips, (o1, o2) -> {
-                    return o1.getPriceToCompare().compareTo(o2.getPriceToCompare());
-                });
-                break;
-            default:
-                break;
-        }
-
-        notifyDataSetChanged();
-    }
-
-    public void setLoading(boolean isLoading) {
-        isItemLoading = isLoading;
-        isItemClickable = !isLoading;
-
-        if (lastClickedItemPos >= 0) notifyDataSetChanged();
-    }
-
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        if (viewType == FILTER) {
-            return new SortByViewHolder(inflater.inflate(R.layout.view_filter, viewGroup, false), sortByItemClickListener);
-        }
-        return new RouteScheduleViewHolder(inflater.inflate(R.layout.view_bus_trip, viewGroup, false), itemClickListener);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return routeTrips.get(position - 1).getLongId();
-    }
-
-    @Override
-    public int getItemCount() {
-        return routeTrips == null ? 0 : routeTrips.size() + 1;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position == 0 ? FILTER : ITEM;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int position) {
-        if (viewHolder.getItemViewType() == ITEM) {
-            Timber.d("Bind bus trip with id = %d, position = %d", getItemId(position), position);
-
-            RouteTrip routeTrip = routeTrips.get(position - 1);
-            ((RouteScheduleViewHolder) viewHolder).bind(context, routeTrip, this.route);
-
-            // set loading indicator only for clicked item
-            ((RouteScheduleViewHolder) viewHolder).setLoading(lastClickedItemPos == position && isItemLoading);
-        } else {
-            ((SortByViewHolder) viewHolder).bind(context, selectedSortingOption);
+            Optional<SortingOption> optional = Arrays.stream(SortingOption.values())
+                    .filter(o -> o.getPosition() == position).findFirst();
+            return optional.orElse(SortingOption.DEPARTURE_TIME);
         }
     }
 
@@ -190,12 +202,12 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         @BindView(R.id.btn_sort) MaterialButton buttonSortBy;
 
-        private SortByItemClickListener sortByItemClickListener;
+        private OnSortByItemClickListener onSortByItemClickListener;
         private SortingOption selectedSortingOption;
 
-        public SortByViewHolder(View itemView, final SortByItemClickListener sortByItemClickListener) {
+        public SortByViewHolder(View itemView, final OnSortByItemClickListener onSortByItemClickListener) {
             super(itemView);
-            this.sortByItemClickListener = sortByItemClickListener;
+            this.onSortByItemClickListener = onSortByItemClickListener;
             ButterKnife.bind(this, itemView);
         }
 
@@ -203,12 +215,12 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
             this.selectedSortingOption = selectedSortingOption;
 
             String option = selectedSortingOption.getOption().toLowerCase();
-            buttonSortBy.setText(context.getResources().getString(R.string.label_sorting_by, option));
+            buttonSortBy.setText(context.getResources().getString(R.string.label_sort_by_option, option));
         }
 
         @OnClick(R.id.btn_sort)
         public void onSortByButtonClick(View itemView) {
-            sortByItemClickListener.onSortByItemClick(selectedSortingOption);
+            onSortByItemClickListener.onSortByItemClick(selectedSortingOption);
         }
     }
 
@@ -226,18 +238,18 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.btn_select) ProgressMaterialButton btnSelectTrip;
         @BindView(R.id.ll_trip) FrameLayout layoutBusTrip;
 
-        private long itemId;
+        private String itemId;
         private String routeId;
-        private ItemClickListener itemClickListener;
+        private OnItemClickListener onItemClickListener;
 
-        public RouteScheduleViewHolder(@NonNull View itemView, final ItemClickListener itemClickListener) {
+        public RouteScheduleViewHolder(@NonNull View itemView, final OnItemClickListener onItemClickListener) {
             super(itemView);
-            this.itemClickListener = itemClickListener;
+            this.onItemClickListener = onItemClickListener;
             ButterKnife.bind(this, itemView);
         }
 
         public void bind(Context context, RouteTrip routeTrip, Route route) {
-            itemId = routeTrip.getLongId();
+            itemId = routeTrip.getId();
             routeId = route.getId();
 
             textCarrierName.setText(routeTrip.getVehicle().getCarrier().getName());
@@ -268,9 +280,9 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             if (isItemClickable && itemPos >= 0) {
                 lastClickedItemPos = itemPos;
-                itemClickListener.onRouteTripItemClick(itemView, itemId, itemPos, routeId);
+                onItemClickListener.onRouteTripItemClick(itemView, itemId, routeId);
 
-                Timber.d("Select bus trip with id = %d, position = %d", itemId, itemPos);
+                Timber.d("Select bus trip with id = %s, position = %d", itemId, itemPos);
             }
         }
 
