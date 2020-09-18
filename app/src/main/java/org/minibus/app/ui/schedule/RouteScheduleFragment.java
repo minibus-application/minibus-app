@@ -13,6 +13,7 @@ import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.ui.cities.arrival.ArrivalCitiesFragment;
 import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
 import org.minibus.app.ui.schedule.trip.RouteTripFragment;
+import org.minibus.app.ui.sorting.SortingOptionsDialogFragment;
 import org.minibus.app.utils.CommonUtil;
 import org.minibus.app.ui.base.BaseFragment;
 import org.minibus.app.ui.custom.BadgeDrawable;
@@ -46,6 +47,7 @@ import org.minibus.app.ui.base.BackButtonListener;
 import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.custom.SpanningLinearLayoutManager;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kennyc.view.MultiStateView;
@@ -63,11 +65,13 @@ import butterknife.OnClick;
 public class RouteScheduleFragment extends BaseFragment implements
         RouteScheduleContract.View,
         SwipeRefreshLayout.OnRefreshListener,
-        RouteScheduleAdapter.OnItemClickListener,
+        RouteScheduleAdapter.ItemClickListener,
+        RouteScheduleAdapter.SortByItemClickListener,
         RouteScheduleCalendarAdapter.OnItemClickListener,
-        DepartureCitiesFragment.OnCitySelectListener,
-        ArrivalCitiesFragment.OnCitySelectListener,
-        RouteTripFragment.OnBusTripBookingListener,
+        SortingOptionsDialogFragment.SortingOptionClickListener,
+        DepartureCitiesFragment.CityClickListener,
+        ArrivalCitiesFragment.CityClickListener,
+        RouteTripFragment.RouteTripBookingListener,
         LoginFragment.OnUserLoginListener,
         UserProfileFragment.UserProfileFragmentCallback,
         BackButtonListener {
@@ -98,6 +102,7 @@ public class RouteScheduleFragment extends BaseFragment implements
     private BadgeDrawable drawableProfileBadge;
 
     private boolean isFilterExpanded = true;
+    private RouteScheduleAdapter.SortingOption DEFAULT_SORTING_OPTION = RouteScheduleAdapter.SortingOption.DEPARTURE_TIME;
 
     public static RouteScheduleFragment newInstance() {
         return new RouteScheduleFragment();
@@ -111,7 +116,7 @@ public class RouteScheduleFragment extends BaseFragment implements
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bus_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_route_schedule, container, false);
         setHasOptionsMenu(true);
 
         getActivityComponent().inject(this);
@@ -123,7 +128,6 @@ public class RouteScheduleFragment extends BaseFragment implements
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-
         fabJumpTop.setVisibility(View.INVISIBLE);
 
         swipeRefresh.setOnRefreshListener(this);
@@ -138,7 +142,9 @@ public class RouteScheduleFragment extends BaseFragment implements
 
         layoutManagerBusSchedule = new LinearLayoutManager(getMainActivity());
         adapterBusSchedule = new RouteScheduleAdapter(getMainActivity());
-        adapterBusSchedule.setOnItemClickListener(this);
+        adapterBusSchedule.setSortingOption(DEFAULT_SORTING_OPTION);
+        adapterBusSchedule.setItemClickListener(this);
+        adapterBusSchedule.setSortByItemClickListener(this);
 
         recyclerBusSchedule.setAdapter(adapterBusSchedule);
         recyclerBusSchedule.setLayoutManager(layoutManagerBusSchedule);
@@ -148,10 +154,10 @@ public class RouteScheduleFragment extends BaseFragment implements
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int visiblePos = layoutManagerBusSchedule.findFirstVisibleItemPosition();
+                int firstVisibleItemPos = layoutManagerBusSchedule.findFirstVisibleItemPosition();
 
                 if (dy < 0) showJumpTopFab();
-                if (dy > 0 || (visiblePos <= 1 && visiblePos >= 0)) hideJumpTopFab();
+                if (dy > 0 || (firstVisibleItemPos <= 1 && firstVisibleItemPos >= 0)) hideJumpTopFab();
             }
         });
 
@@ -237,17 +243,17 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void onBusTripBooked() {
+    public void onRouteTripBooked() {
         presenter.onUserBookedBusTrip(adapterCalendar.getSelectedDate());
     }
 
     @Override
-    public void onArrivalCitySelected(City city) {
+    public void onArrivalCityClicked(City city) {
         presenter.onArrivalCityChange(city, adapterCalendar.getSelectedDate());
     }
 
     @Override
-    public void onDepartureCitySelected(City city) {
+    public void onDepartureCityClicked(City city) {
         presenter.onDepartureCityChange(city, adapterCalendar.getSelectedDate());
     }
 
@@ -413,11 +419,20 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
+    public void openSortingOptions(RouteScheduleAdapter.SortingOption sortingOption) {
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(SortingOptionsDialogFragment.SORT_OPTIONS_KEY, DEFAULT_SORTING_OPTION.getOptions());
+        bundle.putInt(SortingOptionsDialogFragment.SORT_OPTION_POS_KEY, sortingOption.getPosition());
+
+        super.openDialogFragment(SortingOptionsDialogFragment.newInstance(), SortingOptionsDialogFragment.REQ_CODE, bundle);
+    }
+
+    @Override
     public void openBusTripSummary(RouteTrip routeTrip, Route route, String depDate) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(RouteTripFragment.BUS_TRIP_KEY, routeTrip);
-        bundle.putSerializable(RouteTripFragment.BUS_ROUTE_KEY, route);
-        bundle.putString(RouteTripFragment.BUS_DATE_KEY, depDate);
+        bundle.putSerializable(RouteTripFragment.ROUTE_TRIP_KEY, routeTrip);
+        bundle.putSerializable(RouteTripFragment.ROUTE_KEY, route);
+        bundle.putString(RouteTripFragment.DEPARTURE_DATE_KEY, depDate);
 
         super.openDialogFragment(RouteTripFragment.newInstance(), RouteTripFragment.REQ_CODE, bundle);
     }
@@ -454,8 +469,18 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void onBusTripSelect(View view, long id, int pos, String routeId) {
-        presenter.onBusTripSelectButtonClick(adapterCalendar.getSelectedDate(), id, pos, routeId);
+    public void onRouteTripItemClick(View view, long id, int pos, String routeId) {
+        presenter.onRouteTripSelectButtonClick(adapterCalendar.getSelectedDate(), id, pos, routeId);
+    }
+
+    @Override
+    public void onSortByItemClick(RouteScheduleAdapter.SortingOption selectedSortingOption) {
+        presenter.onSortByItemClick(selectedSortingOption);
+    }
+
+    @Override
+    public void onSortingOptionClick(int position) {
+        adapterBusSchedule.setSortingOption(RouteScheduleAdapter.SortingOption.getByPosition(position));
     }
 
     @Override

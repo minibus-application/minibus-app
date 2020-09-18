@@ -62,16 +62,16 @@
     <View
         android:id="@+id/view_delimiter"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_alignBottom="@id/layout_profile_header"
-        android:background="@color/colorControl" />
+        android:background="@color/colorBackground" />
 
     <RelativeLayout
         android:id="@+id/container_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/view_delimiter"
-        android:background="@color/colorBackground">
+        android:background="#fafafa">
 
         <com.kennyc.view.MultiStateView
             android:id="@+id/multi_state_user_bookings"

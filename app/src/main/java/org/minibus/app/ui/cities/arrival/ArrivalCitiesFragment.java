@@ -9,9 +9,6 @@ import org.minibus.app.AppConstants;
 import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.cities.BaseCitiesFragment;
-import org.minibus.app.ui.cities.departure.DepartureCitiesContract;
-import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
-import org.minibus.app.ui.cities.departure.DepartureCitiesPresenter;
 
 import java.util.List;
 
@@ -25,11 +22,11 @@ public class ArrivalCitiesFragment extends BaseCitiesFragment implements Arrival
     @Inject
     ArrivalCitiesPresenter<ArrivalCitiesContract.View> presenter;
 
-    public interface OnCitySelectListener {
-        void onArrivalCitySelected(City city);
+    public interface CityClickListener {
+        void onArrivalCityClicked(City city);
     }
 
-    private OnCitySelectListener callback;
+    private CityClickListener listener;
 
     public static ArrivalCitiesFragment newInstance() {
         return new ArrivalCitiesFragment();
@@ -37,7 +34,7 @@ public class ArrivalCitiesFragment extends BaseCitiesFragment implements Arrival
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        callback = (ArrivalCitiesFragment.OnCitySelectListener) getTargetFragment();
+        listener = (CityClickListener) getTargetFragment();
         getActivityComponent().inject(this);
         presenter.attachView(this);
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -51,7 +48,7 @@ public class ArrivalCitiesFragment extends BaseCitiesFragment implements Arrival
 
     @Override
     public void changeCity(City city) {
-        callback.onArrivalCitySelected(city);
+        listener.onArrivalCityClicked(city);
     }
 
     @Override

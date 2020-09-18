@@ -8,6 +8,7 @@
     <string name="close">Close</string>
     <string name="refresh">Refresh</string>
     <string name="settings">Settings</string>
+    <string name="sort_by">Sort by</string>
     <string name="ok">OK</string>
     <string name="retry">Retry</string>
     <string name="back">Back</string>
@@ -39,6 +40,7 @@
     <string name="label_plate_number">Plate number:</string>
     <string name="label_payment_on_boarding">*payment on boarding</string>
     <string name="label_available_seats_count">%1$d seats</string>
+    <string name="label_sorting_by">Sorting by %1$s</string>
     <string name="label_enter_name">Name</string>
     <string name="label_enter_phone">Phone number</string>
     <string name="label_enter_pass">Password</string>
@@ -94,4 +96,11 @@
     <!-- Welcome and goodbye -->
     <string name="welcome_user_message">Welcome, %1$s</string>
     <string name="goodbye_user_message">Come back again, %1$s</string>
+    
+    <string-array name="route_trips_sorting_options">
+        <item>Departure time</item>
+        <item>Arrival time</item>
+        <item>Carrier rating</item>
+        <item>Price</item>
+    </string-array>
 </resources>

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_trip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?colorPrimary"
+    android:background="@drawable/bg_route_trip"
     android:clickable="false"
     android:focusable="false"
-    app:cardElevation="1dp"
     android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="4dp">
+    android:layout_marginBottom="8dp">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -44,8 +42,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:tint="@color/colorYellow"
-                    app:srcCompat="@drawable/ic_star_dark_24dp" />
+                    app:srcCompat="@drawable/ic_star_dark_24dp"
+                    app:tint="@color/colorYellow" />
 
                 <TextView
                     android:id="@+id/tv_carrier_rating"
@@ -158,4 +156,4 @@
             </LinearLayout>
         </TableRow>
     </TableLayout>
-</androidx.cardview.widget.CardView>
+</FrameLayout>

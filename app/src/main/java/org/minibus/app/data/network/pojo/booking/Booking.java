@@ -22,11 +22,34 @@ public class Booking implements Serializable {
     @SerializedName("tripDate")
     private String departureDate;
 
-    public Booking(String id, RouteTrip routeTrip, User user, String departureDate) {
+    @SerializedName("startDate")
+    private String startDate;
+
+    @SerializedName("endDate")
+    private String endDate;
+
+    @SerializedName("enRoute")
+    private boolean isEnRoute;
+
+    @SerializedName("active")
+    private boolean isActive;
+
+    public Booking(String id,
+                   RouteTrip routeTrip,
+                   User user,
+                   String departureDate,
+                   String startDate,
+                   String endDate,
+                   boolean isEnRoute,
+                   boolean isActive) {
         this.id = id;
         this.routeTrip = routeTrip;
         this.user = user;
         this.departureDate = departureDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isEnRoute = isEnRoute;
+        this.isActive = isActive;
     }
 
     public long getLongId() {
@@ -47,5 +70,21 @@ public class Booking implements Serializable {
 
     public String getDepartureDate() {
         return departureDate;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public boolean isEnRoute() {
+        return isEnRoute;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 }

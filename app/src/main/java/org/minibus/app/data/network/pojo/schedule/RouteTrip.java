@@ -14,7 +14,7 @@ public class RouteTrip implements Serializable {
     private String id;
 
     @SerializedName("cost")
-    private String cost;
+    private String price;
 
     @SerializedName("currency")
     private String currency;
@@ -36,7 +36,7 @@ public class RouteTrip implements Serializable {
 
     private Route route;
 
-    public RouteTrip(String cost,
+    public RouteTrip(String price,
                      String currency,
                      String departureTime,
                      String arrivalTime,
@@ -44,7 +44,7 @@ public class RouteTrip implements Serializable {
                      Vehicle vehicle,
                      Route route,
                      int seatsBooked) {
-        this.cost = cost;
+        this.price = price;
         this.currency = currency;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
@@ -66,8 +66,8 @@ public class RouteTrip implements Serializable {
         return id;
     }
 
-    public String getCost() {
-        return cost;
+    public String getPrice() {
+        return price;
     }
 
     public String getCurrency() {
@@ -100,5 +100,21 @@ public class RouteTrip implements Serializable {
 
     public int getSeatsBooked() {
         return seatsBooked;
+    }
+
+    public int getDepartureTimeToCompare() {
+        return Integer.parseInt(departureTime.split(":")[0]);
+    }
+
+    public int getArrivalTimeToCompare() {
+        return Integer.parseInt(arrivalTime.split(":")[0]);
+    }
+
+    public Double getPriceToCompare() {
+        return Double.parseDouble(price);
+    }
+
+    public double getCarrierRatingToCompare() {
+        return Double.parseDouble(vehicle.getCarrier().getRating());
     }
 }

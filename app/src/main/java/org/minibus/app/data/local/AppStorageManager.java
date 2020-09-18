@@ -130,9 +130,6 @@ public class AppStorageManager {
 
     public void clearUserSession() {
         delete(KEY_USER_DATA);
-        delete(KEY_USER_BOOKINGS_COUNT);
-        delete(KEY_USER_BOOKINGS_LIMIT);
-        delete(KEY_USER_BOOKINGS_LEFT);
         delete(KEY_USER_AUTH_TOKEN);
     }
 

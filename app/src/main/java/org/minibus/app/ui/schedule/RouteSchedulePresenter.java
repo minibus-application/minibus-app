@@ -41,6 +41,11 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
+    public void onSortByItemClick(RouteScheduleAdapter.SortingOption selectedSortingOption) {
+        getView().ifAlive(v -> v.openSortingOptions(selectedSortingOption));
+    }
+
+    @Override
     public void onDepartureCityClick() {
         getView().ifAlive(V::openDepartureCities);
     }
@@ -223,7 +228,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onBusTripSelectButtonClick(String depDate, long id, int pos, String routeId) {
+    public void onRouteTripSelectButtonClick(String depDate, long id, int pos, String routeId) {
 //        if (storage.isAuthorised()) {
 //            addSubscription(getBusScheduleObservable(depDate, routeId)
 //                    .doOnSubscribe(disposable -> getView().ifAlive(V::showBusTripLoading))

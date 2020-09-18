@@ -36,7 +36,7 @@ import timber.log.Timber;
 
 public class RouteTripFragment extends BaseSheetDialogFragment implements RouteTripContract.View {
 
-    public static final int REQ_CODE = AppConstants.BUS_TRIP_FRAGMENT_REQ_CODE;
+    public static final int REQ_CODE = AppConstants.ROUTE_TRIP_FRAGMENT_REQ_CODE;
 
     @BindView(R.id.btn_confirm_reservation) MaterialButton btnConfirmReservation;
     @BindView(R.id.tv_summary_title) TextView textTitle;
@@ -54,15 +54,15 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     @Inject
     RouteTripPresenter<RouteTripContract.View> presenter;
 
-    public interface OnBusTripBookingListener {
-        void onBusTripBooked();
+    public interface RouteTripBookingListener {
+        void onRouteTripBooked();
     }
 
-    public static final String BUS_ROUTE_KEY = "key_route";
-    public static final String BUS_TRIP_KEY = "key_bus_trip";
-    public static final String BUS_DATE_KEY = "key_bus_date";
+    public static final String ROUTE_KEY = "key_route";
+    public static final String ROUTE_TRIP_KEY = "key_route_trip";
+    public static final String DEPARTURE_DATE_KEY = "key_departure_date";
 
-    private OnBusTripBookingListener listener;
+    private RouteTripBookingListener listener;
     private RouteTrip routeTrip;
     private Route route;
     private String departureDate;
@@ -77,9 +77,9 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            routeTrip = (RouteTrip) getArguments().getSerializable(BUS_TRIP_KEY);
-            route = (Route) getArguments().getSerializable(BUS_ROUTE_KEY);
-            departureDate = getArguments().getString(BUS_DATE_KEY);
+            routeTrip = (RouteTrip) getArguments().getSerializable(ROUTE_TRIP_KEY);
+            route = (Route) getArguments().getSerializable(ROUTE_KEY);
+            departureDate = getArguments().getString(DEPARTURE_DATE_KEY);
             availableSeatsCount = routeTrip.getAvailableSeats();
         } else {
             dismiss();
@@ -91,15 +91,15 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = getMainActivity().getLayoutInflater().inflate(R.layout.fragment_bus_trip_summary, null);
+        View view = getMainActivity().getLayoutInflater().inflate(R.layout.fragment_route_trip_summary, null);
 
-        listener = (OnBusTripBookingListener) getTargetFragment();
+        listener = (RouteTripBookingListener) getTargetFragment();
         setUnbinder(ButterKnife.bind(this, view));
         getActivityComponent().inject(this);
         presenter.attachView(this);
 
         textTitle.setText(departureDate);
-        textCost.setText(String.format("%s %s", routeTrip.getCost(), routeTrip.getCurrency()));
+        textCost.setText(String.format("%s %s", routeTrip.getPrice(), routeTrip.getCurrency()));
         textTravelTime.setText(String.format("%s - %s (%s)", routeTrip.getDepartureTime(), routeTrip.getArrivalTime(), routeTrip.getDuration()));
         textRoute.setText(route.getDescription());
         textDepartureStation.setText(route.getDepartureCity().getStation());
@@ -111,7 +111,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
 
         counterSeats.setOnChangedValueListener(value -> {
             try {
-                float cost = Float.parseFloat(routeTrip.getCost());
+                float cost = Float.parseFloat(routeTrip.getPrice());
                 String newCost = String.format("%s %s",
                         (double) Math.round(counterSeats.getValue() * cost * 10) / 10, routeTrip.getCurrency());
                 textCost.setText(newCost);
@@ -184,7 +184,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
 
     @Override
     public void closeOnBooked() {
-        listener.onBusTripBooked();
+        listener.onRouteTripBooked();
         close();
     }
 }

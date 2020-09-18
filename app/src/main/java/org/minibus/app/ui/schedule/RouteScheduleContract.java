@@ -33,6 +33,7 @@ public interface RouteScheduleContract {
         void setArrivalCity(String arrCity);
         void setDirection(String depCity, String arrCity);
         void setOperationalDays(List<Integer> daysOfWeek);
+        void openSortingOptions(RouteScheduleAdapter.SortingOption sortingOption);
         void openProfile();
         void openLogin();
         void openDepartureCities();
@@ -61,8 +62,9 @@ public interface RouteScheduleContract {
         void onDepartureCityClick();
         void onArrivalCityClick();
         void onProfileIconClick();
+        void onSortByItemClick(RouteScheduleAdapter.SortingOption selectedSortingOption);
         void onRouteFabClick();
         void onJumpTopFabClick();
-        void onBusTripSelectButtonClick(String depDate, long id, int pos, String routeId);
+        void onRouteTripSelectButtonClick(String depDate, long id, int pos, String routeId);
     }
 }
