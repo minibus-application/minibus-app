@@ -1,6 +1,8 @@
 package org.minibus.app.ui.cities;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public abstract class BaseCitiesFragment extends BaseDialogFragment implements
-        CitiesAdapter.OnItemClickListener,
+        CitiesAdapter.OnCityItemClickListener,
         BaseCitiesContract.View {
 
     @BindView(R.id.msv_cities) MultiStateView multiStateView;
@@ -47,7 +49,6 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     protected LinearLayoutManager layoutManager;
     protected CitiesAdapter adapter;
     protected ArrayList<City> cities;
-    private String fragmentTitle;
 
     @Override
     @NonNull
@@ -60,21 +61,13 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        if (getArguments() != null) {
-//            cities = getArguments().getParcelableArrayList(CITY_KEY);
-//        } else {
-//            dismiss();
-//        }
-
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_DialogFragment);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bus_stops, container, false);
+        View view = inflater.inflate(R.layout.fragment_cities, container, false);
 
-        // callback = (CitiesFragment.BusStopsFragmentCallback) getTargetFragment();
         setUnbinder(ButterKnife.bind(this, view));
         getActivityComponent().inject(this);
         presenter.attachView(this);
@@ -87,10 +80,6 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
         adapter = new CitiesAdapter(getMainActivity());
         adapter.setOnItemClickListener(this);
 
-//        DividerItemDecoration itemDecorator = new DividerItemDecoration(getMainActivity(), DividerItemDecoration.VERTICAL);
-//        itemDecorator.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(getMainActivity(), R.drawable.item_divider)));
-
-        // recyclerCities.addItemDecoration(itemDecorator);
         recyclerCities.setAdapter(adapter);
         recyclerCities.setLayoutManager(layoutManager);
         recyclerCities.setHasFixedSize(false);
@@ -112,6 +101,19 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     @Override
     public void onCityClick(View view, City city, int pos) {
         presenter.onCitySelect(city);
+    }
+
+    @Override
+    public void onCityLocationClick(View view, City city, int pos) {
+        try {
+            Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s",
+                    city.getLatitude(), city.getLongitude()));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        } catch (Exception e) {
+            showError(R.string.error_finding_direction);
+        }
     }
 
     @Override
@@ -148,6 +150,10 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     protected void setData(List<City> cities, long prevSelectedCityId) {
         adapter.setData(cities, prevSelectedCityId);
         multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
+    }
+
+    protected void openGoogleMapsDirections(String lat, String lng) {
+
     }
 
     protected abstract String getTitle();

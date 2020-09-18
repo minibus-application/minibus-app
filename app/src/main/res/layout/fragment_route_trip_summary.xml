@@ -41,7 +41,7 @@
         android:layout_below="@+id/rl_summary_header">
 
         <include
-            layout="@layout/view_bus_trip_summary" />
+            layout="@layout/view_route_trip_summary" />
     </FrameLayout>
 
     <LinearLayout

@@ -96,7 +96,7 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewType == SORT_BY_ITEM) {
             return new SortByViewHolder(inflater.inflate(R.layout.view_filter, viewGroup, false), onSortByItemClickListener);
         }
-        return new RouteScheduleViewHolder(inflater.inflate(R.layout.view_bus_trip, viewGroup, false), onItemClickListener);
+        return new RouteScheduleViewHolder(inflater.inflate(R.layout.view_route_trip, viewGroup, false), onItemClickListener);
     }
 
     @Override

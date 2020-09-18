@@ -85,6 +85,7 @@
     <string name="error_trip_not_available">This ride is no longer available</string>
     <string name="error_departure_first">Please select your departure point firstly</string>
     <string name="error_complete_route">Please complete your route details</string>
+    <string name="error_finding_direction">An error occurred while finding exact route</string>
 
     <!-- Warnings -->
     <string name="warning_default_title">Attention</string>

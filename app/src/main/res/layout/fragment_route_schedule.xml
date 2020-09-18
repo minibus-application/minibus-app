@@ -84,8 +84,8 @@
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
             android:background="@color/colorSurface"
-            app:msv_errorView="@layout/view_bus_schedule_empty"
-            app:msv_emptyView="@layout/view_bus_schedule_empty"
+            app:msv_errorView="@layout/view_route_schedule_empty"
+            app:msv_emptyView="@layout/view_route_schedule_empty"
             app:msv_loadingView="@layout/view_loading"
             app:msv_viewState="empty">
 

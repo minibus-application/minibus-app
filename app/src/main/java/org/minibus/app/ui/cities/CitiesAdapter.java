@@ -24,20 +24,21 @@ import butterknife.OnClick;
 
 public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.BusStopsViewHolder> {
 
-    public interface OnItemClickListener {
+    public interface OnCityItemClickListener {
         void onCityClick(View view, City city, int pos);
+        void onCityLocationClick(View view, City city, int pos);
     }
 
     private Context context;
     private List<City> cities = new ArrayList<>();
-    private CitiesAdapter.OnItemClickListener clickListener;
+    private OnCityItemClickListener clickListener;
     private long lastSelectedItemId;
 
     public CitiesAdapter(Context context) {
         this.context = context;
     }
 
-    public void setOnItemClickListener(CitiesAdapter.OnItemClickListener clickListener) {
+    public void setOnItemClickListener(OnCityItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
@@ -53,7 +54,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.BusStopsVi
     @Override
     public CitiesAdapter.BusStopsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.view_bus_stop, viewGroup, false);
+        View view = inflater.inflate(R.layout.view_city, viewGroup, false);
 
         return new CitiesAdapter.BusStopsViewHolder(view);
     }
@@ -100,8 +101,8 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.BusStopsVi
                     cityId == lastSelectedCityId ? R.color.colorAccent : R.color.colorOnPrimary));
         }
 
-        @OnClick
-        public void onItemClick(View itemView) {
+        @OnClick(R.id.ll_city_container)
+        public void onCityClick(View itemView) {
             // have to get position by invoking getAdapterPosition()
             // because this is where sometimes the "position" value is not the proper one
             // and sometimes returns an exception regarding inconsistent items state.
@@ -109,6 +110,11 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.BusStopsVi
 
             lastSelectedItemId = cityId;
             clickListener.onCityClick(itemView, city, itemPos);
+        }
+
+        @OnClick(R.id.rl_city_location)
+        public void onCityLocationClick(View itemView) {
+            clickListener.onCityLocationClick(itemView, city, getAdapterPosition());
         }
     }
 }

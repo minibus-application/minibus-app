@@ -35,8 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
-            app:msv_errorView="@layout/view_bus_stops_empty"
-            app:msv_emptyView="@layout/view_bus_stops_empty"
+            app:msv_errorView="@layout/view_cities_empty"
+            app:msv_emptyView="@layout/view_cities_empty"
             app:msv_loadingView="@layout/view_loading"
             app:msv_viewState="loading">
 
