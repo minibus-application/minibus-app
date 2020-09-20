@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_trip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:background="@color/colorSurface"
-    app:cardElevation="2dp"
-    app:cardCornerRadius="4dp">
+    android:background="@drawable/bg_route_trip"
+    android:clickable="false"
+    android:focusable="false">
 
     <RelativeLayout
         android:id="@+id/booking_container"
@@ -15,93 +15,159 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:padding="16dp"
         android:background="@color/colorSurface">
 
         <RelativeLayout
-            android:id="@+id/booking_date_container"
+            android:id="@+id/booking_header_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp">
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/text_booking_dep_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceHeadline6"
+                android:textAppearance="?textAppearanceBody1"
+                android:singleLine="true"
+                android:text="16 Sep, Sa"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/text_booking_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceBody1"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/colorAccent"
+                android:text="En Route"
                 android:singleLine="true"
                 android:ellipsize="end" />
         </RelativeLayout>
 
+        <View
+            android:id="@+id/view_delimiter"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:layout_below="@id/booking_header_container"
+            android:background="@color/colorControl" />
+
         <RelativeLayout
-            android:id="@+id/booking_departure_container"
+            android:id="@+id/booking_dep_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp"
-            android:layout_below="@id/booking_date_container">
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="12dp"
+            android:layout_below="@id/booking_header_container">
 
             <TextView
                 android:id="@+id/text_booking_dep_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1" />
+                android:text="06:00"
+                android:textAppearance="?textAppearanceHeadline6" />
 
             <TextView
                 android:id="@+id/text_booking_dep_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
+                android:textAppearance="?textAppearanceHeadline6"
                 android:layout_toEndOf="@id/text_booking_dep_time"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp" />
+                android:text="Minsk"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
 
             <TextView
-                android:id="@+id/text_booking_dep_bus_stop"
+                android:id="@+id/text_booking_dep_station"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceBody2"
-                android:layout_toEndOf="@id/text_booking_dep_city"
+                android:layout_toEndOf="@id/text_booking_dep_time"
+                android:layout_below="@id/text_booking_dep_city"
+                android:text="Station"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textSize="16sp" />
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
+
+            <TextView
+                android:id="@+id/text_booking_trip_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceBody1"
+                android:layout_alignParentEnd="true"
+                android:text="6h 10m"
+                android:singleLine="true"
+                android:ellipsize="end" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/booking_arrival_container"
+            android:id="@+id/booking_arr_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="4dp"
-            android:paddingBottom="8dp"
-            android:layout_below="@id/booking_departure_container">
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"
+            android:layout_below="@id/booking_dep_container">
 
             <TextView
                 android:id="@+id/text_booking_arr_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1" />
+                android:text="07:00"
+                android:textAppearance="?textAppearanceHeadline6" />
 
             <TextView
                 android:id="@+id/text_booking_arr_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
+                android:textAppearance="?textAppearanceHeadline6"
                 android:layout_toEndOf="@id/text_booking_arr_time"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp" />
+                android:text="Homel"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
+            <TextView
+                android:id="@+id/text_booking_arr_station"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceBody2"
+                android:layout_toEndOf="@id/text_booking_arr_time"
+                android:layout_below="@id/text_booking_arr_city"
+                android:text="Station"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"/>
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_booking_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"
+            android:layout_below="@+id/booking_arr_container"
+            android:textAppearance="?textAppearanceBody1" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_booking_cancel"
             style="@style/Widget.AppTheme.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/booking_arrival_container"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:text="@string/cancel"
             android:textColor="@color/colorErrorVariant"
+            android:layout_below="@+id/text_booking_details"
             app:rippleColor="@color/colorErrorVariant"
             app:strokeColor="@color/colorErrorVariant" />
     </RelativeLayout>
-</com.google.android.material.card.MaterialCardView>
+</FrameLayout>

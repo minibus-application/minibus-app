@@ -92,7 +92,7 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:padding="8dp"
-                android:background="#fafafa" />
+                android:background="@color/colorPrimaryVariant" />
         </com.kennyc.view.MultiStateView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

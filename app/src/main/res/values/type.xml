@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="TextAppearance.AppTheme.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="android:textColor">?colorSecondary</item>
         <item name="fontFamily">sans-serif</item>

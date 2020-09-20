@@ -211,7 +211,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
                                 String formattedDate = AppDatesHelper.formatDate(depDate, AppDatesHelper.DatePattern.SUMMARY);
                                 getView().ifAlive(v -> v.openBusTripSummary(optional.get(), storage.getRoute(), formattedDate));
                             } else {
-                                onError(new UnsupportedOperationException("Time's up', and the bus is probably already too"));
+                                onError(new UnsupportedOperationException("Time's up, and the bus is probably already too"));
                             }
                         }
 

@@ -76,7 +76,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
         @BindView(R.id.text_booking_dep_date) TextView textDepartureDate;
         @BindView(R.id.text_booking_dep_time) TextView textDepartureTime;
         @BindView(R.id.text_booking_dep_city) TextView textDepartureCity;
-        @BindView(R.id.text_booking_dep_bus_stop) TextView textDepartureBusStop;
+        @BindView(R.id.text_booking_dep_station) TextView textDepartureBusStop;
         @BindView(R.id.text_booking_arr_time) TextView textArrivalTime;
         @BindView(R.id.text_booking_arr_city) TextView textArrivalCity;
         @BindView(R.id.button_booking_cancel) MaterialButton buttonCancel;

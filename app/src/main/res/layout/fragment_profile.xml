@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/view_delimiter"
-        android:background="#fafafa">
+        android:background="@color/colorPrimaryVariant">
 
         <com.kennyc.view.MultiStateView
             android:id="@+id/multi_state_user_bookings"
