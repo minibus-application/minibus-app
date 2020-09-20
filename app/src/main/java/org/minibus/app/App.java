@@ -8,6 +8,8 @@ import org.minibus.app.di.components.ApplicationComponent;
 import org.minibus.app.di.components.DaggerApplicationComponent;
 import org.minibus.app.di.modules.ApplicationModule;
 
+import java.util.Locale;
+
 import timber.log.Timber;
 
 public class App extends Application {
@@ -17,6 +19,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Locale.setDefault(Locale.ENGLISH);
 
         Timber.plant(new Timber.DebugTree());
 

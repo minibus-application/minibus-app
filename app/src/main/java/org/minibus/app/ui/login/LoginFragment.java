@@ -53,7 +53,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @BindView(R.id.btn_confirm) MaterialButton buttonLogin;
     @BindView(R.id.btn_form_switcher) MaterialButton buttonFormSwitcher;
     @BindView(R.id.appbar_login) AppBarLayout appbar;
-    @BindView(R.id.toolbar_custom) Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title) TextView textToolbarTitle;
 
     @Inject LoginPresenter<LoginContract.View> presenter;

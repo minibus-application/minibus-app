@@ -92,7 +92,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
             itemId = booking.getId();
 
             String date = AppDatesHelper.formatDate(booking.getDepartureDate(),
-                    AppDatesHelper.DatePattern.API_BOOKING_RESPONSE,
+                    AppDatesHelper.DatePattern.ISO,
                     AppDatesHelper.DatePattern.BOOKING);
 
             textDepartureDate.setText(date.substring(0, 1).toUpperCase().concat(date.substring(1)));

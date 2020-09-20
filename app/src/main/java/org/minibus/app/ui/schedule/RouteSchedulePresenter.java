@@ -12,6 +12,7 @@ import org.minibus.app.ui.base.BasePresenter;
 import org.minibus.app.helpers.ApiErrorHelper;
 import org.minibus.app.helpers.AppDatesHelper;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,17 +38,17 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onSortByItemClick(RouteScheduleAdapter.SortingOption selectedSortingOption) {
+    public void onSortByClick(RouteScheduleAdapter.SortingOption selectedSortingOption) {
         getView().ifAlive(v -> v.openSortingOptions(selectedSortingOption));
     }
 
     @Override
-    public void onDepartureCityClick() {
+    public void onDepartureCityFieldClick() {
         getView().ifAlive(V::openDepartureCities);
     }
 
     @Override
-    public void onArrivalCityClick() {
+    public void onArrivalCityFieldClick() {
         if (storage.isDepartureCityStored()) {
             getView().ifAlive(V::openArrivalCities);
         } else {
@@ -62,8 +63,8 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onRouteFabClick() {
-        getView().ifAlive(V::toggleFilter);
+    public void onRouteDirectionFabClick() {
+        getView().ifAlive(V::toggleRouteDirection);
     }
 
     @Override
@@ -77,8 +78,8 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onUserBookedBusTrip(String departureDate) {
-        onRefresh(departureDate);
+    public void onRouteTripBooked(LocalDate depDate) {
+        onRefresh(depDate);
 
         getView().ifAlive(v -> v.showAction(R.string.success_booking_title,
                 R.string.success_booking_message,
@@ -90,9 +91,9 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onRefresh(String depDate) {
+    public void onRefresh(LocalDate depDate) {
         if (storage.isRouteStored()) {
-            addSubscription(getRouteScheduleObservable(depDate, storage.getRoute().getId())
+            addSubscription(getRouteScheduleObservable(depDate)
                     .doFinally(() -> getView().ifAlive(V::hideRefresh))
                     .subscribeWith(getRouteScheduleObserver()));
         } else {
@@ -102,13 +103,14 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onStart(String depDate) {
+    public void onStart(LocalDate depDate) {
         if (storage.isRouteStored()) {
             Route storedRoute = storage.getRoute();
-            getView().ifAlive(v -> v.setDirection(storedRoute.getDepartureCity().getFullName(),
+
+            getView().ifAlive(v -> v.setRouteDirection(storedRoute.getDepartureCity().getFullName(),
                     storedRoute.getArrivalCity().getFullName()));
 
-            addSubscription(getRouteScheduleObservable(depDate, storedRoute.getId())
+            addSubscription(getRouteScheduleObservable(depDate)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
                     .subscribeWith(getRouteScheduleObserver()));
         } else {
@@ -116,27 +118,22 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showLoadingDataDialog))
                     .doFinally(() -> getView().ifAlive(V::hideLoadingDataDialog))
                     .flatMap(response -> {
-                        if (response != null && !response.isEmpty()) {
-                            Route defaultRoute = response.get(0);
-                            City depCity = defaultRoute.getDepartureCity();
-                            City arrCity = defaultRoute.getArrivalCity();
+                        Route defaultRoute = response.get(0);
+                        City depCity = defaultRoute.getDepartureCity();
+                        City arrCity = defaultRoute.getArrivalCity();
 
-                            storage.setRoute(defaultRoute);
+                        storage.setRoute(defaultRoute);
 
-                            getView().ifAlive(v -> v.setDirection(depCity.getFullName(), arrCity.getFullName()));
+                        getView().ifAlive(v -> v.setRouteDirection(depCity.getFullName(), arrCity.getFullName()));
 
-                            return getRouteScheduleObservable(depDate, defaultRoute.getId());
-                        } else {
-                            getView().ifAlive(V::showEmptyView);
-                            throw new Exception("Oops something went wrong!");
-                        }
+                        return getRouteScheduleObservable(depDate);
                     })
                     .subscribeWith(getRouteScheduleObserver()));
         }
     }
 
     @Override
-    public void onDirectionSwapButtonClick(String depDate) {
+    public void onSwapRouteDirectionButtonClick(LocalDate depDate) {
         if (storage.isRouteStored()) {
             City newArrivalCity = storage.getRoute().getDepartureCity();
             City newDepartureCity = storage.getRoute().getArrivalCity();
@@ -144,8 +141,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
             storage.setDepartureCity(newDepartureCity);
             storage.setArrivalCity(newArrivalCity);
 
-            getView().ifAlive(V::showSwapDirectionAnimation);
-            getView().ifAlive(v -> v.setDirection(newDepartureCity.getFullName(), newArrivalCity.getFullName()));
+            getView().ifAlive(v -> v.setRouteDirection(newDepartureCity.getFullName(), newArrivalCity.getFullName()));
 
             addSubscription(getCompleteRouteScheduleObserver(newDepartureCity.getId(), newArrivalCity.getId(), depDate));
         } else {
@@ -154,9 +150,9 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onDateClick(String depDate) {
+    public void onCalendarDateClick(LocalDate depDate) {
         if (storage.isRouteStored()) {
-            addSubscription(getRouteScheduleObservable(depDate, storage.getRoute().getId())
+            addSubscription(getRouteScheduleObservable(depDate)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
                     .doFinally(() -> getView().ifAlive(V::jumpTop))
                     .subscribeWith(getRouteScheduleObserver()));
@@ -166,7 +162,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onDepartureCityChange(City depCity, String depDate) {
+    public void onDepartureCityChanged(City depCity, LocalDate depDate) {
         storage.setDepartureCity(depCity);
         getView().ifAlive(v -> v.setDepartureCity(depCity.getFullName()));
 
@@ -176,7 +172,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onArrivalCityChange(City arrCity, String depDate) {
+    public void onArrivalCityChanged(City arrCity, LocalDate depDate) {
         storage.setArrivalCity(arrCity);
         getView().ifAlive(v -> v.setArrivalCity(arrCity.getFullName()));
 
@@ -184,23 +180,23 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
-    public void onFilterCollapsed() {
+    public void onRouteDirectionCollapsed() {
         if (storage.isRouteStored()) {
-            getView().ifAlive(v -> v.setDirectionDescription(storage.getRoute().getDescription()));
+            getView().ifAlive(v -> v.setRouteDirectionDescription(storage.getRoute().getDescription()));
         } else {
-            onFilterExpanded();
+            onRouteDirectionExpanded();
         }
     }
 
     @Override
-    public void onFilterExpanded() {
-        getView().ifAlive(v -> v.setDirectionDescription(R.string.route_schedule_direction_title));
+    public void onRouteDirectionExpanded() {
+        getView().ifAlive(v -> v.setRouteDirectionDescription(R.string.route_schedule_route_title));
     }
 
     @Override
-    public void onRouteTripSelectButtonClick(String depDate, String tripId, String routeId) {
+    public void onRouteTripSelectButtonClick(LocalDate depDate, String tripId) {
         if (storage.isAuthorised()) {
-            addSubscription(getRouteScheduleObservable(depDate, routeId)
+            addSubscription(getRouteScheduleObservable(depDate)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showRouteTripLoading))
                     .doFinally(() -> getView().ifAlive(V::hideRouteTripLoading))
                     .subscribeWith(new DisposableSingleObserver<RouteScheduleResponse>() {
@@ -208,18 +204,14 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
                         public void onSuccess(RouteScheduleResponse response) {
                             getView().ifAlive(v -> v.setRouteScheduleData(response.getRouteTrips(), response.getRoute()));
 
-                            // delete due to the implementing of the same check on the backend side
-                            Optional<RouteTrip> optRouteTrip = response.getRouteTrips().stream()
+                            Optional<RouteTrip> optional = response.getRouteTrips().stream()
                                     .filter(t -> t.getId().equals(tripId)).findFirst();
 
-                            if (optRouteTrip.isPresent()) {
-                                String date = AppDatesHelper.formatDate(depDate,
-                                        AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST,
-                                        AppDatesHelper.DatePattern.SUMMARY);
-
-                                getView().ifAlive(v -> v.openBusTripSummary(optRouteTrip.get(), storage.getRoute(), date));
+                            if (optional.isPresent()) {
+                                String formattedDate = AppDatesHelper.formatDate(depDate, AppDatesHelper.DatePattern.SUMMARY);
+                                getView().ifAlive(v -> v.openBusTripSummary(optional.get(), storage.getRoute(), formattedDate));
                             } else {
-                                getView().ifAlive(v -> v.showError(R.string.error_trip_not_available));
+                                onError(new UnsupportedOperationException("Time's up', and the bus is probably already too"));
                             }
                         }
 
@@ -255,20 +247,24 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
         };
     }
 
-    private DisposableSingleObserver<RouteScheduleResponse> getCompleteRouteScheduleObserver(String depCityId, String arrCityId, String depDate) {
+    private DisposableSingleObserver<RouteScheduleResponse> getCompleteRouteScheduleObserver(String depCityId, String arrCityId, LocalDate depDate) {
         return getRouteDataObservable(depCityId, arrCityId)
                 .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
                 .doFinally(() -> getView().ifAlive(V::jumpTop))
                 .flatMap(response -> {
-                    Route route = response;
-                    storage.setRoute(route);
-                    return getRouteScheduleObservable(depDate, route.getId());
+                    storage.setRoute(response);
+                    return getRouteScheduleObservable(depDate);
                 })
                 .subscribeWith(getRouteScheduleObserver());
     }
 
-    private Single<RouteScheduleResponse> getRouteScheduleObservable(String date, String routeId) {
-        return routeScheduleModel.doGetRouteScheduleData(date, routeId)
+    private Single<RouteScheduleResponse> getRouteScheduleObservable(LocalDate date) {
+        Route storedRoute = storage.getRoute();
+
+        // have to leave it here because of necessity to update operational days even on error
+        getView().ifAlive(v -> v.setOperationalDays(storedRoute.getOperationalDays()));
+
+        return routeScheduleModel.doGetRouteScheduleData(date, storedRoute.getId())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

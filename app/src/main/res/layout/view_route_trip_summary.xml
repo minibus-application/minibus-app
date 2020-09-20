@@ -224,11 +224,11 @@
             android:layout_centerVertical="true"
             android:text="@string/label_seats_to_reserve"/>
 
-        <org.minibus.app.ui.custom.CounterLayout
-            android:id="@+id/cl_trip_seats"
+        <RadioGroup
+            android:id="@+id/rg_seats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"/>
     </RelativeLayout>
 </LinearLayout>

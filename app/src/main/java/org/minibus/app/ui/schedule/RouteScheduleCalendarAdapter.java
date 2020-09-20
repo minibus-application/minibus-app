@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -15,80 +16,62 @@ import org.minibus.app.AppConstants;
 import org.minibus.app.ui.R;
 import org.minibus.app.helpers.AppDatesHelper;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
+
 
 public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteScheduleCalendarAdapter.RouteScheduleCalendarViewHolder> {
 
-    public interface OnCalendarItemClickListener {
-        void onDateClick(View view, int position);
-    }
-
-    private final int DEFAULT_CALENDAR_DATE_POSITION = AppConstants.DEFAULT_CALENDAR_DATE_POSITION;
-    private final int DEFAULT_CALENDAR_SIZE = AppConstants.DEFAULT_CALENDAR_SIZE;
-
     private Context context;
-    private List<String> dates = new ArrayList<>();
-    private int lastSelectedPos;
+    private List<LocalDate> dates = new ArrayList<>();
+    public List<Integer> activeDaysOfWeek;
     private int selectedPos;
     private OnCalendarItemClickListener onCalendarItemClickListener;
 
     public RouteScheduleCalendarAdapter(Context context) {
         this.context = context;
-        setupSelectedDatePosition(DEFAULT_CALENDAR_DATE_POSITION);
-        setupCalendar(DEFAULT_CALENDAR_SIZE);
+        this.activeDaysOfWeek = AppDatesHelper.getDaysOfWeek();
+        this.selectedPos = AppConstants.DEFAULT_CALENDAR_DATE_POSITION;
+
+        setupCalendar();
     }
 
     public void setOnItemClickListener(OnCalendarItemClickListener clickListener) {
         this.onCalendarItemClickListener = clickListener;
     }
 
-    private void setupSelectedDatePosition(int position) {
-        this.selectedPos = position;
-        this.lastSelectedPos = selectedPos;
+    public void setActiveDays(List<Integer> daysOfWeek) {
+        this.activeDaysOfWeek = daysOfWeek;
+        notifyDataSetChanged();
     }
 
-    private void setupCalendar(int calendarSize) {
-        if (!dates.isEmpty()) clearCalendar();
-        dates.addAll(AppDatesHelper.createWeekdays(calendarSize, AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST));
-    }
-
-    private void clearCalendar() {
-        dates.clear();
-    }
-
-    public String getSelectedDate(AppDatesHelper.DatePattern pattern) {
-        return AppDatesHelper.formatDate(getSelectedDate(), AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST, pattern);
-    }
-
-    public String getSelectedDate() {
+    public LocalDate getSelectedDate() {
         return getDate(selectedPos);
     }
 
-    public String getDate(AppDatesHelper.DatePattern pattern, int position) {
-        return AppDatesHelper.formatDate(getDate(position), AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST, pattern);
-    }
+    public LocalDate getDate(int position) {
+        LocalDate previousDay = dates.get(0);
+        LocalDate currentDay = LocalDate.now();
 
-    public String getDate(int position) {
-        String oldCurrentDate = dates.get(DEFAULT_CALENDAR_DATE_POSITION);
-        String currentDate = AppDatesHelper.getTimestamp();
-
-        // calculate days difference before update and after
-        // to re-draw calendar if the date changes during the app session
-        int diff = AppDatesHelper.getDaysDifference(oldCurrentDate, currentDate, AppDatesHelper.DatePattern.API_SCHEDULE_REQUEST);
+        // calculate days difference before and after an update
+        // to re-draw calendar if the day has changed during the app session
+        int diff = (int) ChronoUnit.DAYS.between(previousDay, currentDay);
 
         if (diff != 0) {
-            Timber.d("The day has passed");
+            Timber.d("The day has changed: %s", previousDay.toString());
 
-            setupCalendar(DEFAULT_CALENDAR_SIZE);
-            lastSelectedPos = lastSelectedPos != 0 ? lastSelectedPos - 1 : 0;
+            setupCalendar();
+            selectedPos = selectedPos != 0 ? selectedPos - 1 : 0;
             notifyDataSetChanged();
         } else {
-            dates.set(DEFAULT_CALENDAR_DATE_POSITION, currentDate);
+            dates.set(0, currentDay);
         }
 
         return dates.get(position);
@@ -107,21 +90,12 @@ public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteSche
 
     @Override
     public void onBindViewHolder(@NonNull RouteScheduleCalendarViewHolder viewHolder, int position) {
-        viewHolder.bind(getDate(AppDatesHelper.DatePattern.CALENDAR, position).toUpperCase());
+        LocalDate date = getDate(position);
+        boolean isOperational = activeDaysOfWeek.contains(AppDatesHelper.getDayOfWeek(date));
 
-        viewHolder.itemView.setOnClickListener((View v) -> {
-            lastSelectedPos = position;
-            onCalendarItemClickListener.onDateClick(v, position);
+        Timber.d("Bind date=%s, enabled=%s", date.toString(), isOperational);
 
-            notifyDataSetChanged();
-        });
-
-        if (lastSelectedPos == position) {
-            selectedPos = position;
-            viewHolder.radioButtonMonthDay.setChecked(true);
-        } else {
-            viewHolder.radioButtonMonthDay.setChecked(false);
-        }
+        viewHolder.bind(date, isOperational);
     }
 
     @Override
@@ -129,20 +103,54 @@ public class RouteScheduleCalendarAdapter extends RecyclerView.Adapter<RouteSche
         return dates.size();
     }
 
-    static class RouteScheduleCalendarViewHolder extends RecyclerView.ViewHolder {
+    public interface OnCalendarItemClickListener {
+        void onDateItemClick(View view, int position);
+    }
 
-        @BindView(R.id.radio_button_month_day) RadioButton radioButtonMonthDay;
-        @BindView(R.id.text_week_day) TextView textWeekDay;
+    class RouteScheduleCalendarViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.rb_month_day) RadioButton radioButtonMonthDay;
+        @BindView(R.id.tv_day_of_week) TextView textDayOfWeek;
+        @BindView(R.id.ll_date_container) LinearLayout layoutDate;
 
         public RouteScheduleCalendarViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(String date) {
-            String[] parts = date.split(" ");
-            textWeekDay.setText(parts[0]);
+        void bind(LocalDate date, boolean isOperationalDay) {
+            String formattedDate = AppDatesHelper.formatDate(date, AppDatesHelper.DatePattern.CALENDAR);
+            String[] parts = formattedDate.split(" ");
+            textDayOfWeek.setText(parts[0]);
             radioButtonMonthDay.setText(parts[1]);
+            layoutDate.setEnabled(isOperationalDay);
+            layoutDate.setAlpha(isOperationalDay ? 1.0f : 0.3f);
+
+            if (selectedPos == getAdapterPosition()) {
+                radioButtonMonthDay.setChecked(true);
+            } else {
+                radioButtonMonthDay.setChecked(false);
+            }
         }
+
+        @OnClick
+        public void onItemClick(View itemView) {
+            radioButtonMonthDay.setChecked(true);
+            int itemPos = getAdapterPosition();
+            if (selectedPos != itemPos) {
+                onCalendarItemClickListener.onDateItemClick(itemView, itemPos);
+                notifyDataSetChanged();
+                selectedPos = itemPos;
+            }
+        }
+    }
+
+    private void setupCalendar() {
+        if (!dates.isEmpty()) clearCalendar();
+        dates.addAll(AppDatesHelper.getWeek());
+    }
+
+    private void clearCalendar() {
+        dates.clear();
     }
 }

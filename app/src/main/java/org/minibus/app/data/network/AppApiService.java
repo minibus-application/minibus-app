@@ -49,6 +49,7 @@ public interface AppApiService {
     @POST("/schedule")
     Single<UserResponse> postRouteTripData(@Header("Authorization") String authToken,
                                               @Query("tripDate") String depDate,
+                                              @Query("routeId") String routeId,
                                               @Query("tripId") String tripId,
-                                              @Query("userSeats") int seats);
+                                              @Query("seats") int seatsCount);
 }

@@ -23,7 +23,7 @@ public class DepartureCitiesFragment extends BaseCitiesFragment implements Depar
     DepartureCitiesPresenter<DepartureCitiesContract.View> presenter;
 
     public interface OnCityClickListener {
-        void onDepartureCityClicked(City city);
+        void onDepartureCityItemClicked(City city);
     }
 
     private OnCityClickListener listener;
@@ -48,7 +48,7 @@ public class DepartureCitiesFragment extends BaseCitiesFragment implements Depar
 
     @Override
     public void changeCity(City city) {
-        listener.onDepartureCityClicked(city);
+        listener.onDepartureCityItemClicked(city);
     }
 
     @Override

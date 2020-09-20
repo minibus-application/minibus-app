@@ -1,13 +1,13 @@
 package org.minibus.app;
 
+import java.time.DayOfWeek;
+
 public class AppConstants {
 
-    public static final String BASE_URL = "http://192.168.3.8:3000";
-    public static final String DEFAULT_APP_LOCALE = "en";
+    public static final String BASE_URL = "http://localhost:3000";
     public static final String STORAGE_NAME = "app-prefs";
     public static final String COUNTRY_CODE = "+375";
     public static final int DEFAULT_TIMEOUT_SEC = 15;
-    public static final int DEFAULT_CALENDAR_SIZE = 7;
     public static final int DEFAULT_CALENDAR_DATE_POSITION = 0;
     public static final int DEFAULT_SELECTED_CITY_ID = -1;
     public static final int DEFAULT_PHONE_NUMBER_LENGTH = 13;

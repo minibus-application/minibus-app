@@ -65,7 +65,7 @@
     <string name="departure_cities_title">Departure</string>
     <string name="arrival_cities_title">Arrival</string>
     <string name="route_schedule_title">Schedule</string>
-    <string name="route_schedule_direction_title">Direction</string>
+    <string name="route_schedule_route_title">Route direction</string>
     <string name="route_trip_summary_title">Reservation</string>
 
     <!-- Success -->
@@ -90,7 +90,7 @@
     <!-- Warnings -->
     <string name="warning_default_title">Attention</string>
     <string name="warning_bookings_limit_message">Active booking limit exceeded</string>
-    <string name="warning_no_seats_message">Мест больше нет</string>
+    <string name="warning_no_seats_message">No seats available for booking</string>
     <string name="warning_logout_message">Do you really want to log out?</string>
     <string name="warning_booking_cancel_message">Do you really want to cancel your reservation?</string>
     <string name="warning_unauthorized_message">To continue, you must be logged in</string>

@@ -1,20 +1,20 @@
 package org.minibus.app.helpers;
 
-import org.minibus.app.AppConstants;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AppDatesHelper {
 
     public enum DatePattern {
-        API_SCHEDULE_REQUEST("yyyy-MM-dd"),
-        API_BOOKING_RESPONSE ("yyyy-MM-dd"),
+        ISO("yyyy-MM-dd"),
         CALENDAR ("EE d"),
         BOOKING ("EEEE, d MMM"),
         SUMMARY ("EE, d MMM");
@@ -30,64 +30,47 @@ public class AppDatesHelper {
         }
     }
 
-    private static final String DEFAULT_APP_LOCALE = AppConstants.DEFAULT_APP_LOCALE;
-
-    private static SimpleDateFormat createDateFormat(DatePattern datePattern) {
-        return new SimpleDateFormat(datePattern.toString(), new Locale(DEFAULT_APP_LOCALE));
+    public static LocalDate getDateByDayOfWeek(int dayOfWeek) {
+        Optional<LocalDate> optional = getWeek().stream().filter(d -> getDayOfWeek(d) == dayOfWeek).findFirst();
+        return optional.orElseGet(() -> getWeek().get(dayOfWeek));
     }
 
-    private static Date parseDate(String date, DatePattern datePattern) {
-        Date parsed = new Date();
-        try {
-            parsed = createDateFormat(datePattern).parse(date);
-        } catch (ParseException e) {}
-        return parsed;
+    public static List<Integer> getDaysOfWeek() {
+        return IntStream.rangeClosed(1, DayOfWeek.values().length).boxed().collect(Collectors.toList());
     }
 
-    public static String getTimestamp(DatePattern datePattern) {
-        return createDateFormat(datePattern).format(new Date());
+    public static int getDayOfWeek(LocalDate date) {
+        return date.getDayOfWeek().getValue();
     }
 
-    public static String getTimestamp() {
-        return createDateFormat(DatePattern.API_SCHEDULE_REQUEST).format(new Date());
-    }
+    public static ArrayList<LocalDate> getWeek() {
+        ArrayList<LocalDate> weekdays = new ArrayList<>();
 
-    public static String formatDate(String date, DatePattern currentPattern, DatePattern newPattern) {
-        return createDateFormat(newPattern).format(parseDate(date, currentPattern));
-    }
-
-    public static ArrayList<String> createWeekdays(int amount, DatePattern datePattern) {
-        ArrayList<String> weekdays = new ArrayList<>();
-        DateFormat dateFormat = createDateFormat(datePattern);
-
-        int end = amount < 0 ? amount * -1 : amount;
-
-        for (int i = 0; i < end; i++) {
-            Calendar calendar = Calendar.getInstance();
-
-            if (i == 0) {
-                calendar.setTime(new Date());
-            } else {
-                calendar.set(Calendar.HOUR, 0);
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-                calendar.set(Calendar.HOUR_OF_DAY, 0);
-            }
-
-            calendar.add(Calendar.DATE, i);
-            weekdays.add(dateFormat.format(calendar.getTime()));
-        }
+        IntStream.rangeClosed(0, DayOfWeek.values().length).forEach(i -> {
+            LocalDateTime date = LocalDate.now().plus(i, ChronoUnit.DAYS).atStartOfDay();
+            weekdays.add(date.toLocalDate());
+        });
 
         return weekdays;
     }
 
-    public static int getDaysDifference(String d1, String d2, DatePattern datePattern) {
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.setTime(parseDate(d1, datePattern));
+    public static LocalDate parseDate(String date, DatePattern datePattern) {
+        return LocalDate.parse(date, getDateTimeFormatter(datePattern));
+    }
 
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.setTime(parseDate(d2, datePattern));
+    public static String getToday() {
+        return getDateTimeFormatter(DatePattern.ISO).format(LocalDate.now());
+    }
 
-        return Math.abs(calendar1.get(Calendar.DAY_OF_MONTH) - calendar2.get(Calendar.DAY_OF_MONTH));
+    public static String formatDate(String date, DatePattern currentPattern, DatePattern newPattern) {
+        return getDateTimeFormatter(newPattern).format(parseDate(date, currentPattern));
+    }
+
+    public static String formatDate(LocalDate date, DatePattern newPattern) {
+        return getDateTimeFormatter(newPattern).format(date);
+    }
+
+    private static DateTimeFormatter getDateTimeFormatter(DatePattern datePattern) {
+        return DateTimeFormatter.ofPattern(datePattern.toString());
     }
 }

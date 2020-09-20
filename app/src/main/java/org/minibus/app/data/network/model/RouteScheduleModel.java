@@ -2,10 +2,10 @@ package org.minibus.app.data.network.model;
 
 import org.minibus.app.data.network.AppApiClient;
 import org.minibus.app.data.network.pojo.schedule.RouteScheduleResponse;
-import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.data.network.pojo.user.UserResponse;
+import org.minibus.app.helpers.AppDatesHelper;
 
-import java.util.List;
+import java.time.LocalDate;
 
 import io.reactivex.Single;
 
@@ -15,11 +15,12 @@ public class RouteScheduleModel extends BaseModel {
         super(appApiClient);
     }
 
-    public Single<RouteScheduleResponse> doGetRouteScheduleData(String date, String routeId) {
-        return getClient().getApiService().getRouteScheduleData(date, routeId);
+    public Single<RouteScheduleResponse> doGetRouteScheduleData(LocalDate date, String routeId) {
+        String formattedDate = AppDatesHelper.formatDate(date, AppDatesHelper.DatePattern.ISO);
+        return getClient().getApiService().getRouteScheduleData(formattedDate, routeId);
     }
 
-    public Single<UserResponse> doPostRouteTripData(String authToken, String depDate, String id, int seatsCount) {
-        return getClient().getApiService().postRouteTripData("Bearer ".concat(authToken), depDate, id, seatsCount);
+    public Single<UserResponse> doPostRouteTripData(String authToken, String depDate, String routeId, String tripId, int seatsCount) {
+        return getClient().getApiService().postRouteTripData("Bearer ".concat(authToken), depDate, routeId, tripId, seatsCount);
     }
 }

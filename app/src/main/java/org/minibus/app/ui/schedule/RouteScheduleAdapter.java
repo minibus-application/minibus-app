@@ -156,7 +156,7 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public interface OnItemClickListener {
-        void onRouteTripItemClick(View view, String itemId, String routeId);
+        void onRouteTripItemClick(View view, String itemId);
     }
 
     public interface OnSortByItemClickListener {
@@ -200,7 +200,7 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     static class SortByViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.btn_sort) MaterialButton buttonSortBy;
+        @BindView(R.id.btn_sort_by) MaterialButton buttonSortBy;
 
         private OnSortByItemClickListener onSortByItemClickListener;
         private SortingOption selectedSortingOption;
@@ -218,7 +218,7 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
             buttonSortBy.setText(context.getResources().getString(R.string.label_sort_by_option, option));
         }
 
-        @OnClick(R.id.btn_sort)
+        @OnClick(R.id.btn_sort_by)
         public void onSortByButtonClick(View itemView) {
             onSortByItemClickListener.onSortByItemClick(selectedSortingOption);
         }
@@ -235,11 +235,10 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.tv_arr_station) TextView textArrivalStation;
         @BindView(R.id.tv_available_seats) TextView textSeatsAvailable;
         @BindView(R.id.tv_cost) TextView textCost;
-        @BindView(R.id.btn_select) ProgressMaterialButton btnSelectTrip;
-        @BindView(R.id.ll_trip) FrameLayout layoutBusTrip;
+        @BindView(R.id.btn_select) ProgressMaterialButton btnSelect;
+        @BindView(R.id.ll_trip) FrameLayout layoutRouteTrip;
 
         private String itemId;
-        private String routeId;
         private OnItemClickListener onItemClickListener;
 
         public RouteScheduleViewHolder(@NonNull View itemView, final OnItemClickListener onItemClickListener) {
@@ -250,7 +249,6 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public void bind(Context context, RouteTrip routeTrip, Route route) {
             itemId = routeTrip.getId();
-            routeId = route.getId();
 
             textCarrierName.setText(routeTrip.getVehicle().getCarrier().getName());
             textCarrierRating.setText(routeTrip.getVehicle().getCarrier().getRating());
@@ -264,10 +262,10 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             if (routeTrip.getAvailableSeats() == 0) {
                 textSeatsAvailable.setTextColor(ContextCompat.getColor(context, R.color.colorError));
-                layoutBusTrip.setEnabled(false);
+                btnSelect.setEnabled(false);
             } else {
                 textSeatsAvailable.setTextColor(ContextCompat.getColor(context, R.color.colorGreen));
-                layoutBusTrip.setEnabled(true);
+                btnSelect.setEnabled(true);
             }
         }
 
@@ -280,15 +278,15 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             if (isItemClickable && itemPos >= 0) {
                 lastClickedItemPos = itemPos;
-                onItemClickListener.onRouteTripItemClick(itemView, itemId, routeId);
+                onItemClickListener.onRouteTripItemClick(itemView, itemId);
 
                 Timber.d("Select bus trip with id = %s, position = %d", itemId, itemPos);
             }
         }
 
         protected void setLoading(boolean isLoading) {
-            btnSelectTrip.setLoading(isLoading);
-            btnSelectTrip.setEnabled(!isLoading);
+            btnSelect.setLoading(isLoading);
+            btnSelect.setEnabled(!isLoading);
         }
     }
 }

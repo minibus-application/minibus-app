@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class SortingOptionsDialogFragment extends BaseDialogFragment {
 
     public interface OnSortingOptionClickListener {
-        void onSortingOptionClick(int position);
+        void onSortingOptionItemClick(int position);
     }
 
     public static final int REQ_CODE = AppConstants.SORT_BY_FRAGMENT_REQ_CODE;
@@ -55,7 +55,7 @@ public class SortingOptionsDialogFragment extends BaseDialogFragment {
         });
 
         builder.setPositiveButton("Ok", (dialogInterface, i) -> {
-            listener.onSortingOptionClick(position);
+            listener.onSortingOptionItemClick(position);
         });
 
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {

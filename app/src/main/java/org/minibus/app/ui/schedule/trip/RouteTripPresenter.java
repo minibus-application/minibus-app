@@ -4,6 +4,7 @@ import org.minibus.app.AppConstants;
 import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.data.network.model.RouteScheduleModel;
 import org.minibus.app.data.network.pojo.user.UserResponse;
+import org.minibus.app.ui.R;
 import org.minibus.app.ui.base.BasePresenter;
 
 import javax.inject.Inject;
@@ -31,7 +32,14 @@ public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePr
         final int max = AppConstants.MAX_SEATS_PER_BOOKING;
         final int available = Math.min(availableSeats, max);
 
-        getView().ifAlive(v -> v.setSeatsCounterRange(min, available));
+        if (available < min) {
+            getView().ifAlive(v -> v.showError(R.string.warning_no_seats_message));
+            getView().ifAlive(V::close);
+            return;
+        }
+
+        getView().ifAlive(v -> v.setSeatsCount(available));
+        getView().ifAlive(v -> v.setPassengerName(storage.getUserData().getName()));
     }
 
     @Override
@@ -66,9 +74,10 @@ public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePr
 
     private Single<UserResponse> getRouteTripBookingObservable(String authToken,
                                                                String depDate,
-                                                               String id,
+                                                               String routeId,
+                                                               String tripId,
                                                                int seatsCount) {
-        return routeScheduleModel.doPostRouteTripData(authToken, depDate, id, seatsCount)
+        return routeScheduleModel.doPostRouteTripData(authToken, depDate, routeId, tripId, seatsCount)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

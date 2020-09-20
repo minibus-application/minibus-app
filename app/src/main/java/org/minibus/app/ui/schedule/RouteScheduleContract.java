@@ -7,30 +7,31 @@ import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.base.Contract;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RouteScheduleContract {
 
     interface View extends Contract.View {
 
-        void showFilter();
-        void showSwapDirectionAnimation();
+        void showRouteDirection();
+        void hideRouteDirection();
         void showJumpTopFab();
+        void hideJumpTopFab();
         void showLoadingDataDialog();
         void hideLoadingDataDialog();
-        void showRefresh();
         void showRouteTripLoading();
         void hideRouteTripLoading();
+        void showRefresh();
         void hideRefresh();
-        void hideJumpTopFab();
-        void toggleFilter();
+        void toggleRouteDirection();
         void setRouteScheduleData(List<RouteTrip> routeTrips, Route route);
-        void setDirectionDescription(String text);
-        void setDirectionDescription(@StringRes int resId);
+        void setRouteDirectionDescription(String text);
+        void setRouteDirectionDescription(@StringRes int resId);
         void setDepartureCity(String depCity);
         void setArrivalCity(String arrCity);
-        void setDirection(String depCity, String arrCity);
-        void setOperationalDays(List<Integer> daysOfWeek);
+        void setRouteDirection(String depCity, String arrCity);
+        void setOperationalDays(List<Integer> operationalDays);
         void openSortingOptions(RouteScheduleAdapter.SortingOption sortingOption);
         void openProfile();
         void openLogin();
@@ -44,21 +45,21 @@ public interface RouteScheduleContract {
     interface Presenter<V extends RouteScheduleContract.View> extends Contract.Presenter<V> {
 
         void onBackPressed();
-        void onStart(String depDate);
-        void onRefresh(String depDate);
-        void onUserBookedBusTrip(String depDate);
-        void onFilterCollapsed();
-        void onFilterExpanded();
-        void onDirectionSwapButtonClick(String depDate);
-        void onDateClick(String depDate);
-        void onArrivalCityChange(City city, String depDate);
-        void onDepartureCityChange(City city, String depDate);
-        void onDepartureCityClick();
-        void onArrivalCityClick();
+        void onStart(LocalDate depDate);
+        void onRefresh(LocalDate depDate);
+        void onRouteTripBooked(LocalDate depDate);
+        void onRouteDirectionCollapsed();
+        void onRouteDirectionExpanded();
+        void onSwapRouteDirectionButtonClick(LocalDate depDate);
+        void onCalendarDateClick(LocalDate depDate);
+        void onArrivalCityChanged(City city, LocalDate depDate);
+        void onDepartureCityChanged(City city, LocalDate depDate);
+        void onDepartureCityFieldClick();
+        void onArrivalCityFieldClick();
         void onProfileIconClick();
-        void onSortByItemClick(RouteScheduleAdapter.SortingOption selectedSortingOption);
-        void onRouteFabClick();
+        void onSortByClick(RouteScheduleAdapter.SortingOption selectedSortingOption);
+        void onRouteDirectionFabClick();
         void onJumpTopFabClick();
-        void onRouteTripSelectButtonClick(String depDate, String itemId, String routeId);
+        void onRouteTripSelectButtonClick(LocalDate depDate, String itemId);
     }
 }

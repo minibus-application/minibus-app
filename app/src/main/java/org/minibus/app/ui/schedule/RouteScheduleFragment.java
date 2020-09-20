@@ -1,5 +1,7 @@
 package org.minibus.app.ui.schedule;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -51,6 +53,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kennyc.view.MultiStateView;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,31 +76,30 @@ public class RouteScheduleFragment extends BaseFragment implements
         RouteTripFragment.OnRouteTripBookingListener,
         BackButtonListener {
 
-    @BindView(R.id.cl_schedule_content) CoordinatorLayout layoutContent;
-    @BindView(R.id.recycler_calendar) RecyclerView recyclerCalendar;
-    @BindView(R.id.recycler_bus_schedule) RecyclerView recyclerRouteSchedule;
-    @BindView(R.id.swipe_refresh_bus_schedule) SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.button_swap_direction) ImageButton buttonSwapDirection;
-    @BindView(R.id.input_dep_city) TextInputEditText inputDepartureBusStop;
-    @BindView(R.id.input_arr_city) TextInputEditText inputArrivalBusStop;
+    @BindView(R.id.cl_route_schedule_content) CoordinatorLayout layoutContent;
+    @BindView(R.id.rv_calendar) RecyclerView recyclerCalendar;
+    @BindView(R.id.rv_route_schedule) RecyclerView recyclerRouteSchedule;
+    @BindView(R.id.srl_route_schedule) SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.ib_swap_direction) ImageButton buttonSwapDirection;
+    @BindView(R.id.et_dep_city) TextInputEditText inputDepartureCity;
+    @BindView(R.id.et_arr_city) TextInputEditText inputArrivalCity;
     @BindView(R.id.tv_toolbar_title) TextView textToolbarTitle;
     @BindView(R.id.tv_toolbar_subtitle) TextView textToolbarSubtitle;
-    @BindView(R.id.appbar) AppBarLayout appBar;
-    @BindView(R.id.container_bus_schedule) MultiStateView multiStateView;
-    @BindView(R.id.toolbar_custom) Toolbar toolbar;
-    @BindView(R.id.fab_route) FloatingActionButton fabRoute;
+    @BindView(R.id.msv_route_schedule) MultiStateView multiStateView;
+    @BindView(R.id.fab_route_direction) FloatingActionButton fabRouteDirection;
     @BindView(R.id.fab_jump_top) FloatingActionButton fabJumpTop;
+    @BindView(R.id.appbar) AppBarLayout appBar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     @Inject
     RouteSchedulePresenter<RouteScheduleContract.View> presenter;
 
+    private static final RouteScheduleAdapter.SortingOption DEFAULT_SORTING_OPTION = RouteScheduleAdapter.SortingOption.DEPARTURE_TIME;
+    private boolean isRouteDirectionExpanded = true;
     private LinearLayoutManager layoutManagerRouteSchedule;
     private SpanningLinearLayoutManager layoutManagerCalendar;
     private RouteScheduleCalendarAdapter adapterCalendar;
     private RouteScheduleAdapter adapterRouteSchedule;
-    private boolean isFilterExpanded = true;
-    private static final RouteScheduleAdapter.SortingOption DEFAULT_SORTING_OPTION
-            = RouteScheduleAdapter.SortingOption.DEPARTURE_TIME;
 
     public static RouteScheduleFragment newInstance() {
         return new RouteScheduleFragment();
@@ -152,7 +154,7 @@ public class RouteScheduleFragment extends BaseFragment implements
                 int firstVisibleItemPos = layoutManagerRouteSchedule.findFirstVisibleItemPosition();
 
                 if (dy < 0) showJumpTopFab();
-                if (dy > 0 || (firstVisibleItemPos <= 1 && firstVisibleItemPos >= 0)) hideJumpTopFab();
+                else if (dy > 0 || (firstVisibleItemPos <= 1 && firstVisibleItemPos >= 0)) hideJumpTopFab();
             }
         });
 
@@ -164,18 +166,18 @@ public class RouteScheduleFragment extends BaseFragment implements
             @Override
             public void onAppBarStateChanged(AppBarLayout appBarLayout, State state) {
                 if (state.name().equals(State.COLLAPSED.toString())) {
-                    presenter.onFilterCollapsed();
-                    isFilterExpanded = false;
+                    presenter.onRouteDirectionCollapsed();
+                    isRouteDirectionExpanded = false;
                 } else if (state.name().equals(State.EXPANDED.toString())) {
-                    presenter.onFilterExpanded();
-                    isFilterExpanded = true;
+                    presenter.onRouteDirectionExpanded();
+                    isRouteDirectionExpanded = true;
                 }
             }
         });
 
         textToolbarTitle.setText(getResources().getString(R.string.route_schedule_title));
         textToolbarSubtitle.setVisibility(View.VISIBLE);
-        textToolbarSubtitle.setText(getResources().getString(R.string.route_schedule_direction_title));
+        textToolbarSubtitle.setText(getResources().getString(R.string.route_schedule_route_title));
 
         // disable custom ItemAnimator to prevent blinking on notifyItemChanged
         RecyclerView.ItemAnimator animator = recyclerRouteSchedule.getItemAnimator();
@@ -192,14 +194,63 @@ public class RouteScheduleFragment extends BaseFragment implements
         } catch (NullPointerException e) {}
     }
 
-    @OnClick(R.id.button_empty_cities)
-    public void onDepartureCitiesButtonClick() {
-        presenter.onDepartureCityClick();
+    @Override
+    public void onRefresh() {
+        presenter.onRefresh(adapterCalendar.getSelectedDate());
     }
 
-    @OnClick(R.id.fab_route)
-    public void onRouteFabClick() {
-        presenter.onRouteFabClick();
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.onStart(adapterCalendar.getSelectedDate());
+    }
+
+    @Override
+    public void onDestroyView() {
+        presenter.detachView();
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_route_schedule, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_profile) presenter.onProfileIconClick();
+        return true;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        presenter.onBackPressed();
+        return true;
+    }
+
+    /**
+     * OnClick methods
+     */
+
+    @OnClick(R.id.btn_empty_cities)
+    public void onDepartureCitiesButtonClick() {
+        presenter.onDepartureCityFieldClick();
+    }
+
+    @OnClick(R.id.et_dep_city)
+    public void onDepartureCityFieldClick() {
+        presenter.onDepartureCityFieldClick();
+    }
+
+    @OnClick(R.id.et_arr_city)
+    public void onArrivalCityFieldClick() {
+        presenter.onArrivalCityFieldClick();
+    }
+
+    @OnClick(R.id.fab_route_direction)
+    public void onRouteDirectionFabClick() {
+        presenter.onRouteDirectionFabClick();
     }
 
     @OnClick(R.id.fab_jump_top)
@@ -207,45 +258,62 @@ public class RouteScheduleFragment extends BaseFragment implements
         presenter.onJumpTopFabClick();
     }
 
-    @OnClick(R.id.button_swap_direction)
-    public void onSwapDirectionButtonClick() {
-        presenter.onDirectionSwapButtonClick(adapterCalendar.getSelectedDate());
+    @OnClick(R.id.ib_swap_direction)
+    public void onSwapRouteDirectionButtonClick() {
+        presenter.onSwapRouteDirectionButtonClick(adapterCalendar.getSelectedDate());
+
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 180,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setDuration((long) 200);
+        rotateAnimation.setRepeatCount(0);
+        buttonSwapDirection.startAnimation(rotateAnimation);
     }
 
-    @OnClick(R.id.input_dep_city)
-    public void onDepartureCityFieldClick() {
-        presenter.onDepartureCityClick();
-    }
-
-    @OnClick(R.id.input_arr_city)
-    public void onArrivalCityFieldClick() {
-        presenter.onArrivalCityClick();
-    }
+    /**
+     * Listeners
+     */
 
     @Override
     public void onRouteTripBooked() {
-        presenter.onUserBookedBusTrip(adapterCalendar.getSelectedDate());
+        presenter.onRouteTripBooked(adapterCalendar.getSelectedDate());
     }
 
     @Override
-    public void onArrivalCityClicked(City city) {
-        presenter.onArrivalCityChange(city, adapterCalendar.getSelectedDate());
+    public void onArrivalCityItemClicked(City city) {
+        presenter.onArrivalCityChanged(city, adapterCalendar.getSelectedDate());
     }
 
     @Override
-    public void onDepartureCityClicked(City city) {
-        presenter.onDepartureCityChange(city, adapterCalendar.getSelectedDate());
+    public void onDepartureCityItemClicked(City city) {
+        presenter.onDepartureCityChanged(city, adapterCalendar.getSelectedDate());
     }
 
     @Override
-    public void setDirectionDescription(String text) {
-        AppAnimHelper.textFadeInOut(textToolbarSubtitle, text);
+    public void onDateItemClick(View view, int position) {
+        presenter.onCalendarDateClick(adapterCalendar.getDate(position));
     }
 
     @Override
-    public void setDirectionDescription(int resId) {
-        AppAnimHelper.textFadeInOut(textToolbarSubtitle, getResources().getString(resId));
+    public void onRouteTripItemClick(View view, String itemId) {
+        presenter.onRouteTripSelectButtonClick(adapterCalendar.getSelectedDate(), itemId);
     }
+
+    @Override
+    public void onSortByItemClick(RouteScheduleAdapter.SortingOption selectedSortingOption) {
+        presenter.onSortByClick(selectedSortingOption);
+    }
+
+    @Override
+    public void onSortingOptionItemClick(int position) {
+        RouteScheduleAdapter.SortingOption newSortingOption = RouteScheduleAdapter.SortingOption.getByPosition(position);
+        if (adapterRouteSchedule.getSortingOption() != newSortingOption) {
+            adapterRouteSchedule.setSortingOption(RouteScheduleAdapter.SortingOption.getByPosition(position));
+        }
+    }
+
+    /**
+     * View contract methods
+     */
 
     @Override
     public void hideRefresh() {
@@ -268,12 +336,19 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void toggleFilter() {
-        if (isFilterExpanded) {
-            appBar.setExpanded(false, true);
-        } else {
-            appBar.setExpanded(true, true);
-        }
+    public void toggleRouteDirection() {
+        if (isRouteDirectionExpanded) hideRouteDirection();
+        else showRouteDirection();
+    }
+
+    @Override
+    public void hideRouteDirection() {
+        appBar.setExpanded(false, true);
+    }
+
+    @Override
+    public void showRouteDirection() {
+        appBar.setExpanded(true, true);
     }
 
     @Override
@@ -281,11 +356,6 @@ public class RouteScheduleFragment extends BaseFragment implements
         if (multiStateView.getViewState() != MultiStateView.ViewState.EMPTY) {
             multiStateView.setViewState(MultiStateView.ViewState.EMPTY);
         }
-    }
-
-    @Override
-    public void showFilter() {
-        appBar.setExpanded(true, true);
     }
 
     @Override
@@ -309,53 +379,51 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void showProgress() {
-        if (multiStateView.getViewState() != MultiStateView.ViewState.LOADING) {
-            multiStateView.setViewState(MultiStateView.ViewState.LOADING);
-        }
+    public void jumpTop() {
+        fabJumpTop.hide();
+        recyclerRouteSchedule.scrollToPosition(0);
     }
 
     @Override
-    public void hideProgress() {
-        if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
-
-        if (multiStateView.getViewState() == MultiStateView.ViewState.LOADING) {
-            multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
-        }
+    public void finish() {
+        getMainActivity().finish();
     }
 
     @Override
-    public void showSwapDirectionAnimation() {
-        RotateAnimation rotateAnimation = new RotateAnimation(0, 180,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotateAnimation.setDuration((long) 200);
-        rotateAnimation.setRepeatCount(0);
-        buttonSwapDirection.startAnimation(rotateAnimation);
+    public void setRouteDirectionDescription(String text) {
+        fadeInOut(textToolbarSubtitle, text);
     }
 
     @Override
-    public void setDirection(String departureCity, String arrivalCity) {
-        setDepartureCity(departureCity);
-        setArrivalCity(arrivalCity);
+    public void setRouteDirectionDescription(int resId) {
+        fadeInOut(textToolbarSubtitle, getResources().getString(resId));
     }
 
     @Override
-    public void setOperationalDays(List<Integer> daysOfWeek) {
+    public void setRouteDirection(String depCity, String arrCity) {
+        setDepartureCity(depCity);
+        setArrivalCity(arrCity);
+    }
 
+    @Override
+    public void setOperationalDays(List<Integer> operationalDays) {
+        adapterCalendar.setActiveDays(operationalDays);
     }
 
     @Override
     public void setDepartureCity(String city) {
-        inputDepartureBusStop.setText(city);
+        inputDepartureCity.setText(city);
     }
 
     @Override
     public void setArrivalCity(String city) {
-        inputArrivalBusStop.setText(city);
+        inputArrivalCity.setText(city);
     }
 
     @Override
     public void setRouteScheduleData(List<RouteTrip> routeTrips, Route route) {
+        setOperationalDays(route.getOperationalDays());
+
         Drawable background;
 
         if (routeTrips == null || routeTrips.isEmpty()) {
@@ -412,72 +480,33 @@ public class RouteScheduleFragment extends BaseFragment implements
         super.openDialogFragment(ArrivalCitiesFragment.newInstance(), ArrivalCitiesFragment.REQ_CODE, null);
     }
 
-    @Override
-    public void jumpTop() {
-        fabJumpTop.hide();
-        recyclerRouteSchedule.scrollToPosition(0);
-    }
+    /**
+     * Base view contract methods
+     */
 
     @Override
-    public void onDateClick(View view, int position) {
-        presenter.onDateClick(adapterCalendar.getDate(position));
-    }
-
-    @Override
-    public void onRouteTripItemClick(View view, String itemId, String routeId) {
-        presenter.onRouteTripSelectButtonClick(adapterCalendar.getSelectedDate(), itemId, routeId);
-    }
-
-    @Override
-    public void onSortByItemClick(RouteScheduleAdapter.SortingOption selectedSortingOption) {
-        presenter.onSortByItemClick(selectedSortingOption);
-    }
-
-    @Override
-    public void onSortingOptionClick(int position) {
-        RouteScheduleAdapter.SortingOption newSortingOption = RouteScheduleAdapter.SortingOption.getByPosition(position);
-        if (adapterRouteSchedule.getSortingOption() != newSortingOption) {
-            adapterRouteSchedule.setSortingOption(RouteScheduleAdapter.SortingOption.getByPosition(position));
+    public void showProgress() {
+        if (multiStateView.getViewState() != MultiStateView.ViewState.LOADING) {
+            multiStateView.setViewState(MultiStateView.ViewState.LOADING);
         }
     }
 
     @Override
-    public void onRefresh() {
-        presenter.onRefresh(adapterCalendar.getSelectedDate());
+    public void hideProgress() {
+        if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+
+        if (multiStateView.getViewState() == MultiStateView.ViewState.LOADING) {
+            multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
+        }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        presenter.onStart(adapterCalendar.getSelectedDate());
-    }
-
-    @Override
-    public void onDestroyView() {
-        presenter.detachView();
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_route_schedule, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_profile) presenter.onProfileIconClick();
-        return true;
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        presenter.onBackPressed();
-        return true;
-    }
-
-    @Override
-    public void finish() {
-        getMainActivity().finish();
+    private static void fadeInOut(final TextView textView, String text) {
+        textView.animate().setDuration(200).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                textView.setText(text);
+                textView.animate().setListener(null).setDuration(200).alpha(1.0f);
+            }
+        }).alpha(0.0f);
     }
 }

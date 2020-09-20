@@ -87,7 +87,7 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
         return view;
     }
 
-    @OnClick(R.id.button_empty_cities)
+    @OnClick(R.id.btn_empty_cities)
     public void onRouteScheduleButtonClick() {
         presenter.onCloseButtonClick();
     }

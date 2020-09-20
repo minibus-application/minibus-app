@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import org.minibus.app.AppConstants;
@@ -22,6 +24,7 @@ import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.base.BaseSheetDialogFragment;
 import org.minibus.app.ui.custom.CounterLayout;
 import org.minibus.app.ui.R;
+import org.minibus.app.utils.CommonUtil;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -38,6 +41,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
 
     public static final int REQ_CODE = AppConstants.ROUTE_TRIP_FRAGMENT_REQ_CODE;
 
+    @BindView(R.id.rg_seats) RadioGroup radioGroupSeats;
     @BindView(R.id.btn_confirm_reservation) MaterialButton btnConfirmReservation;
     @BindView(R.id.tv_summary_title) TextView textTitle;
     @BindView(R.id.tv_summary_cost) TextView textCost;
@@ -49,7 +53,6 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     @BindView(R.id.tv_trip_vehicle_color) TextView textVehicleColor;
     @BindView(R.id.tv_trip_vehicle_plate_num) TextView textVehiclePlateNumber;
     @BindView(R.id.tv_trip_passenger_info) TextView textPassengerInfo;
-    @BindView(R.id.cl_trip_seats) CounterLayout counterSeats;
 
     @Inject
     RouteTripPresenter<RouteTripContract.View> presenter;
@@ -109,16 +112,16 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         textVehicle.setText(String.format("%s %s", routeTrip.getVehicle().getMake(), routeTrip.getVehicle().getModel()));
         textVehiclePlateNumber.setText(routeTrip.getVehicle().getPlateNumber());
 
-        counterSeats.setOnChangedValueListener(value -> {
-            try {
-                float cost = Float.parseFloat(routeTrip.getPrice());
-                String newCost = String.format("%s %s",
-                        (double) Math.round(counterSeats.getValue() * cost * 10) / 10, routeTrip.getCurrency());
-                textCost.setText(newCost);
-            } catch (Exception ignore) {
-                Timber.d("Can't parse to float: %s", textCost.getText());
-            }
-        });
+//        counterSeats.setOnChangedValueListener(value -> {
+//            try {
+//                float cost = Float.parseFloat(routeTrip.getPrice());
+//                String newCost = String.format("%s %s",
+//                        (double) Math.round(counterSeats.getValue() * cost * 10) / 10, routeTrip.getCurrency());
+//                textCost.setText(newCost);
+//            } catch (Exception ignore) {
+//                Timber.d("Can't parse to float: %s", textCost.getText());
+//            }
+//        });
 
         return view;
     }
@@ -152,7 +155,30 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
 
     @OnClick(R.id.btn_confirm_reservation)
     public void onConfirmReservationButtonClick() {
-        presenter.onConfirmReservationButtonClick(departureDate, routeTrip.getId(), counterSeats.getValue());
+        presenter.onConfirmReservationButtonClick(departureDate, routeTrip.getId(), getCurrentSeatsCount());
+    }
+
+    @Override
+    public void setSeatsCount(int seatsCount) {
+        RadioButton[] radioButtons = new RadioButton[seatsCount];
+        int margin = CommonUtil.dpToPx(getMainActivity(),4);
+        int height = CommonUtil.dpToPx(getMainActivity(),32);
+        int width = height;
+
+        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(width, height);
+        params.setMargins(margin, margin, margin, margin);
+
+        if (radioGroupSeats.getChildCount() == 0) {
+            for (int i = 0; i < seatsCount; i++) {
+                radioButtons[i] = new RadioButton(getMainActivity());
+                radioButtons[i].setText(String.valueOf(i + 1));
+                radioButtons[i].setChecked(i == 0);
+                radioButtons[i].setId(i);
+                radioButtons[i].setLayoutParams(params);
+
+                radioGroupSeats.addView(radioButtons[i]);
+            }
+        }
     }
 
     @Override
@@ -170,12 +196,12 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         textPassengerInfo.setText(name);
     }
 
-    @Override
-    public void setSeatsCounterRange(int minSeatsValue, int maxSeatsValue) {
-        counterSeats.setValue(minSeatsValue);
-        counterSeats.setMinValue(minSeatsValue);
-        counterSeats.setMaxValue(maxSeatsValue);
-    }
+//    @Override
+//    public void setSeatsCounterRange(int minSeatsValue, int maxSeatsValue) {
+//        counterSeats.setValue(minSeatsValue);
+//        counterSeats.setMinValue(minSeatsValue);
+//        counterSeats.setMaxValue(maxSeatsValue);
+//    }
 
     @Override
     public void close() {
@@ -186,5 +212,15 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     public void closeOnBooked() {
         listener.onRouteTripBooked();
         close();
+    }
+
+    private int getCurrentSeatsCount() {
+        int checkedId = radioGroupSeats.getCheckedRadioButtonId();
+        View radioButton = radioGroupSeats.findViewById(checkedId);
+
+        int idx = radioGroupSeats.indexOfChild(radioButton);
+        RadioButton rb = (RadioButton) radioGroupSeats.getChildAt(idx);
+
+        return Integer.parseInt(rb.getText().toString());
     }
 }

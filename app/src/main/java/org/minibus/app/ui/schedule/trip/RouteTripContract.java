@@ -6,8 +6,8 @@ public interface RouteTripContract {
 
     interface View extends Contract.View {
 
-        void setSeatsCounterRange(int minSeatsValue, int maxSeatsValue);
         void setPassengerName(String name);
+        void setSeatsCount(int seatsCount);
         void disableConfirmReservationButton();
         void enableConfirmReservationButton();
         void closeOnBooked();
