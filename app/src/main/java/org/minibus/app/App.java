@@ -4,7 +4,6 @@ import android.app.Application;
 
 import org.minibus.app.di.components.ApplicationComponent;
 
-
 import org.minibus.app.di.components.DaggerApplicationComponent;
 import org.minibus.app.di.modules.ApplicationModule;
 
@@ -31,7 +30,7 @@ public class App extends Application {
         applicationComponent.inject(this);
     }
 
-    public ApplicationComponent getComponent(){
+    public ApplicationComponent getComponent() {
         return applicationComponent;
     }
 }

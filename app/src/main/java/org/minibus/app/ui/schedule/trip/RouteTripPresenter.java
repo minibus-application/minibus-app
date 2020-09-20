@@ -16,10 +16,10 @@ import io.reactivex.schedulers.Schedulers;
 public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePresenter<V>
         implements RouteTripContract.Presenter<V> {
 
-    private RouteScheduleModel routeScheduleModel;
-
     @Inject
     AppStorageManager storage;
+
+    private RouteScheduleModel routeScheduleModel;
 
     @Inject
     public RouteTripPresenter(RouteScheduleModel routeScheduleModel) {
@@ -27,7 +27,7 @@ public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePr
     }
 
     @Override
-    public void onStart(int availableSeats) {
+    public void onStart(final int availableSeats) {
         final int min = AppConstants.MIN_SEATS_PER_BOOKING;
         final int max = AppConstants.MAX_SEATS_PER_BOOKING;
         final int available = Math.min(availableSeats, max);
@@ -43,7 +43,7 @@ public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePr
     }
 
     @Override
-    public void onConfirmReservationButtonClick(String depDate, String busTripId, int seatsToReserve) {
+    public void onConfirmReservationButtonClick(String depDate, String routeTripId, int seatsToReserve) {
 //        addSubscription(getBusTripBookingObservable(storage.getUserAuthToken(), depDate, busTripId, seatsToReserve)
 //                .doOnSubscribe(disposable -> {
 //                    getView().ifAlive(V::showProgress);
@@ -65,11 +65,6 @@ public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePr
 //                        getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
 //                    }
 //                }));
-    }
-
-    @Override
-    public void onSeatsCountChanged(int newValue) {
-
     }
 
     private Single<UserResponse> getRouteTripBookingObservable(String authToken,

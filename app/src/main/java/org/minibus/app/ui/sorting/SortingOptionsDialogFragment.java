@@ -19,13 +19,13 @@ public class SortingOptionsDialogFragment extends BaseDialogFragment {
         void onSortingOptionItemClick(int position);
     }
 
-    public static final int REQ_CODE = AppConstants.SORT_BY_FRAGMENT_REQ_CODE;
     public static final String SORT_OPTIONS_KEY = "sort_options_key";
     public static final String SORT_OPTION_POS_KEY = "sort_option_pos_key";
+    public static final int REQ_CODE = AppConstants.SORT_BY_FRAGMENT_REQ_CODE;
     private OnSortingOptionClickListener listener;
     private ArrayList<String> options;
-    private int lastPosition;
-    private int position;
+    private int lastSelectedPosition;
+    private int selectedPosition;
 
     public static SortingOptionsDialogFragment newInstance() {
         return new SortingOptionsDialogFragment();
@@ -37,7 +37,7 @@ public class SortingOptionsDialogFragment extends BaseDialogFragment {
 
         if (getArguments() != null) {
             options = getArguments().getStringArrayList(SORT_OPTIONS_KEY);
-            lastPosition = getArguments().getInt(SORT_OPTION_POS_KEY);
+            lastSelectedPosition = getArguments().getInt(SORT_OPTION_POS_KEY);
         } else {
             dismiss();
         }
@@ -50,15 +50,15 @@ public class SortingOptionsDialogFragment extends BaseDialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
         builder.setTitle(getResources().getString(R.string.sort_by));
-        builder.setSingleChoiceItems(options.toArray(new CharSequence[0]), lastPosition, (dialogInterface, i) -> {
-            position = i;
+        builder.setSingleChoiceItems(options.toArray(new CharSequence[0]), lastSelectedPosition, (dialogInterface, i) -> {
+            selectedPosition = i;
         });
 
-        builder.setPositiveButton("Ok", (dialogInterface, i) -> {
-            listener.onSortingOptionItemClick(position);
+        builder.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+            listener.onSortingOptionItemClick(selectedPosition);
         });
 
-        builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
+        builder.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
             onBack();
         });
 

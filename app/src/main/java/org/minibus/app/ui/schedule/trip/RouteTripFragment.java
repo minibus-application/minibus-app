@@ -22,7 +22,6 @@ import org.minibus.app.AppConstants;
 import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.base.BaseSheetDialogFragment;
-import org.minibus.app.ui.custom.CounterLayout;
 import org.minibus.app.ui.R;
 import org.minibus.app.utils.CommonUtil;
 
@@ -34,12 +33,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 
 public class RouteTripFragment extends BaseSheetDialogFragment implements RouteTripContract.View {
 
-    public static final int REQ_CODE = AppConstants.ROUTE_TRIP_FRAGMENT_REQ_CODE;
+    public interface OnRouteTripBookingListener {
+        void onRouteTripBooked();
+    }
 
     @BindView(R.id.rg_seats) RadioGroup radioGroupSeats;
     @BindView(R.id.btn_confirm_reservation) MaterialButton btnConfirmReservation;
@@ -57,13 +57,10 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     @Inject
     RouteTripPresenter<RouteTripContract.View> presenter;
 
-    public interface OnRouteTripBookingListener {
-        void onRouteTripBooked();
-    }
-
     public static final String ROUTE_KEY = "key_route";
     public static final String ROUTE_TRIP_KEY = "key_route_trip";
     public static final String DEPARTURE_DATE_KEY = "key_departure_date";
+    public static final int REQ_CODE = AppConstants.ROUTE_TRIP_FRAGMENT_REQ_CODE;
 
     private OnRouteTripBookingListener listener;
     private RouteTrip routeTrip;
@@ -112,17 +109,6 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         textVehicle.setText(String.format("%s %s", routeTrip.getVehicle().getMake(), routeTrip.getVehicle().getModel()));
         textVehiclePlateNumber.setText(routeTrip.getVehicle().getPlateNumber());
 
-//        counterSeats.setOnChangedValueListener(value -> {
-//            try {
-//                float cost = Float.parseFloat(routeTrip.getPrice());
-//                String newCost = String.format("%s %s",
-//                        (double) Math.round(counterSeats.getValue() * cost * 10) / 10, routeTrip.getCurrency());
-//                textCost.setText(newCost);
-//            } catch (Exception ignore) {
-//                Timber.d("Can't parse to float: %s", textCost.getText());
-//            }
-//        });
-
         return view;
     }
 
@@ -153,10 +139,18 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         super.onDestroyView();
     }
 
+    /**
+     * OnClick methods
+     */
+
     @OnClick(R.id.btn_confirm_reservation)
     public void onConfirmReservationButtonClick() {
         presenter.onConfirmReservationButtonClick(departureDate, routeTrip.getId(), getCurrentSeatsCount());
     }
+
+    /**
+     * View contract methods
+     */
 
     @Override
     public void setSeatsCount(int seatsCount) {
@@ -195,13 +189,6 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     public void setPassengerName(String name) {
         textPassengerInfo.setText(name);
     }
-
-//    @Override
-//    public void setSeatsCounterRange(int minSeatsValue, int maxSeatsValue) {
-//        counterSeats.setValue(minSeatsValue);
-//        counterSeats.setMinValue(minSeatsValue);
-//        counterSeats.setMaxValue(maxSeatsValue);
-//    }
 
     @Override
     public void close() {

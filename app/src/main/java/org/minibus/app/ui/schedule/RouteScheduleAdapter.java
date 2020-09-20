@@ -117,7 +117,7 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int position) {
         if (viewHolder.getItemViewType() == ITEM) {
-            Timber.d("Bind bus trip with id = %d, position = %d", getItemId(position), position);
+            Timber.d("Bind route trip with id = %d, position = %d", getItemId(position), position);
 
             RouteTrip routeTrip = routeTrips.get(position - 1);
             ((RouteScheduleViewHolder) viewHolder).bind(context, routeTrip, this.route);

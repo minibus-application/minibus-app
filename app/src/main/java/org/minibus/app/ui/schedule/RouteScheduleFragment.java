@@ -148,13 +148,17 @@ public class RouteScheduleFragment extends BaseFragment implements
         recyclerRouteSchedule.setHasFixedSize(false);
         recyclerRouteSchedule.setItemAnimator(null);
         recyclerRouteSchedule.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int scrollPos = 0;
+
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                scrollPos += dy;
+
                 int firstVisibleItemPos = layoutManagerRouteSchedule.findFirstVisibleItemPosition();
 
                 if (dy < 0) showJumpTopFab();
-                else if (dy > 0 || (firstVisibleItemPos <= 1 && firstVisibleItemPos >= 0)) hideJumpTopFab();
+                if (scrollPos == 0 || (firstVisibleItemPos <= 1 && firstVisibleItemPos >= 0)) hideJumpTopFab();
             }
         });
 

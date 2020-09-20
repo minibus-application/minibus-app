@@ -17,7 +17,6 @@ public interface RouteTripContract {
     interface Presenter<V extends RouteTripContract.View> extends Contract.Presenter<V> {
 
         void onStart(int availableSeats);
-        void onConfirmReservationButtonClick(String depDate, String busTripId, int seatsToReserve);
-        void onSeatsCountChanged(int newValue);
+        void onConfirmReservationButtonClick(String depDate, String routeTripId, int seatsToReserve);
     }
 }

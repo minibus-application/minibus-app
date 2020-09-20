@@ -54,10 +54,6 @@ public class RouteTrip implements Serializable {
         this.seatsBooked = seatsBooked;
     }
 
-    public long getLongId() {
-        return new BigInteger(id, 16).longValue();
-    }
-
     public void setRoute(Route route) {
         this.route = route;
     }

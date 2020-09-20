@@ -39,6 +39,7 @@
     <string name="label_vehicle">Vehicle:</string>
     <string name="label_plate_number">Plate number:</string>
     <string name="label_payment_on_boarding">*payment on boarding</string>
+    <string name="label_cost_note">per seat</string>
     <string name="label_available_seats_count">%1$d seats</string>
     <string name="label_sort_by_option">Sort by %1$s</string>
     <string name="label_enter_name">Name</string>

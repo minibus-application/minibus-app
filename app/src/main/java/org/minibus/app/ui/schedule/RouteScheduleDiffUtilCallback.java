@@ -31,14 +31,14 @@ public class RouteScheduleDiffUtilCallback extends DiffUtil.Callback {
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         RouteTrip oldRouteTrip = oldList.get(oldItemPosition);
         RouteTrip newRouteTrip = newList.get(newItemPosition);
-        return oldRouteTrip.getLongId() == newRouteTrip.getLongId();
+        return oldRouteTrip.getId().equals(newRouteTrip.getId());
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         RouteTrip oldRouteTrip = oldList.get(oldItemPosition);
         RouteTrip newRouteTrip = newList.get(newItemPosition);
-        return oldRouteTrip.getLongId() == newRouteTrip.getLongId()
+        return oldRouteTrip.getId().equals(newRouteTrip.getId())
                 && oldRouteTrip.getAvailableSeats() == newRouteTrip.getAvailableSeats()
                 && oldRouteTrip.getDepartureTime().equals(newRouteTrip.getDepartureTime());
     }

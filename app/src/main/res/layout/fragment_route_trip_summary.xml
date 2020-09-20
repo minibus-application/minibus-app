@@ -26,12 +26,22 @@
         <TextView
             android:id="@+id/tv_summary_cost"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:ellipsize="end"
             android:singleLine="true"
             android:textAppearance="?textAppearanceBody1" />
+
+        <TextView
+            android:id="@+id/tv_summary_cost_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/tv_summary_cost"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/label_cost_note"
+            android:textAppearance="?textAppearanceBody2" />
     </RelativeLayout>
 
     <FrameLayout
