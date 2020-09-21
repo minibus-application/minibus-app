@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.minibus.app.data.network.pojo.booking.Booking;
+import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.helpers.AppDatesHelper;
 import com.google.android.material.button.MaterialButton;
@@ -22,11 +23,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static org.minibus.app.helpers.AppDatesHelper.DatePattern.BOOKING;
+import static org.minibus.app.helpers.AppDatesHelper.DatePattern.ISO;
+
 
 public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapter.BookingsViewHolder> {
 
     public interface OnItemClickListener {
-        void onBookingCancelButtonClick(View view, String id);
+        void onBookingActionButtonClick(View view, String id);
     }
 
     private Context context;
@@ -73,13 +77,17 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
 
     class BookingsViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.text_booking_dep_date) TextView textDepartureDate;
-        @BindView(R.id.text_booking_dep_time) TextView textDepartureTime;
-        @BindView(R.id.text_booking_dep_city) TextView textDepartureCity;
-        @BindView(R.id.text_booking_dep_station) TextView textDepartureBusStop;
-        @BindView(R.id.text_booking_arr_time) TextView textArrivalTime;
-        @BindView(R.id.text_booking_arr_city) TextView textArrivalCity;
-        @BindView(R.id.button_booking_action) MaterialButton buttonCancel;
+        @BindView(R.id.tv_booking_trip_duration) TextView textTripDuration;
+        @BindView(R.id.btn_booking_action) MaterialButton buttonAction;
+        @BindView(R.id.tv_booking_dep_date) TextView textDepDate;
+        @BindView(R.id.tv_booking_dep_time) TextView textDepTime;
+        @BindView(R.id.tv_booking_dep_city) TextView textDepCity;
+        @BindView(R.id.tv_booking_dep_station) TextView textDepCityStation;
+        @BindView(R.id.tv_booking_arr_station) TextView textArrCityStation;
+        @BindView(R.id.tv_booking_arr_time) TextView textArrTime;
+        @BindView(R.id.tv_booking_arr_city) TextView textArrCity;
+        @BindView(R.id.tv_booking_details) TextView textDetails;
+        @BindView(R.id.tv_booking_cost) TextView textCost;
 
         private String itemId;
 
@@ -89,26 +97,46 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
         }
 
         private void bind(Booking booking) {
-            itemId = booking.getId();
+            String formattedDate = AppDatesHelper.formatDate(booking.getDepartureDate(), ISO, BOOKING);
+            this.itemId = booking.getId();
 
-            String date = AppDatesHelper.formatDate(booking.getDepartureDate(),
-                    AppDatesHelper.DatePattern.ISO,
-                    AppDatesHelper.DatePattern.BOOKING);
+            RouteTrip routeTrip = booking.getRouteTrip();
 
-            textDepartureDate.setText(date.substring(0, 1).toUpperCase().concat(date.substring(1)));
+            String details = String.format("%s - %s %s, %s",
+                    routeTrip.getVehicle().getCarrier().getName(),
+                    routeTrip.getVehicle().getMake(),
+                    routeTrip.getVehicle().getModel(),
+                    routeTrip.getVehicle().getPlateNumber());
 
-            textDepartureTime.setText(booking.getRouteTrip().getDepartureTime());
-            textDepartureCity.setText(booking.getRouteTrip().getRoute().getDepartureCity().getName());
-//            textDepartureBusStop.setText(context.getResources()
-//                    .getString(R.string.label_bus_stop_prefix, booking.getCity().getName()));
+            textCost.setText(String.format("%s %s", routeTrip.getPrice(), routeTrip.getCurrency()));
+            textDepDate.setText(formattedDate.substring(0, 1).toUpperCase().concat(formattedDate.substring(1)));
+            textDetails.setText(details);
+            textDepTime.setText(routeTrip.getDepartureTime());
+            textDepCity.setText(routeTrip.getRoute().getDepartureCity().getName());
+            textDepCityStation.setText(routeTrip.getRoute().getDepartureCity().getStation());
+            textTripDuration.setText(routeTrip.getDuration());
 
-            textArrivalTime.setText(booking.getRouteTrip().getArrivalTime());
-            textArrivalCity.setText(booking.getRouteTrip().getRoute().getArrivalCity().getName());
+            textArrTime.setText(routeTrip.getArrivalTime());
+            textArrCity.setText(routeTrip.getRoute().getArrivalCity().getName());
+            textArrCityStation.setText(routeTrip.getRoute().getArrivalCity().getStation());
+
+            if (booking.isEnRoute()) {
+                buttonAction.setStrokeColorResource(R.color.colorAccent);
+                buttonAction.setText(context.getText(R.string.en_route));
+                buttonAction.setTextColor(context.getColor(R.color.colorAccent));
+                buttonAction.setEnabled(false);
+                buttonAction.setClickable(false);
+            } else {
+                buttonAction.setStrokeColorResource(R.color.colorControl);
+                buttonAction.setText(context.getText(R.string.cancel));
+                buttonAction.setEnabled(true);
+                buttonAction.setClickable(true);
+            }
         }
 
-        @OnClick(R.id.button_booking_action)
+        @OnClick(R.id.btn_booking_action)
         public void onCancelButtonClick(View itemView) {
-            clickListener.onBookingCancelButtonClick(itemView, itemId);
+            clickListener.onBookingActionButtonClick(itemView, itemId);
         }
     }
 }

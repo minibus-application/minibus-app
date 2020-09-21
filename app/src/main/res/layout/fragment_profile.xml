@@ -85,24 +85,13 @@
             <RelativeLayout
                 android:id="@+id/container_user_bookings"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="20dp"
-                android:paddingTop="20dp">
-
-                <TextView
-                    android:id="@+id/text_user_bookings_active"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:paddingStart="16dp"
-                    android:textAppearance="?textAppearanceBody2"
-                    android:text="@string/profile_active_user_bookings" />
+                android:layout_height="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_user_bookings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/text_user_bookings_active"
+                    android:padding="16dp"
                     android:clipToPadding="false" />
 
                 <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
@@ -111,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/recycler_user_bookings"
                     android:layout_centerHorizontal="true"
+                    android:paddingBottom="16dp"
                     app:spi_dotColor="@color/colorTextSecondary"
                     app:spi_dotSelectedColor="@color/colorAccent" />
             </RelativeLayout>

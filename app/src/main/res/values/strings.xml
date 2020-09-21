@@ -16,6 +16,8 @@
     <string name="confirm_reservation">Confirm reservation</string>
     <string name="go">Go</string>
     <string name="cancel">Cancel</string>
+    <string name="en_route">En Route</string>
+    <string name="completed">Completed</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 

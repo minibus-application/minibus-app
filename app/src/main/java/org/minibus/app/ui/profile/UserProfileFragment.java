@@ -133,7 +133,7 @@ public class UserProfileFragment extends BottomSheetDialogFragment implements
     }
 
     @Override
-    public void onBookingCancelButtonClick(View view, String id) {
+    public void onBookingActionButtonClick(View view, String id) {
         presenter.onBookingCancelButtonClick(id);
     }
 

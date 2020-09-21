@@ -24,27 +24,27 @@
             android:paddingBottom="12dp">
 
             <TextView
-                android:id="@+id/text_booking_dep_date"
+                android:id="@+id/tv_booking_dep_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceHeadline6"
+                android:textAppearance="?textAppearanceBody1"
                 android:singleLine="true"
                 android:ellipsize="end" />
 
             <TextView
-                android:id="@+id/text_booking_details"
+                android:id="@+id/tv_booking_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceBody2"
-                android:layout_below="@id/text_booking_dep_date"
+                android:layout_below="@id/tv_booking_dep_date"
                 android:singleLine="true"
                 android:ellipsize="end" />
 
             <TextView
-                android:id="@+id/text_booking_cost"
+                android:id="@+id/tv_booking_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceHeadline6"
+                android:textAppearance="?textAppearanceBody1"
                 android:layout_alignParentEnd="true"
                 android:textColor="@color/colorAccent"
                 android:singleLine="true"
@@ -68,36 +68,36 @@
             android:layout_below="@id/booking_header_container">
 
             <TextView
-                android:id="@+id/text_booking_dep_time"
+                android:id="@+id/tv_booking_dep_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceHeadline6" />
 
             <TextView
-                android:id="@+id/text_booking_dep_city"
+                android:id="@+id/tv_booking_dep_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceHeadline6"
-                android:layout_toEndOf="@id/text_booking_dep_time"
+                android:textAppearance="?textAppearanceBody1"
+                android:layout_toEndOf="@id/tv_booking_dep_time"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp" />
 
             <TextView
-                android:id="@+id/text_booking_dep_station"
+                android:id="@+id/tv_booking_dep_station"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceBody2"
-                android:layout_toEndOf="@id/text_booking_dep_time"
-                android:layout_below="@id/text_booking_dep_city"
+                android:layout_toEndOf="@id/tv_booking_dep_time"
+                android:layout_below="@id/tv_booking_dep_city"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"/>
 
             <TextView
-                android:id="@+id/text_booking_trip_duration"
+                android:id="@+id/tv_booking_trip_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceBody1"
@@ -115,29 +115,29 @@
             android:layout_below="@id/booking_dep_container">
 
             <TextView
-                android:id="@+id/text_booking_arr_time"
+                android:id="@+id/tv_booking_arr_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceHeadline6" />
 
             <TextView
-                android:id="@+id/text_booking_arr_city"
+                android:id="@+id/tv_booking_arr_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceHeadline6"
-                android:layout_toEndOf="@id/text_booking_arr_time"
+                android:textAppearance="?textAppearanceBody1"
+                android:layout_toEndOf="@id/tv_booking_arr_time"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp" />
 
             <TextView
-                android:id="@+id/text_booking_arr_station"
+                android:id="@+id/tv_booking_arr_station"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceBody2"
-                android:layout_toEndOf="@id/text_booking_arr_time"
-                android:layout_below="@id/text_booking_arr_city"
+                android:layout_toEndOf="@id/tv_booking_arr_time"
+                android:layout_below="@id/tv_booking_arr_city"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:paddingStart="12dp"
@@ -145,7 +145,7 @@
         </RelativeLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_booking_action"
+            android:id="@+id/btn_booking_action"
             style="@style/Widget.AppTheme.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
