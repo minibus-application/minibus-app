@@ -25,6 +25,8 @@ public interface RouteScheduleContract {
         void showRefresh();
         void hideRefresh();
         void toggleRouteDirection();
+        void disableRouteDirection();
+        void enableRouteDirection();
         void setRouteScheduleData(List<RouteTrip> routeTrips, Route route);
         void setRouteDirectionDescription(String text);
         void setRouteDirectionDescription(@StringRes int resId);

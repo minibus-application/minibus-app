@@ -394,6 +394,20 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
+    public void disableRouteDirection() {
+        inputDepartureCity.setEnabled(false);
+        inputArrivalCity.setEnabled(false);
+        buttonSwapDirection.setEnabled(false);
+    }
+
+    @Override
+    public void enableRouteDirection() {
+        inputDepartureCity.setEnabled(true);
+        inputArrivalCity.setEnabled(true);
+        buttonSwapDirection.setEnabled(true);
+    }
+
+    @Override
     public void setRouteDirectionDescription(String text) {
         fadeInOut(textToolbarSubtitle, text);
     }
@@ -426,8 +440,6 @@ public class RouteScheduleFragment extends BaseFragment implements
 
     @Override
     public void setRouteScheduleData(List<RouteTrip> routeTrips, Route route) {
-        setOperationalDays(route.getOperationalDays());
-
         Drawable background;
 
         if (routeTrips == null || routeTrips.isEmpty()) {

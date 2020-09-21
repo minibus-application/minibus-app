@@ -138,11 +138,6 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
             City newArrivalCity = storage.getRoute().getDepartureCity();
             City newDepartureCity = storage.getRoute().getArrivalCity();
 
-            storage.setDepartureCity(newDepartureCity);
-            storage.setArrivalCity(newArrivalCity);
-
-            getView().ifAlive(v -> v.setRouteDirection(newDepartureCity.getFullName(), newArrivalCity.getFullName()));
-
             addSubscription(getCompleteRouteScheduleObserver(newDepartureCity.getId(), newArrivalCity.getId(), depDate));
         } else {
             getView().ifAlive(v -> v.showError(R.string.error_complete_route));
@@ -163,9 +158,6 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
 
     @Override
     public void onDepartureCityChanged(City depCity, LocalDate depDate) {
-        storage.setDepartureCity(depCity);
-        getView().ifAlive(v -> v.setDepartureCity(depCity.getFullName()));
-
         if (storage.isArrivalCityStored()) {
             addSubscription(getCompleteRouteScheduleObserver(depCity.getId(), storage.getArrivalCity().getId(), depDate));
         }
@@ -173,9 +165,6 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
 
     @Override
     public void onArrivalCityChanged(City arrCity, LocalDate depDate) {
-        storage.setArrivalCity(arrCity);
-        getView().ifAlive(v -> v.setArrivalCity(arrCity.getFullName()));
-
         addSubscription(getCompleteRouteScheduleObserver(storage.getDepartureCity().getId(), arrCity.getId(), depDate));
     }
 
@@ -249,10 +238,22 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
 
     private DisposableSingleObserver<RouteScheduleResponse> getCompleteRouteScheduleObserver(String depCityId, String arrCityId, LocalDate depDate) {
         return getRouteDataObservable(depCityId, arrCityId)
-                .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
-                .doFinally(() -> getView().ifAlive(V::jumpTop))
+                .doOnSubscribe(disposable -> {
+                    getView().ifAlive(V::disableRouteDirection);
+                    getView().ifAlive(V::showProgress);
+                })
+                .doFinally(() -> {
+                    getView().ifAlive(V::enableRouteDirection);
+                    getView().ifAlive(V::jumpTop);
+                })
                 .flatMap(response -> {
-                    storage.setRoute(response);
+                    Route stored = storage.getRoute();
+                    if (!stored.getDepartureCity().getId().equals(depCityId) || !stored.getArrivalCity().getId().equals(arrCityId)) {
+                        storage.setRoute(response);
+                        getView().ifAlive(v -> v.setRouteDirection(response.getDepartureCity().getFullName(),
+                                response.getArrivalCity().getFullName()));
+                    }
+
                     return getRouteScheduleObservable(depDate);
                 })
                 .subscribeWith(getRouteScheduleObserver());

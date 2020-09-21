@@ -79,7 +79,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
         @BindView(R.id.text_booking_dep_station) TextView textDepartureBusStop;
         @BindView(R.id.text_booking_arr_time) TextView textArrivalTime;
         @BindView(R.id.text_booking_arr_city) TextView textArrivalCity;
-        @BindView(R.id.button_booking_cancel) MaterialButton buttonCancel;
+        @BindView(R.id.button_booking_action) MaterialButton buttonCancel;
 
         private String itemId;
 
@@ -106,7 +106,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
             textArrivalCity.setText(booking.getRouteTrip().getRoute().getArrivalCity().getName());
         }
 
-        @OnClick(R.id.button_booking_cancel)
+        @OnClick(R.id.button_booking_action)
         public void onCancelButtonClick(View itemView) {
             clickListener.onBookingCancelButtonClick(itemView, itemId);
         }
