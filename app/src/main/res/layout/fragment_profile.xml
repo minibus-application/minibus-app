@@ -1,109 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottom_sheet_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:elevation="7dp">
+    android:layout_height="match_parent"
+    android:background="@color/colorSurface"
+    android:fitsSystemWindows="false">
 
-    <RelativeLayout
-        android:id="@+id/layout_profile_header"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_login"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
 
-        <ImageView
-            android:id="@+id/image_user_avatar"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:tint="@color/colorIconSecondary"
-            app:srcCompat="@drawable/ic_avatar_dark_24dp" />
-
-        <TextView
-            android:id="@+id/text_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/image_user_avatar"
-            android:layout_toEndOf="@id/image_user_avatar"
-            android:ellipsize="end"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:singleLine="true"
-            android:textAppearance="?textAppearanceBody1" />
-
-        <TextView
-            android:id="@+id/text_user_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/image_user_avatar"
-            android:layout_toEndOf="@id/image_user_avatar"
-            android:ellipsize="end"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:singleLine="true"
-            android:textAppearance="?textAppearanceBody2" />
-
-        <Button
-            android:id="@+id/button_user_logout"
-            style="@style/Widget.AppTheme.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:text="@string/logout"
-            android:textSize="14sp"
-            android:textColor="@color/colorErrorVariant"
-            app:rippleColor="@color/colorErrorVariant"
-            android:textAllCaps="true" />
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/view_delimiter"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_alignBottom="@id/layout_profile_header"
-        android:background="@color/colorBackground" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/view_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
         android:id="@+id/container_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_delimiter"
-        android:background="@color/colorPrimaryVariant">
+        android:layout_height="match_parent"
+        android:background="@color/colorSurface"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.kennyc.view.MultiStateView
-            android:id="@+id/multi_state_user_bookings"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/btn_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:msv_errorView="@layout/view_user_bookings_empty"
-            app:msv_emptyView="@layout/view_user_bookings_empty"
-            app:msv_loadingView="@layout/view_loading"
-            app:msv_viewState="loading">
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:background="@color/colorSurface"
+            android:padding="8dp">
 
-            <RelativeLayout
-                android:id="@+id/container_user_bookings"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_active_bookings"
+                style="@style/Widget.AppTheme.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/active"
+                android:textColor="@color/selector_toggle_btn_text"
+                android:textAllCaps="true"
+                app:strokeColor="@color/selector_toggle_btn"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_bookings_history"
+                style="@style/Widget.AppTheme.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/history"
+                android:textColor="@color/selector_toggle_btn_text"
+                android:textAllCaps="true"
+                app:strokeColor="@color/selector_toggle_btn"/>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <View
+            android:id="@+id/view_delimiter"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="bottom"
+            android:layout_below="@+id/btn_group"
+            android:background="@color/colorBackground" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srl_bookings"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_below="@+id/view_delimiter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.kennyc.view.MultiStateView
+                android:id="@+id/multi_state_user_bookings"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                app:msv_emptyView="@layout/view_user_bookings_empty"
+                app:msv_errorView="@layout/view_user_bookings_empty"
+                app:msv_loadingView="@layout/view_loading"
+                app:msv_viewState="loading">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_user_bookings"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:clipToPadding="false" />
-
-                <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
-                    android:id="@+id/indicator_user_bookings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/recycler_user_bookings"
-                    android:layout_centerHorizontal="true"
-                    android:paddingBottom="16dp"
-                    app:spi_dotColor="@color/colorTextSecondary"
-                    app:spi_dotSelectedColor="@color/colorAccent" />
-            </RelativeLayout>
-        </com.kennyc.view.MultiStateView>
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimaryVariant"
+                    android:clipToPadding="false"
+                    android:padding="8dp" />
+            </com.kennyc.view.MultiStateView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

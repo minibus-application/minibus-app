@@ -83,7 +83,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         setUnbinder(ButterKnife.bind(this, view));
         getActivityComponent().inject(this);

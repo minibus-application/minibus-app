@@ -197,8 +197,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
                                     .filter(t -> t.getId().equals(tripId)).findFirst();
 
                             if (optional.isPresent()) {
-                                String formattedDate = AppDatesHelper.formatDate(depDate, AppDatesHelper.DatePattern.SUMMARY);
-                                getView().ifAlive(v -> v.openBusTripSummary(optional.get(), storage.getRoute(), formattedDate));
+                                getView().ifAlive(v -> v.openBusTripSummary(optional.get(), storage.getRoute(), depDate));
                             } else {
                                 onError(new UnsupportedOperationException("Time's up, and the bus is probably already too"));
                             }

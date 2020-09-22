@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.minibus.app.AppConstants;
 import org.minibus.app.ui.R;
@@ -48,7 +51,7 @@ public class SortingOptionsDialogFragment extends BaseDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         listener = (OnSortingOptionClickListener) getTargetFragment();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getMainActivity());
         builder.setTitle(getResources().getString(R.string.sort_by));
         builder.setSingleChoiceItems(options.toArray(new CharSequence[0]), lastSelectedPosition, (dialogInterface, i) -> {
             selectedPosition = i;

@@ -20,7 +20,8 @@ public class RouteScheduleModel extends BaseModel {
         return getClient().getApiService().getRouteScheduleData(formattedDate, routeId);
     }
 
-    public Single<UserResponse> doPostRouteTripData(String authToken, String depDate, String routeId, String tripId, int seatsCount) {
-        return getClient().getApiService().postRouteTripData("Bearer ".concat(authToken), depDate, routeId, tripId, seatsCount);
+    public Single<UserResponse> doPostRouteTripData(String authToken, LocalDate depDate, String routeId, String tripId, int seatsCount) {
+        String formattedDate = AppDatesHelper.formatDate(depDate, AppDatesHelper.DatePattern.ISO);
+        return getClient().getApiService().postRouteTripData("Bearer ".concat(authToken), formattedDate, routeId, tripId, seatsCount);
     }
 }

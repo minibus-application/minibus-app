@@ -94,7 +94,7 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         LayoutInflater inflater = LayoutInflater.from(context);
 
         if (viewType == SORT_BY_ITEM) {
-            return new SortByViewHolder(inflater.inflate(R.layout.view_filter, viewGroup, false), onSortByItemClickListener);
+            return new SortByViewHolder(inflater.inflate(R.layout.view_sort_by, viewGroup, false), onSortByItemClickListener);
         }
         return new RouteScheduleViewHolder(inflater.inflate(R.layout.view_route_trip, viewGroup, false), onItemClickListener);
     }
@@ -236,7 +236,7 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         @BindView(R.id.tv_available_seats) TextView textSeatsAvailable;
         @BindView(R.id.tv_cost) TextView textCost;
         @BindView(R.id.btn_select) ProgressMaterialButton btnSelect;
-        @BindView(R.id.ll_trip) FrameLayout layoutRouteTrip;
+        @BindView(R.id.fl_trip) FrameLayout layoutRouteTrip;
 
         private String itemId;
         private OnItemClickListener onItemClickListener;

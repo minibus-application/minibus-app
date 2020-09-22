@@ -3,25 +3,37 @@ package org.minibus.app.ui.profile;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.minibus.app.data.network.pojo.booking.Booking;
 import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.helpers.AppDatesHelper;
-import com.google.android.material.button.MaterialButton;
+import org.minibus.app.ui.schedule.RouteScheduleAdapter;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 import static org.minibus.app.helpers.AppDatesHelper.DatePattern.BOOKING;
 import static org.minibus.app.helpers.AppDatesHelper.DatePattern.ISO;
@@ -29,53 +41,56 @@ import static org.minibus.app.helpers.AppDatesHelper.DatePattern.ISO;
 
 public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapter.BookingsViewHolder> {
 
-    public interface OnItemClickListener {
-        void onBookingActionButtonClick(View view, String id);
-    }
-
     private Context context;
     private List<Booking> bookings = new ArrayList<>();
-    private OnItemClickListener clickListener;
+    private OnItemClickListener onItemClickListener;
 
     public UserBookingsAdapter(Context context) {
         this.context = context;
     }
 
     public void setOnItemClickListener(OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
+        this.onItemClickListener = clickListener;
     }
 
     public void setData(List<Booking> bookings) {
         this.bookings.clear();
-        if (bookings != null) this.bookings.addAll(bookings);
+        if (bookings != null) {
+            this.bookings.addAll(bookings);
+        }
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public BookingsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        int bookingItemLayoutId = R.layout.view_user_booking;
-        View layoutView = LayoutInflater.from(context).inflate(bookingItemLayoutId, viewGroup, false);
-        return new BookingsViewHolder(layoutView);
+    public BookingsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        return new BookingsViewHolder(inflater.inflate(R.layout.view_user_booking, viewGroup, false), onItemClickListener);
     }
 
     @Override
     public long getItemId(int position) {
-        return bookings.get(position).getLongId();
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull BookingsViewHolder viewHolder, int position) {
-        Booking booking = bookings.get(position);
-        viewHolder.bind(booking);
+        return new BigInteger(bookings.get(position).getId(), 16).longValue();
     }
 
     @Override
     public int getItemCount() {
-        return bookings.size();
+        return bookings == null ? 0 : bookings.size();
     }
 
-    class BookingsViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onBindViewHolder(@NonNull final BookingsViewHolder viewHolder, int position) {
+        Timber.d("Bind booking with id = %d, position = %d", getItemId(position), position);
+
+        Booking booking = bookings.get(position);
+        viewHolder.bind(context, booking);
+    }
+
+    public interface OnItemClickListener {
+        void onBookingActionButtonClick(View view, String itemId);
+    }
+
+    static class BookingsViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_booking_trip_duration) TextView textTripDuration;
         @BindView(R.id.btn_booking_action) MaterialButton buttonAction;
@@ -88,15 +103,18 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
         @BindView(R.id.tv_booking_arr_city) TextView textArrCity;
         @BindView(R.id.tv_booking_details) TextView textDetails;
         @BindView(R.id.tv_booking_cost) TextView textCost;
+        @BindView(R.id.fl_trip) FrameLayout layoutBooking;
 
         private String itemId;
+        private OnItemClickListener onItemClickListener;
 
-        private BookingsViewHolder(@NonNull View itemView) {
+        private BookingsViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
+            this.onItemClickListener = onItemClickListener;
             ButterKnife.bind(this, itemView);
         }
 
-        private void bind(Booking booking) {
+        private void bind(Context context, Booking booking) {
             String formattedDate = AppDatesHelper.formatDate(booking.getDepartureDate(), ISO, BOOKING);
             this.itemId = booking.getId();
 
@@ -121,22 +139,29 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
             textArrCityStation.setText(routeTrip.getRoute().getArrivalCity().getStation());
 
             if (booking.isEnRoute()) {
-                buttonAction.setStrokeColorResource(R.color.colorAccent);
+                buttonAction.setVisibility(View.VISIBLE);
+                buttonAction.setStrokeColorResource(R.color.colorGreen);
                 buttonAction.setText(context.getText(R.string.en_route));
-                buttonAction.setTextColor(context.getColor(R.color.colorAccent));
+                buttonAction.setTextColor(context.getColor(R.color.colorGreen));
                 buttonAction.setEnabled(false);
                 buttonAction.setClickable(false);
+                buttonAction.setFocusable(false);
             } else {
-                buttonAction.setStrokeColorResource(R.color.colorControl);
-                buttonAction.setText(context.getText(R.string.cancel));
-                buttonAction.setEnabled(true);
-                buttonAction.setClickable(true);
+                if (booking.isActive()) {
+                    buttonAction.setVisibility(View.VISIBLE);
+                    buttonAction.setText(context.getText(R.string.cancel));
+                    buttonAction.setEnabled(true);
+                    buttonAction.setClickable(true);
+                    buttonAction.setFocusable(true);
+                } else {
+                    buttonAction.setVisibility(View.GONE);
+                }
             }
         }
 
         @OnClick(R.id.btn_booking_action)
         public void onCancelButtonClick(View itemView) {
-            clickListener.onBookingActionButtonClick(itemView, itemId);
+            onItemClickListener.onBookingActionButtonClick(itemView, itemId);
         }
     }
 }

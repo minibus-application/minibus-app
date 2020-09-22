@@ -32,7 +32,7 @@ public interface AppApiService {
     Single<Route> getRouteData(@Query("fromId") String depCityId, @Query("toId") String arrCityId);
 
     @GET("/user")
-    Single<UserResponse> getUserData(@Header("Authorization") String authToken);
+    Single<UserResponse> getUserData(@Header("Authorization") String authToken, @Query("history") boolean withBookingsHistory);
 
     @POST("/user/auth")
     Single<UserResponse> authUserData(@Body HashMap<String, Object> body);

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import android.os.Handler;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +22,17 @@ import android.widget.TextView;
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.schedule.RouteTrip;
+import org.minibus.app.helpers.AppAlertsHelper;
+import org.minibus.app.helpers.AppDatesHelper;
 import org.minibus.app.ui.base.BaseSheetDialogFragment;
 import org.minibus.app.ui.R;
+import org.minibus.app.ui.custom.ProgressMaterialButton;
 import org.minibus.app.utils.CommonUtil;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
+
+import java.time.LocalDate;
 
 import javax.inject.Inject;
 
@@ -42,7 +48,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     }
 
     @BindView(R.id.rg_seats) RadioGroup radioGroupSeats;
-    @BindView(R.id.btn_confirm_reservation) MaterialButton btnConfirmReservation;
+    @BindView(R.id.btn_confirm_reservation) ProgressMaterialButton btnConfirmReservation;
     @BindView(R.id.tv_summary_title) TextView textTitle;
     @BindView(R.id.tv_summary_cost) TextView textCost;
     @BindView(R.id.tv_trip_travel_time) TextView textTravelTime;
@@ -65,7 +71,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     private OnRouteTripBookingListener listener;
     private RouteTrip routeTrip;
     private Route route;
-    private String departureDate;
+    private LocalDate departureDate;
     private int availableSeatsCount;
 
     public static RouteTripFragment newInstance() {
@@ -79,7 +85,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         if (getArguments() != null) {
             routeTrip = (RouteTrip) getArguments().getSerializable(ROUTE_TRIP_KEY);
             route = (Route) getArguments().getSerializable(ROUTE_KEY);
-            departureDate = getArguments().getString(DEPARTURE_DATE_KEY);
+            departureDate = (LocalDate) getArguments().getSerializable(DEPARTURE_DATE_KEY);
             availableSeatsCount = routeTrip.getAvailableSeats();
         } else {
             dismiss();
@@ -98,7 +104,8 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         getActivityComponent().inject(this);
         presenter.attachView(this);
 
-        textTitle.setText(departureDate);
+        String formattedDate = AppDatesHelper.formatDate(departureDate, AppDatesHelper.DatePattern.SUMMARY);
+        textTitle.setText(formattedDate);
         textCost.setText(String.format("%s %s", routeTrip.getPrice(), routeTrip.getCurrency()));
         textTravelTime.setText(String.format("%s - %s (%s)", routeTrip.getDepartureTime(), routeTrip.getArrivalTime(), routeTrip.getDuration()));
         textRoute.setText(route.getDescription());
@@ -145,7 +152,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
 
     @OnClick(R.id.btn_confirm_reservation)
     public void onConfirmReservationButtonClick() {
-        presenter.onConfirmReservationButtonClick(departureDate, routeTrip.getId(), getCurrentSeatsCount());
+        presenter.onConfirmReservationButtonClick(departureDate, routeTrip.getId(), routeTrip.getRoute().getId(), getCurrentSeatsCount());
     }
 
     /**
@@ -176,12 +183,14 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
     }
 
     @Override
-    public void disableConfirmReservationButton() {
+    public void showProgress() {
+        btnConfirmReservation.setLoading(true);
         btnConfirmReservation.setEnabled(false);
     }
 
     @Override
-    public void enableConfirmReservationButton() {
+    public void hideProgress() {
+        btnConfirmReservation.setLoading(false);
         btnConfirmReservation.setEnabled(true);
     }
 

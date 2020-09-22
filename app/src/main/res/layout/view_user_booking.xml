@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ll_trip"
+    android:id="@+id/fl_trip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:background="@drawable/bg_route_trip"
     android:clickable="false"
-    android:focusable="false">
+    android:focusable="false"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
 
     <RelativeLayout
         android:id="@+id/booking_container"
@@ -71,6 +73,7 @@
                 android:id="@+id/tv_booking_dep_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textAppearance="?textAppearanceHeadline6" />
 
             <TextView
@@ -151,6 +154,8 @@
             android:layout_height="wrap_content"
             android:text="@string/cancel"
             android:layout_below="@+id/booking_arr_container"
+            android:textColor="@color/selector_neg_outlined_btn_text"
+            app:strokeColor="@color/selector_neg_outlined_btn"
             app:rippleColor="@color/colorErrorVariant" />
     </RelativeLayout>
 </FrameLayout>

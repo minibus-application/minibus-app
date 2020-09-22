@@ -42,6 +42,7 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     @BindView(R.id.appbar_cities) AppBarLayout appbar;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title) TextView toolbarTitle;
+    @BindView(R.id.tv_toolbar_subtitle) TextView toolbarSubtitle;
 
     @Inject
     BaseCitiesPresenter<BaseCitiesContract.View> presenter;
@@ -75,6 +76,7 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
         toolbar.setNavigationIcon(R.drawable.ic_close_dark_24dp);
         toolbar.setNavigationOnClickListener(v -> presenter.onCloseButtonClick());
         toolbarTitle.setText(getTitle());
+        toolbarSubtitle.setVisibility(View.GONE);
 
         layoutManager = new LinearLayoutManager(getMainActivity());
         adapter = new CitiesAdapter(getMainActivity());

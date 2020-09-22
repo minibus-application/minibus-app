@@ -7,7 +7,7 @@
     <color name="colorPrimaryVariant">#FAFAFA</color>
     <color name="colorOnPrimary">#121212</color>
     <color name="colorSecondary">#1E88E5</color>
-    <color name="colorSecondaryVariant">#90CAF9</color>
+    <color name="colorSecondaryVariant">#BBDEFB</color>
     <color name="colorOnSecondary">#FFFFFF</color>
     <color name="colorBackground">#F5F5F5</color>
     <color name="colorOnBackground">#9E9E9E</color>

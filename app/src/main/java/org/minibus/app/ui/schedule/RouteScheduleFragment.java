@@ -20,7 +20,6 @@ import org.minibus.app.utils.CommonUtil;
 import org.minibus.app.ui.base.BaseFragment;
 import org.minibus.app.ui.login.LoginFragment;
 import org.minibus.app.ui.profile.UserProfileFragment;
-import org.minibus.app.helpers.AppAnimHelper;
 
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -79,7 +78,7 @@ public class RouteScheduleFragment extends BaseFragment implements
     @BindView(R.id.cl_route_schedule_content) CoordinatorLayout layoutContent;
     @BindView(R.id.rv_calendar) RecyclerView recyclerCalendar;
     @BindView(R.id.rv_route_schedule) RecyclerView recyclerRouteSchedule;
-    @BindView(R.id.srl_route_schedule) SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.srl_route_schedule) SwipeRefreshLayout swipeRefreshRouteSchedule;
     @BindView(R.id.ib_swap_direction) ImageButton buttonSwapDirection;
     @BindView(R.id.et_dep_city) TextInputEditText inputDepartureCity;
     @BindView(R.id.et_arr_city) TextInputEditText inputArrivalCity;
@@ -127,8 +126,8 @@ public class RouteScheduleFragment extends BaseFragment implements
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         fabJumpTop.setVisibility(View.INVISIBLE);
 
-        swipeRefresh.setOnRefreshListener(this);
-        swipeRefresh.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshRouteSchedule.setOnRefreshListener(this);
+        swipeRefreshRouteSchedule.setColorSchemeResources(R.color.colorAccent);
 
         layoutManagerCalendar = new SpanningLinearLayoutManager(getMainActivity(), LinearLayoutManager.HORIZONTAL, false);
         adapterCalendar = new RouteScheduleCalendarAdapter(getMainActivity());
@@ -321,12 +320,12 @@ public class RouteScheduleFragment extends BaseFragment implements
 
     @Override
     public void hideRefresh() {
-        swipeRefresh.setRefreshing(false);
+        swipeRefreshRouteSchedule.setRefreshing(false);
     }
 
     @Override
     public void showRefresh() {
-        swipeRefresh.setRefreshing(true);
+        swipeRefreshRouteSchedule.setRefreshing(true);
     }
 
     @Override
@@ -467,11 +466,11 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void openBusTripSummary(RouteTrip routeTrip, Route route, String depDate) {
+    public void openBusTripSummary(RouteTrip routeTrip, Route route, LocalDate depDate) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(RouteTripFragment.ROUTE_TRIP_KEY, routeTrip);
         bundle.putSerializable(RouteTripFragment.ROUTE_KEY, route);
-        bundle.putString(RouteTripFragment.DEPARTURE_DATE_KEY, depDate);
+        bundle.putSerializable(RouteTripFragment.DEPARTURE_DATE_KEY, depDate);
 
         super.openDialogFragment(RouteTripFragment.newInstance(), RouteTripFragment.REQ_CODE, bundle);
     }
@@ -509,7 +508,7 @@ public class RouteScheduleFragment extends BaseFragment implements
 
     @Override
     public void hideProgress() {
-        if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
+        if (swipeRefreshRouteSchedule.isRefreshing()) swipeRefreshRouteSchedule.setRefreshing(false);
 
         if (multiStateView.getViewState() == MultiStateView.ViewState.LOADING) {
             multiStateView.setViewState(MultiStateView.ViewState.CONTENT);

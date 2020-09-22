@@ -39,7 +39,7 @@ public interface RouteScheduleContract {
         void openLogin();
         void openDepartureCities();
         void openArrivalCities();
-        void openBusTripSummary(RouteTrip routeTrip, Route route, String depDate);
+        void openBusTripSummary(RouteTrip routeTrip, Route route, LocalDate depDate);
         void jumpTop();
         void finish();
     }

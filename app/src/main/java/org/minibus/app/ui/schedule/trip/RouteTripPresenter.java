@@ -4,13 +4,17 @@ import org.minibus.app.AppConstants;
 import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.data.network.model.RouteScheduleModel;
 import org.minibus.app.data.network.pojo.user.UserResponse;
+import org.minibus.app.helpers.ApiErrorHelper;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.base.BasePresenter;
+
+import java.time.LocalDate;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePresenter<V>
@@ -43,36 +47,30 @@ public class RouteTripPresenter<V extends RouteTripContract.View> extends BasePr
     }
 
     @Override
-    public void onConfirmReservationButtonClick(String depDate, String routeTripId, int seatsToReserve) {
-//        addSubscription(getBusTripBookingObservable(storage.getUserAuthToken(), depDate, busTripId, seatsToReserve)
-//                .doOnSubscribe(disposable -> {
-//                    getView().ifAlive(V::showProgress);
-//                    getView().ifAlive(V::disableConfirmReservationButton);
-//                })
-//                .doFinally(() -> getView().ifAlive(V::enableConfirmReservationButton))
-//                .subscribeWith(new DisposableSingleObserver<BookingResponse>() {
-//                    @Override
-//                    public void onSuccess(BookingResponse bookingResponse) {
-//                        storage.setUserBookingsCount(storage.getUserBookingsCount() + seatsCount);
-//
-//                        getView().ifAlive(V::hideProgress);
-//                        getView().ifAlive(V::closeOnBooked);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable throwable) {
-//                        getView().ifAlive(V::hideProgress);
-//                        getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
-//                    }
-//                }));
+    public void onConfirmReservationButtonClick(LocalDate depDate, String tripId, String routeId, int seatsCount) {
+        addSubscription(getRouteTripBookingObservable(depDate, tripId, routeId, seatsCount)
+                .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
+                .doFinally(() -> getView().ifAlive(V::hideProgress))
+                .subscribeWith(new DisposableSingleObserver<UserResponse>() {
+                    @Override
+                    public void onSuccess(UserResponse response) {
+                        storage.setUserData(response.getUser());
+
+                        getView().ifAlive(V::closeOnBooked);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
+                    }
+                }));
     }
 
-    private Single<UserResponse> getRouteTripBookingObservable(String authToken,
-                                                               String depDate,
-                                                               String routeId,
+    private Single<UserResponse> getRouteTripBookingObservable(LocalDate depDate,
                                                                String tripId,
+                                                               String routeId,
                                                                int seatsCount) {
-        return routeScheduleModel.doPostRouteTripData(authToken, depDate, routeId, tripId, seatsCount)
+        return routeScheduleModel.doPostRouteTripData(storage.getAuthToken(), depDate, routeId, tripId, seatsCount)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

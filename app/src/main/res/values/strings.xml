@@ -18,6 +18,8 @@
     <string name="cancel">Cancel</string>
     <string name="en_route">En Route</string>
     <string name="completed">Completed</string>
+    <string name="active">Active</string>
+    <string name="history">History</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 

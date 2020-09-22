@@ -4,37 +4,35 @@ import com.google.gson.annotations.SerializedName;
 
 public class ErrorResponse {
 
-    @SerializedName("timestamp")
-    private String timestamp;
+    @SerializedName("success")
+    private boolean success;
 
-    @SerializedName("status")
-    private int status;
+    @SerializedName("code")
+    private int code;
 
     @SerializedName("message")
     private String message;
 
-    public ErrorResponse(String timestamp,
-                         int status,
-                         String message) {
-        this.timestamp = timestamp;
-        this.status = status;
+    public ErrorResponse(boolean success, int code, String message) {
+        this.success = success;
+        this.code = code;
         this.message = message;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
-    public int getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getMessage() {

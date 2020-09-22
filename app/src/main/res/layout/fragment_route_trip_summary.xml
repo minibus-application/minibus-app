@@ -75,7 +75,7 @@
             android:text="@string/label_payment_on_boarding"
             android:textAppearance="?textAppearanceBody2" />
 
-        <com.google.android.material.button.MaterialButton
+        <org.minibus.app.ui.custom.ProgressMaterialButton
             android:id="@+id/btn_confirm_reservation"
             style="@style/Widget.AppTheme.Button.UnelevatedButton"
             android:layout_width="match_parent"

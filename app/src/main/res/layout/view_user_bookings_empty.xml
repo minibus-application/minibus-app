@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_empty"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/colorSurface"
     android:gravity="center">
 
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:src="@drawable/ic_user_bookings_empty_state" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/image_empty"
         android:layout_margin="4dp"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:textAppearance="?textAppearanceHeadline6"
         android:text="@string/bookings_empty_title" />
 
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/text_empty_title"
         android:layout_margin="4dp"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:textAppearance="?textAppearanceBody2"
         android:text="@string/bookings_empty_message" />
 
@@ -42,6 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/text_empty_subtitle"
         android:layout_margin="8dp"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:text="@string/route_schedule_title" />
 </RelativeLayout>

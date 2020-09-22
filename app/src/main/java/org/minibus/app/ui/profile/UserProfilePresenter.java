@@ -1,6 +1,7 @@
 package org.minibus.app.ui.profile;
 
 import org.minibus.app.data.local.AppStorageManager;
+import org.minibus.app.data.network.pojo.user.User;
 import org.minibus.app.data.network.pojo.user.UserResponse;
 import org.minibus.app.data.network.model.UserModel;
 import org.minibus.app.ui.R;
@@ -56,7 +57,37 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
     @Override
     public void onStart() {
         getView().ifAlive(v -> v.setUserData(storage.getUserData().getName(), storage.getUserData().getPhone()));
-        refreshUserData();
+
+        onActiveBookingsTabSelected();
+    }
+
+    @Override
+    public void onActiveBookingsTabSelected() {
+        addSubscription(getUserDataObservable(storage.getAuthToken(), false)
+                .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
+                .subscribeWith(getUserDataObserver()));
+    }
+
+    @Override
+    public void onBookingsHistoryTabSelected() {
+        addSubscription(getUserDataObservable(storage.getAuthToken(), true)
+                .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
+                .subscribeWith(getUserDataObserver()));
+    }
+
+    @Override
+    public void onRefreshActiveBookings() {
+        refreshUserData(false);
+    }
+
+    @Override
+    public void onRefreshBookingsHistory() {
+        refreshUserData(true);
+    }
+
+    @Override
+    public void onCloseButtonClick() {
+        getView().ifAlive(V::close);
     }
 
     @Override
@@ -64,29 +95,37 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
         getView().ifAlive(v -> v.showAsk(R.string.warning_logout_message, (dialogInterface, i) -> {
             dialogInterface.dismiss();
             storage.clearUserSession();
-
             getView().ifAlive(V::logout);
         }));
     }
 
-    private void refreshUserData() {
-        addSubscription(getUserDataObservable(storage.getAuthToken())
-                .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
-                .subscribeWith(new DisposableSingleObserver<UserResponse>() {
-                    @Override
-                    public void onSuccess(UserResponse response) {
-                        storage.setUserData(response.getUser());
+    private void refreshUserData(boolean withBookingsHistory) {
+        addSubscription(getUserDataObservable(storage.getAuthToken(), withBookingsHistory)
+                .doFinally(() -> getView().ifAlive(V::hideRefresh))
+                .subscribeWith(getUserDataObserver()));
+    }
 
-                        getView().ifAlive(v -> v.setUserData(response.getUser().getName(), response.getUser().getPhone()));
-                        getView().ifAlive(v -> v.setUserBookingsData(response.getBookings()));
-                    }
+    private DisposableSingleObserver<UserResponse> getUserDataObserver() {
+        return new DisposableSingleObserver<UserResponse>() {
+            @Override
+            public void onSuccess(UserResponse response) {
+                User received = response.getUser();
+                User stored = storage.getUserData();
+                if (!received.getName().equals(stored.getName()) || !received.getPhone().equals(stored.getPhone())) {
+                    storage.setUserData(response.getUser());
+                    getView().ifAlive(v -> v.setUserData(response.getUser().getName(), response.getUser().getPhone()));
+                }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
-                        getView().ifAlive(V::showEmptyView);
-                    }
-                }));
+                getView().ifAlive(v -> v.setActiveTabCounter(response.getBookings().size()));
+                getView().ifAlive(v -> v.setUserBookingsData(response.getBookings()));
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
+                getView().ifAlive(V::showEmptyView);
+            }
+        };
     }
 
     private Single<UserResponse> getRevokeBookingObservable(String authToken, String bookingId) {
@@ -95,8 +134,8 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<UserResponse> getUserDataObservable(String authToken) {
-        return userModel.doGetUserData(authToken)
+    private Single<UserResponse> getUserDataObservable(String authToken, boolean withBookingsHistory) {
+        return userModel.doGetUserData(authToken, withBookingsHistory)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -13,8 +13,8 @@ public class UserModel extends BaseModel {
         super(appApiClient);
     }
 
-    public Single<UserResponse> doGetUserData(String authToken) {
-        return getClient().getApiService().getUserData("Bearer ".concat(authToken));
+    public Single<UserResponse> doGetUserData(String authToken, boolean withBookingsHistory) {
+        return getClient().getApiService().getUserData("Bearer ".concat(authToken), withBookingsHistory);
     }
 
     public Single<UserResponse> doAuthUserData(String name, String phone, String password) {
