@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_trip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_route_trip"
     android:clickable="false"
     android:focusable="false"
     android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_route_trip">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -30,7 +29,7 @@
                 android:layout_weight="1"
                 android:layout_gravity="start"
                 android:textAppearance="?textAppearanceBody2"
-                android:textColor="@color/colorTextPrimary" />
+                android:textColor="?colorTextPrimary" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,14 +42,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/ic_star_dark_24dp"
-                    app:tint="@color/colorYellow" />
+                    app:tint="?colorYellow" />
 
                 <TextView
                     android:id="@+id/tv_carrier_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?textAppearanceBody2"
-                    android:textColor="@color/colorTextPrimary" />
+                    android:textColor="?colorTextPrimary" />
             </LinearLayout>
         </TableRow>
 
@@ -141,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="start|center_vertical"
-                    android:textColor="?colorAccent"
+                    android:textColor="?colorSecondary"
                     android:textAppearance="?textAppearanceBody1" />
 
                 <org.minibus.app.ui.custom.ProgressMaterialButton
@@ -151,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAllCaps="true"
-                    app:progressColor="@color/colorAccent"
+                    app:progressColor="?colorAccent"
                     android:text="@string/go" />
             </LinearLayout>
         </TableRow>

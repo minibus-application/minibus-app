@@ -4,20 +4,19 @@
     android:id="@+id/fl_trip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
     android:background="@drawable/bg_route_trip"
     android:clickable="false"
     android:focusable="false"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp">
+    android:padding="12dp">
 
     <RelativeLayout
         android:id="@+id/booking_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:focusable="true"
-        android:background="@color/colorSurface">
+        android:focusable="true">
 
         <RelativeLayout
             android:id="@+id/booking_header_container"
@@ -29,93 +28,93 @@
                 android:id="@+id/tv_booking_dep_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
+                android:ellipsize="end"
                 android:singleLine="true"
-                android:ellipsize="end" />
+                android:textAppearance="?textAppearanceBody1" />
 
             <TextView
                 android:id="@+id/tv_booking_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody2"
                 android:layout_below="@id/tv_booking_dep_date"
+                android:ellipsize="end"
                 android:singleLine="true"
-                android:ellipsize="end" />
+                android:textAppearance="?textAppearanceBody2" />
 
             <TextView
                 android:id="@+id/tv_booking_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
                 android:layout_alignParentEnd="true"
-                android:textColor="@color/colorAccent"
+                android:ellipsize="end"
                 android:singleLine="true"
-                android:ellipsize="end" />
+                android:textAppearance="?textAppearanceBody1"
+                android:textColor="?colorSecondary" />
         </RelativeLayout>
 
         <View
             android:id="@+id/view_delimiter"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_gravity="bottom"
             android:layout_below="@id/booking_header_container"
-            android:background="@color/colorControl" />
+            android:layout_gravity="bottom"
+            android:background="?colorPrimaryVariant" />
 
         <RelativeLayout
             android:id="@+id/booking_dep_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
+            android:layout_below="@id/booking_header_container"
             android:paddingTop="12dp"
-            android:layout_below="@id/booking_header_container">
+            android:paddingBottom="8dp">
 
             <TextView
                 android:id="@+id/tv_booking_dep_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textAppearance="?textAppearanceHeadline6" />
+                android:textAppearance="?textAppearanceHeadline6"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_booking_dep_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
                 android:layout_toEndOf="@id/tv_booking_dep_time"
-                android:singleLine="true"
                 android:ellipsize="end"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp" />
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                android:textAppearance="?textAppearanceBody1" />
 
             <TextView
                 android:id="@+id/tv_booking_dep_station"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody2"
-                android:layout_toEndOf="@id/tv_booking_dep_time"
                 android:layout_below="@id/tv_booking_dep_city"
-                android:singleLine="true"
+                android:layout_toEndOf="@id/tv_booking_dep_time"
                 android:ellipsize="end"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"/>
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                android:textAppearance="?textAppearanceBody2" />
 
             <TextView
                 android:id="@+id/tv_booking_trip_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
                 android:layout_alignParentEnd="true"
+                android:ellipsize="end"
                 android:singleLine="true"
-                android:ellipsize="end" />
+                android:textAppearance="?textAppearanceBody1" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/booking_arr_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="12dp"
+            android:layout_below="@id/booking_dep_container"
             android:paddingTop="8dp"
-            android:layout_below="@id/booking_dep_container">
+            android:paddingBottom="12dp">
 
             <TextView
                 android:id="@+id/tv_booking_arr_time"
@@ -127,24 +126,24 @@
                 android:id="@+id/tv_booking_arr_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody1"
                 android:layout_toEndOf="@id/tv_booking_arr_time"
-                android:singleLine="true"
                 android:ellipsize="end"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp" />
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                android:textAppearance="?textAppearanceBody1" />
 
             <TextView
                 android:id="@+id/tv_booking_arr_station"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody2"
-                android:layout_toEndOf="@id/tv_booking_arr_time"
                 android:layout_below="@id/tv_booking_arr_city"
-                android:singleLine="true"
+                android:layout_toEndOf="@id/tv_booking_arr_time"
                 android:ellipsize="end"
                 android:paddingStart="12dp"
-                android:paddingEnd="12dp"/>
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                android:textAppearance="?textAppearanceBody2" />
         </RelativeLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -152,10 +151,10 @@
             style="@style/Widget.AppTheme.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
             android:layout_below="@+id/booking_arr_container"
+            android:text="@string/cancel"
             android:textColor="@color/selector_neg_outlined_btn_text"
-            app:strokeColor="@color/selector_neg_outlined_btn"
-            app:rippleColor="@color/colorErrorVariant" />
+            app:rippleColor="@null"
+            app:strokeColor="@color/selector_neg_outlined_btn" />
     </RelativeLayout>
 </FrameLayout>

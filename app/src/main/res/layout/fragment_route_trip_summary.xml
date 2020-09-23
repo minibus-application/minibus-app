@@ -8,6 +8,7 @@
         android:id="@+id/rl_summary_header"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -58,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_trip_info"
-        android:background="@color/colorSurface"
+        android:background="?colorPrimary"
         android:orientation="vertical"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"

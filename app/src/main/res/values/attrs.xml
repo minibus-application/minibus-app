@@ -4,8 +4,11 @@
     <attr name="colorTextSecondary" format="color|reference" />
     <attr name="colorIconPrimary" format="color|reference" />
     <attr name="colorIconSecondary" format="color|reference" />
-    <attr name="colorControls" format="color|reference" />
-    <attr name="colorErrorVariant" format="color|reference" />
+    <attr name="colorStroke" format="color|reference" />
+    <attr name="colorCard" format="color|reference" />
+    <attr name="colorBackground" format="color|reference" />
+    <attr name="colorGreen" format="color|reference" />
+    <attr name="colorYellow" format="color|reference" />
 
     <declare-styleable name="ProgressMaterialButton">
         <attr name="progressColor" format="color" />

@@ -25,6 +25,7 @@ import org.minibus.app.ui.base.BaseDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -108,10 +109,9 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     @Override
     public void onCityLocationClick(View view, City city, int pos) {
         try {
-            Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s",
+            Uri intentUri = Uri.parse(String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%s,%s",
                     city.getLatitude(), city.getLongitude()));
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-            mapIntent.setPackage("com.google.android.apps.maps");
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, intentUri);
             startActivity(mapIntent);
         } catch (Exception e) {
             showError(R.string.error_finding_direction);

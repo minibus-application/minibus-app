@@ -28,6 +28,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.kennyc.view.MultiStateView;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -56,6 +57,9 @@ public class UserProfileFragment extends BaseDialogFragment implements
     @Inject UserProfilePresenter<UserProfileContract.View> presenter;
 
     public static final int REQ_CODE = AppConstants.USER_PROFILE_FRAGMENT_REQ_CODE;
+    private BookingsTab checkedTab = BookingsTab.ACTIVE;
+    private String defaultActiveBookingsTabName;
+    private String defaultBookingsHistoryTabName;
     private LinearLayoutManager layoutManager;
     private UserBookingsAdapter adapter;
 
@@ -67,7 +71,7 @@ public class UserProfileFragment extends BaseDialogFragment implements
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideAnimation;
+        Objects.requireNonNull(dialog.getWindow()).getAttributes().windowAnimations = R.style.DialogSlideAnimation;
         return dialog;
     }
 
@@ -90,13 +94,15 @@ public class UserProfileFragment extends BaseDialogFragment implements
         tabsBookingsTypes.setSingleSelection(true);
         tabsBookingsTypes.addOnButtonCheckedListener(this);
         tabsBookingsTypes.check(buttonActiveBookings.getId());
+        defaultActiveBookingsTabName = getResources().getString(R.string.active);
+        defaultBookingsHistoryTabName = getResources().getString(R.string.history);
 
         toolbar.setNavigationIcon(R.drawable.ic_close_dark_24dp);
         toolbar.setNavigationOnClickListener(v -> presenter.onCloseButtonClick());
 
         textToolbarSubtitle.setVisibility(View.VISIBLE);
         buttonLogout.setVisibility(View.VISIBLE);
-        buttonLogout.setText(R.string.logout);
+        buttonLogout.setText(getResources().getString(R.string.logout));
 
         swipeRefreshBookings.setOnRefreshListener(this);
         swipeRefreshBookings.setColorSchemeResources(R.color.colorAccent);
@@ -122,20 +128,17 @@ public class UserProfileFragment extends BaseDialogFragment implements
 
     @Override
     public void onRefresh() {
-        if (buttonActiveBookings.isChecked()) {
-            presenter.onRefreshActiveBookings();
-        } else if (buttonBookingsHistory.isChecked()) {
-            presenter.onRefreshBookingsHistory();
-        }
+        presenter.onBookingsTabRefresh(checkedTab);
     }
 
     @Override
     public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
         if (checkedId == buttonActiveBookings.getId() && isChecked) {
-            presenter.onActiveBookingsTabSelected();
-        }
-        if (checkedId == buttonBookingsHistory.getId() && isChecked) {
-            presenter.onBookingsHistoryTabSelected();
+            checkedTab = BookingsTab.ACTIVE;
+            presenter.onBookingsTabChecked(BookingsTab.ACTIVE);
+        } else if (checkedId == buttonBookingsHistory.getId() && isChecked) {
+            checkedTab = BookingsTab.HISTORY;
+            presenter.onBookingsTabChecked(BookingsTab.HISTORY);
         }
     }
 
@@ -152,7 +155,7 @@ public class UserProfileFragment extends BaseDialogFragment implements
     @Override
     public void onStart() {
         super.onStart();
-        presenter.onStart();
+        presenter.onStart(checkedTab);
     }
 
     @Override
@@ -160,16 +163,20 @@ public class UserProfileFragment extends BaseDialogFragment implements
         swipeRefreshBookings.setRefreshing(false);
     }
 
+    @Override
+    public void resetTabsCounter() {
+        buttonActiveBookings.setText(defaultActiveBookingsTabName);
+        buttonBookingsHistory.setText(defaultBookingsHistoryTabName);
+    }
+
     @SuppressLint("DefaultLocale")
     @Override
-    public void setActiveTabCounter(int bookingsCount) {
-//        if (buttonActiveBookings.isChecked()) {
-//            buttonActiveBookings.setText(String.format("%s (%d)", getResources().getString(R.string.active), bookingsCount));
-//            buttonBookingsHistory.setText(getResources().getString(R.string.history));
-//        } else if (buttonBookingsHistory.isChecked()) {
-//            buttonBookingsHistory.setText(String.format("%s (%d)", getResources().getString(R.string.history), bookingsCount));
-//            buttonActiveBookings.setText(getResources().getString(R.string.active));
-//        }
+    public void setCheckedTabCounter(int bookingsCount) {
+        if (checkedTab == BookingsTab.ACTIVE) {
+            buttonActiveBookings.setText(String.format("%s (%d)", getResources().getString(R.string.active), bookingsCount));
+        } else if (checkedTab == BookingsTab.HISTORY) {
+            buttonBookingsHistory.setText(String.format("%s (%d)", getResources().getString(R.string.history), bookingsCount));
+        }
     }
 
     @Override
@@ -222,5 +229,9 @@ public class UserProfileFragment extends BaseDialogFragment implements
     public void onDestroyView() {
         presenter.detachView();
         super.onDestroyView();
+    }
+
+    enum BookingsTab {
+        ACTIVE, HISTORY
     }
 }

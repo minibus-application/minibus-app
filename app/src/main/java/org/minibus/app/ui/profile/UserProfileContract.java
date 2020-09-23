@@ -12,7 +12,8 @@ public interface UserProfileContract {
 
         void setUserBookingsData(List<Booking> bookings);
         void setUserData(String userName, String userPhone);
-        void setActiveTabCounter(int bookingsCount);
+        void setCheckedTabCounter(int bookingsCount);
+        void resetTabsCounter();
         void hideRefresh();
         void logout();
         void close();
@@ -20,14 +21,12 @@ public interface UserProfileContract {
 
     interface Presenter<V extends UserProfileContract.View> extends Contract.Presenter<V> {
 
-        void onStart();
-        void onLogoutButtonClick();
-        void onCloseButtonClick();
-        void onActiveBookingsTabSelected();
-        void onBookingsHistoryTabSelected();
-        void onRefreshActiveBookings();
-        void onRefreshBookingsHistory();
+        void onStart(UserProfileFragment.BookingsTab checkedTab);
+        void onBookingsTabChecked(UserProfileFragment.BookingsTab checkedTab);
+        void onBookingsTabRefresh(UserProfileFragment.BookingsTab checkedTab);
         void onBookingCancelButtonClick(String bookingId);
         void onRouteScheduleButtonClick();
+        void onLogoutButtonClick();
+        void onCloseButtonClick();
     }
 }

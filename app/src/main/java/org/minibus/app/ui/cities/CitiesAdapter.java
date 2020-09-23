@@ -98,7 +98,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.BusStopsVi
             textCityRegionName.setText(city.getRegion());
             textCityName.setText(city.getName());
             textCityName.setTextColor(ContextCompat.getColor(context,
-                    cityId == lastSelectedCityId ? R.color.colorAccent : R.color.colorOnPrimary));
+                    cityId == lastSelectedCityId ? R.color.colorSecondary : R.color.colorTextPrimary));
         }
 
         @OnClick(R.id.ll_city_container)

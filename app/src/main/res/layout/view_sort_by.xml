@@ -8,8 +8,8 @@
         style="@style/Widget.AppTheme.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="?colorCard"
         android:drawableEnd="@drawable/ic_filter_dark_24dp"
-        android:drawableTint="@color/colorTextSecondary"
+        android:drawableTint="?colorTextSecondary"
         android:textAlignment="viewStart" />
 </RelativeLayout>

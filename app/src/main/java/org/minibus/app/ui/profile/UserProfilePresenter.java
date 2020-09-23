@@ -29,6 +29,12 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
     }
 
     @Override
+    public void onStart(UserProfileFragment.BookingsTab checkedTab) {
+        getView().ifAlive(v -> v.setUserData(storage.getUserData().getName(), storage.getUserData().getPhone()));
+        onBookingsTabChecked(checkedTab);
+    }
+
+    @Override
     public void onRouteScheduleButtonClick() {
         getView().ifAlive(V::close);
     }
@@ -55,39 +61,20 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
     }
 
     @Override
-    public void onStart() {
-        getView().ifAlive(v -> v.setUserData(storage.getUserData().getName(), storage.getUserData().getPhone()));
-
-        onActiveBookingsTabSelected();
-    }
-
-    @Override
-    public void onActiveBookingsTabSelected() {
-        addSubscription(getUserDataObservable(storage.getAuthToken(), false)
-                .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
+    public void onBookingsTabChecked(UserProfileFragment.BookingsTab checkedTab) {
+        addSubscription(getUserDataObservable(storage.getAuthToken(), checkedTab)
+                .doOnSubscribe(disposable -> {
+                    getView().ifAlive(V::showProgress);
+                    getView().ifAlive(V::resetTabsCounter);
+                })
                 .subscribeWith(getUserDataObserver()));
     }
 
     @Override
-    public void onBookingsHistoryTabSelected() {
-        addSubscription(getUserDataObservable(storage.getAuthToken(), true)
-                .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
+    public void onBookingsTabRefresh(UserProfileFragment.BookingsTab checkedTab) {
+        addSubscription(getUserDataObservable(storage.getAuthToken(), checkedTab)
+                .doFinally(() -> getView().ifAlive(V::hideRefresh))
                 .subscribeWith(getUserDataObserver()));
-    }
-
-    @Override
-    public void onRefreshActiveBookings() {
-        refreshUserData(false);
-    }
-
-    @Override
-    public void onRefreshBookingsHistory() {
-        refreshUserData(true);
-    }
-
-    @Override
-    public void onCloseButtonClick() {
-        getView().ifAlive(V::close);
     }
 
     @Override
@@ -99,10 +86,9 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
         }));
     }
 
-    private void refreshUserData(boolean withBookingsHistory) {
-        addSubscription(getUserDataObservable(storage.getAuthToken(), withBookingsHistory)
-                .doFinally(() -> getView().ifAlive(V::hideRefresh))
-                .subscribeWith(getUserDataObserver()));
+    @Override
+    public void onCloseButtonClick() {
+        getView().ifAlive(V::close);
     }
 
     private DisposableSingleObserver<UserResponse> getUserDataObserver() {
@@ -116,7 +102,7 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
                     getView().ifAlive(v -> v.setUserData(response.getUser().getName(), response.getUser().getPhone()));
                 }
 
-                getView().ifAlive(v -> v.setActiveTabCounter(response.getBookings().size()));
+                getView().ifAlive(v -> v.setCheckedTabCounter(response.getBookings().size()));
                 getView().ifAlive(v -> v.setUserBookingsData(response.getBookings()));
             }
 
@@ -134,8 +120,8 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Single<UserResponse> getUserDataObservable(String authToken, boolean withBookingsHistory) {
-        return userModel.doGetUserData(authToken, withBookingsHistory)
+    private Single<UserResponse> getUserDataObservable(String authToken, UserProfileFragment.BookingsTab checkedTab) {
+        return userModel.doGetUserData(authToken, checkedTab == UserProfileFragment.BookingsTab.HISTORY)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }

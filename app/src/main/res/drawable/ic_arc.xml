@@ -3,23 +3,23 @@
     <item>
         <shape android:shape="oval">
             <size
-                android:height="40dp"
-                android:width="40dp"/>
+                android:width="40dp"
+                android:height="40dp" />
             <stroke
                 android:width="3dp"
-                android:color="@android:color/transparent"/>
+                android:color="@android:color/transparent" />
         </shape>
     </item>
     <item>
         <shape android:shape="oval">
             <size
-                android:height="40dp"
-                android:width="40dp"/>
+                android:width="40dp"
+                android:height="40dp" />
             <stroke
-                android:width="4dp"
-                android:dashGap="140dp"
+                android:width="3dp"
+                android:color="@android:color/white"
                 android:dashWidth="90dp"
-                android:color="@color/colorPrimary"/>
+                android:dashGap="140dp" />
         </shape>
     </item>
 </layer-list>

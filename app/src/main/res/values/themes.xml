@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!--Define custom color attributes-->
         <item name="colorTextPrimary">@color/colorTextPrimary</item>
         <item name="colorTextSecondary">@color/colorTextSecondary</item>
         <item name="colorIconPrimary">@color/colorIconPrimary</item>
         <item name="colorIconSecondary">@color/colorIconSecondary</item>
+        <item name="colorStroke">@color/colorStroke</item>
+        <item name="colorCard">@color/colorCard</item>
+        <item name="colorBackground">@color/colorBackground</item>
+        <item name="colorGreen">@color/colorGreen</item>
+        <item name="colorYellow">@color/colorYellow</item>
 
         <!--Material color attributes -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="colorControlHighlight">@color/colorAccentLight</item>
+        <item name="colorControlHighlight">@color/colorSecondaryVariant</item>
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorError">@color/colorError</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="colorOnBackground">@color/colorOnBackground</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorOnError">@color/colorOnError</item>
 
-        <item name="android:colorControlNormal">@color/colorControl</item>
-        <item name="android:colorControlActivated">@color/colorAccent</item>
-        <item name="android:colorControlHighlight">@color/colorAccentLight</item>
+        <item name="android:colorControlNormal">@color/colorStroke</item>
+        <item name="android:colorControlActivated">@color/colorSecondary</item>
+        <item name="android:colorControlHighlight">@color/colorSecondaryVariant</item>
 
         <!--Remap legacy AppCompat attributes to MaterialComponent attributes-->
-        <item name="colorPrimaryDark">@color/colorPrimaryVariant</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <!--Material type attributes-->
@@ -55,12 +59,12 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
-    <style name="AppTheme.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.Light.BottomSheetDialog">
+    <style name="AppTheme.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Widget.AppTheme.BottomSheet.Modal</item>
     </style>
 
     <style name="AppTheme.DialogFragment" parent="AppTheme">
-        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">false</item>

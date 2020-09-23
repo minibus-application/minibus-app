@@ -24,7 +24,7 @@
     <string name="no">No</string>
 
     <!-- Empty state -->
-    <string name="bookings_empty_title">No active reservations</string>
+    <string name="bookings_empty_title">No reservations</string>
     <string name="bookings_empty_message">Hurry up to book a seat</string>
     <string name="bus_stops_empty_title">No cities found</string>
     <string name="bus_stops_empty_message">Try to update later</string>

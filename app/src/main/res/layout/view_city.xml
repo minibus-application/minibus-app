@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:background="@color/colorSurface">
+    android:baselineAligned="false">
 
     <LinearLayout
         android:id="@+id/ll_city_container"
@@ -52,6 +51,6 @@
             android:visibility="visible"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_navigation_dark_24dp"
-            app:tint="@color/colorAccent" />
+            app:tint="?colorSecondary" />
     </RelativeLayout>
 </LinearLayout>

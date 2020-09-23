@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="colorAccent">@color/colorSecondary</color>
-    <color name="colorAccentLight">@color/colorSecondaryVariant</color>
 
+    <!--accent-->
+    <color name="colorAccent">#1E88E5</color>
+
+    <!--primary-->
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryVariant">#FAFAFA</color>
+    <color name="colorPrimaryVariant">#F5F5F5</color>
     <color name="colorOnPrimary">#121212</color>
+
+    <!--secondary-->
     <color name="colorSecondary">#1E88E5</color>
     <color name="colorSecondaryVariant">#BBDEFB</color>
     <color name="colorOnSecondary">#FFFFFF</color>
-    <color name="colorBackground">#F5F5F5</color>
-    <color name="colorOnBackground">#9E9E9E</color>
-    <color name="colorSurface">#ffffff</color>
+
+    <!--background-->
+    <color name="colorBackground">#FAFAFA</color>
+
+    <!--surface-->
+    <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#121212</color>
+
+    <!--error-->
     <color name="colorError">#FF1744</color>
-    <color name="colorErrorVariant">#FF5252</color>
     <color name="colorOnError">#FFFFFF</color>
+
+    <!--others-->
     <color name="colorYellow">#FFAB00</color>
     <color name="colorGreen">#00C853</color>
+    <color name="colorStroke">#E0E0E0</color>
+    <color name="colorCard">#FFFFFF</color>
 
+    <!--text and drawables-->
     <color name="colorTextPrimary">#121212</color>
     <color name="colorTextSecondary">#9E9E9E</color>
     <color name="colorIconPrimary">#121212</color>
     <color name="colorIconSecondary">#E0E0E0</color>
-
-    <color name="colorControl">#E0E0E0</color>
-
-    <color name="colorProgressHud">#80121212</color>
 
     <color tools:override = "true" name="mtrl_textinput_default_box_stroke_color">#E0E0E0</color>
 </resources>

@@ -1,5 +1,6 @@
 package org.minibus.app.ui.schedule.trip;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 
 import android.graphics.Color;
@@ -91,7 +92,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
             dismiss();
         }
 
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_BottomSheetDialog);
+        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_BottomSheetDialog);
     }
 
     @Nullable
@@ -119,6 +120,7 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         return view;
     }
 
+    @SuppressLint("RestrictedApi")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -128,9 +130,12 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
             FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
 
             BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+            behavior.disableShapeAnimations(); // avoid making rounded corners straight on expanded state
             behavior.setSkipCollapsed(true);
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
+
+
         return bottomSheetDialog;
     }
 

@@ -55,6 +55,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @BindView(R.id.appbar_login) AppBarLayout appbar;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title) TextView textToolbarTitle;
+    @BindView(R.id.tv_toolbar_subtitle) TextView textToolbarSubtitle;
 
     @Inject LoginPresenter<LoginContract.View> presenter;
 
@@ -69,7 +70,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideAnimation;
+        Objects.requireNonNull(dialog.getWindow()).getAttributes().windowAnimations = R.style.DialogSlideAnimation;
         return dialog;
     }
 
@@ -92,6 +93,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         toolbar.setNavigationIcon(R.drawable.ic_close_dark_24dp);
         toolbar.setNavigationOnClickListener(v -> presenter.onCloseButtonClick());
         textToolbarTitle.setText(getMainActivity().getResources().getString(R.string.login_title));
+        textToolbarSubtitle.setVisibility(View.GONE);
 
         return view;
     }

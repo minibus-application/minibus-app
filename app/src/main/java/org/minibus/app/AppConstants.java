@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 
 public class AppConstants {
 
-    public static final String BASE_URL = "http://localhost:3000";
+    public static final String BASE_URL = "http://192.168.3.8:3000";
     public static final String STORAGE_NAME = "app-prefs";
     public static final String COUNTRY_CODE = "+375";
     public static final int DEFAULT_TIMEOUT_SEC = 15;

@@ -1,6 +1,8 @@
 package org.minibus.app.ui.main;
 
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         CommonUtil.adjustFontSize(this, (float) AppConstants.MAX_FONT_SCALE_FACTOR);
 
         setContentView(R.layout.activity_main);
@@ -55,13 +59,14 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(new NetworkChangeReceiver(), filter);
 
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         View decor = getWindow().getDecorView();
         decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.main_container,
+            transaction.add(R.id.container,
                     RouteScheduleFragment.newInstance(),
                     RouteScheduleFragment.class.getName());
             transaction.commitNow();

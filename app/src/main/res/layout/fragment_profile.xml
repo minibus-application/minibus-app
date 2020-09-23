@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorSurface"
-    android:fitsSystemWindows="false">
+    android:background="?colorSurface">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_login"
@@ -21,10 +20,8 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/container_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorSurface"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.android.material.button.MaterialButtonToggleGroup
@@ -33,31 +30,31 @@
             android:layout_height="wrap_content"
             android:weightSum="2"
             android:orientation="horizontal"
-            android:background="@color/colorSurface"
+            android:background="?colorPrimary"
             android:padding="8dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_active_bookings"
                 style="@style/Widget.AppTheme.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/active"
+                android:backgroundTint="?colorPrimary"
                 android:textColor="@color/selector_toggle_btn_text"
                 android:textAllCaps="true"
+                android:text="@string/active"
                 app:strokeColor="@color/selector_toggle_btn"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_bookings_history"
                 style="@style/Widget.AppTheme.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimary"
-                android:text="@string/history"
+                android:backgroundTint="?colorPrimary"
                 android:textColor="@color/selector_toggle_btn_text"
                 android:textAllCaps="true"
+                android:text="@string/history"
                 app:strokeColor="@color/selector_toggle_btn"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -67,7 +64,7 @@
             android:layout_height="2dp"
             android:layout_gravity="bottom"
             android:layout_below="@+id/btn_group"
-            android:background="@color/colorBackground" />
+            android:background="?colorPrimaryVariant" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srl_bookings"
@@ -90,7 +87,7 @@
                     android:id="@+id/recycler_user_bookings"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorPrimaryVariant"
+                    android:background="?colorBackground"
                     android:clipToPadding="false"
                     android:padding="8dp" />
             </com.kennyc.view.MultiStateView>
