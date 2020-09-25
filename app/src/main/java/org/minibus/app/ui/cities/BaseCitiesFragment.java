@@ -90,12 +90,6 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        presenter.detachView();
-        super.onDestroyView();
-    }
-
     /**
      * OnClick methods
      */

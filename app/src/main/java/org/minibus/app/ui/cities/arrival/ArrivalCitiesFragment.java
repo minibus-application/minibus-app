@@ -41,6 +41,12 @@ public class ArrivalCitiesFragment extends BaseCitiesFragment implements Arrival
     }
 
     @Override
+    public void onDestroyView() {
+        presenter.detachView();
+        super.onDestroyView();
+    }
+
+    @Override
     protected String getTitle() {
         return getMainActivity().getResources().getString(R.string.arrival_cities_title);
     }

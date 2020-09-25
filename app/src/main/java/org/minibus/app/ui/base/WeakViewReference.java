@@ -17,7 +17,7 @@ public class WeakViewReference<V extends Contract.View> extends WeakReference<V>
 
     public void ifAlive(ViewRunnable<V> runnable) {
         V view = get();
-        if(view != null) runnable.run(view);
+        if (view != null) runnable.run(view);
         else Timber.w("Attempt to access a detached view");
     }
 }

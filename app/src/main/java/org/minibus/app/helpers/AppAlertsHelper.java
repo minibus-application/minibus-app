@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.custom.ProgressHud;
@@ -76,18 +77,9 @@ public class AppAlertsHelper {
     }
 
     public static Toast showToast(Context context, String msg) {
-        LayoutInflater inflater = ((MainActivity) context).getLayoutInflater();
-        View layout = inflater.inflate(R.layout.view_toast,
-                ((MainActivity) context).findViewById(R.id.layout_toast));
-
-        TextView text = layout.findViewById(R.id.text_toast_message);
-        text.setText(msg);
-
-        if (toast != null) toast.cancel();
-
-        toast = new Toast(context);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+        toast.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.colorOnPrimary));
+        ((TextView) toast.getView().findViewById(android.R.id.message)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
         toast.show();
 
         return toast;
