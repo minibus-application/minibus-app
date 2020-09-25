@@ -186,7 +186,7 @@ public class RouteScheduleFragment extends BaseFragment implements
 
         textToolbarTitle.setText(getResources().getString(R.string.route_schedule_title));
         textToolbarSubtitle.setVisibility(View.VISIBLE);
-        textToolbarSubtitle.setText(getResources().getString(R.string.route_schedule_route_title));
+        textToolbarSubtitle.setText(getResources().getString(R.string.route_direction_title));
 
         // disable custom ItemAnimator to prevent blinking on notifyItemChanged
         RecyclerView.ItemAnimator animator = recyclerRouteSchedule.getItemAnimator();

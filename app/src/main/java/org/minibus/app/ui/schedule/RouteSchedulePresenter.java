@@ -206,7 +206,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
 
     @Override
     public void onRouteDirectionExpanded() {
-        getView().ifAlive(v -> v.setRouteDirectionDescription(R.string.route_schedule_route_title));
+        getView().ifAlive(v -> v.setRouteDirectionDescription(R.string.route_direction_title));
     }
 
     @Override

@@ -45,18 +45,7 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
             dialogInterface.dismiss();
             addSubscription(getRevokeBookingObservable(storage.getAuthToken(), bookingId)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
-                    .subscribeWith(new DisposableSingleObserver<UserResponse>() {
-                        @Override
-                        public void onSuccess(UserResponse response) {
-                            getView().ifAlive(v -> v.setUserBookingsData(response.getBookings()));
-                        }
-
-                        @Override
-                        public void onError(Throwable throwable) {
-                            getView().ifAlive(v -> v.showError(ApiErrorHelper.parseResponseMessage(throwable)));
-                            getView().ifAlive(V::hideProgress);
-                        }
-                    }));
+                    .subscribeWith(getUserDataObserver()));
         }));
     }
 

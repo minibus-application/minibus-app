@@ -66,11 +66,10 @@
     <string name="login_title">Login</string>
     <string name="profile_title">Profile</string>
     <string name="filter_title">Filter</string>
-    <string name="profile_active_user_bookings">Active bookings:</string>
     <string name="departure_cities_title">Departure</string>
     <string name="arrival_cities_title">Arrival</string>
     <string name="route_schedule_title">Schedule</string>
-    <string name="route_schedule_route_title">Route direction</string>
+    <string name="route_direction_title">Route direction</string>
     <string name="route_trip_summary_title">Reservation</string>
 
     <!--Menu-->
