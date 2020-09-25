@@ -18,8 +18,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             if (status == NetworkConnectivityUtil.NETWORK_STATUS_NOT_CONNECTED) {
                 Timber.i("Network connection is unstable or temporary lost");
 
-                AppAlertsHelper.showToast(context,
-                        context.getResources().getString(R.string.warning_bad_connectivity_message));
+                AppAlertsHelper.showToast(context, context.getResources().getString(R.string.warning_bad_connectivity_message));
             } else {
                 Timber.i("Network connection is stable or restored");
             }

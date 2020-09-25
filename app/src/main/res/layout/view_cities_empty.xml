@@ -43,5 +43,5 @@
         android:layout_below="@id/text_empty_subtitle"
         android:layout_margin="8dp"
         android:layout_centerInParent="true"
-        android:text="@string/refresh" />
+        android:text="@string/route_schedule_title" />
 </RelativeLayout>

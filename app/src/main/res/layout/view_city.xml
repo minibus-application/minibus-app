@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_city_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground"
     android:baselineAligned="false">
 
     <LinearLayout
-        android:id="@+id/ll_city_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -35,22 +36,16 @@
             android:textAppearance="?textAppearanceBody2" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_city_location"
+    <ImageView
+        android:id="@+id/iv_city_location"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:visibility="visible"
         android:gravity="center_horizontal|center_vertical"
         android:clickable="true"
         android:focusable="true"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_navigation_dark_24dp"
-            app:tint="?colorSecondary" />
-    </RelativeLayout>
+        android:paddingEnd="16dp"
+        android:src="@drawable/ic_navigation_dark_24dp"
+        app:tint="?colorSecondary" />
 </LinearLayout>

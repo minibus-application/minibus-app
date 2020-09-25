@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -78,7 +79,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
 
         @BindView(R.id.tv_city_title) TextView textCityName;
         @BindView(R.id.tv_region_subtitle) TextView textCityRegionName;
-        @BindView(R.id.rl_city_location) RelativeLayout cityLocationIcon;
+        @BindView(R.id.iv_city_location) ImageView cityLocationIcon;
 
         private City city;
         private String cityId;
@@ -106,7 +107,7 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
             clickListener.onCityClick(itemView, city, itemPos);
         }
 
-        @OnClick(R.id.rl_city_location)
+        @OnClick(R.id.iv_city_location)
         public void onCityLocationClick(View itemView) {
             clickListener.onCityLocationClick(itemView, city, getAdapterPosition());
         }
