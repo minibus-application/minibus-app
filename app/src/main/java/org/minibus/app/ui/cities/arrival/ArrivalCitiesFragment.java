@@ -16,16 +16,10 @@ import javax.inject.Inject;
 
 public class ArrivalCitiesFragment extends BaseCitiesFragment implements ArrivalCitiesContract.View {
 
-    public static final int REQ_CODE = AppConstants.ARR_CITIES_FRAGMENT_REQ_CODE;
-    public static final String CITY_KEY = "key_arrival_city";
-
     @Inject
     ArrivalCitiesPresenter<ArrivalCitiesContract.View> presenter;
 
-    public interface OnCityClickListener {
-        void onArrivalCityItemClicked(City city);
-    }
-
+    public static final int REQ_CODE = AppConstants.ARR_CITIES_FRAGMENT_REQ_CODE;
     private OnCityClickListener listener;
 
     public static ArrivalCitiesFragment newInstance() {
@@ -47,17 +41,25 @@ public class ArrivalCitiesFragment extends BaseCitiesFragment implements Arrival
     }
 
     @Override
+    protected String getTitle() {
+        return getMainActivity().getResources().getString(R.string.arrival_cities_title);
+    }
+
+    /**
+     * View contract methods
+     */
+
+    @Override
     public void changeCity(City city) {
         listener.onArrivalCityItemClicked(city);
     }
 
     @Override
-    public void setCitiesData(List<City> cities, long prevSelectedCityId) {
+    public void setCitiesData(List<City> cities, String prevSelectedCityId) {
         super.setData(cities, prevSelectedCityId);
     }
 
-    @Override
-    protected String getTitle() {
-        return getMainActivity().getResources().getString(R.string.arrival_cities_title);
+    public interface OnCityClickListener {
+        void onArrivalCityItemClicked(City city);
     }
 }

@@ -7,7 +7,6 @@ import org.minibus.app.ui.base.Contract;
 public interface LoginContract {
 
     interface View extends Contract.View {
-
         void close();
         void showWelcomeMessage(@StringRes int msgResId, String userName);
         void showNameFieldError(@StringRes int msgResId);
@@ -22,7 +21,6 @@ public interface LoginContract {
     }
 
     interface Presenter<V extends LoginContract.View> extends Contract.Presenter<V> {
-
         void onCloseButtonClick();
         void onLoginButtonClick(String userName,
                                 String userPhone,

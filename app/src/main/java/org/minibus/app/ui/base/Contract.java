@@ -2,6 +2,7 @@ package org.minibus.app.ui.base;
 
 
 import android.content.DialogInterface;
+
 import androidx.annotation.StringRes;
 
 import org.minibus.app.ui.R;
@@ -11,7 +12,6 @@ import org.minibus.app.helpers.AppAlertsHelper;
 public interface Contract {
 
     interface View {
-
         MainActivity getMainActivity();
 
         void showEmptyView();
@@ -41,8 +41,8 @@ public interface Contract {
             AppAlertsHelper.showToast(getMainActivity(), msg);
         }
 
-        default void showAsk(@StringRes int msgResId,
-                             DialogInterface.OnClickListener posBtnCallback) {
+        default void showQuestion(@StringRes int msgResId,
+                                  DialogInterface.OnClickListener posBtnCallback) {
             AppAlertsHelper.showActionDialog(getMainActivity(),
                     getMainActivity().getResources().getString(R.string.warning_default_title),
                     getMainActivity().getResources().getString(msgResId),
@@ -80,7 +80,6 @@ public interface Contract {
     }
 
     interface Presenter<V extends Contract.View> {
-
         WeakViewReference<V> getView();
         void attachView(V v);
         void detachView();

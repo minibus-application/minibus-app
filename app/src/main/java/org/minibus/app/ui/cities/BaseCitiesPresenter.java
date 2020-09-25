@@ -2,8 +2,6 @@ package org.minibus.app.ui.cities;
 
 import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.data.network.model.CitiesModel;
-import org.minibus.app.data.network.pojo.BaseResponse;
-import org.minibus.app.data.network.pojo.city.CityResponse;
 import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.ui.base.BasePresenter;
 
@@ -18,11 +16,11 @@ import io.reactivex.schedulers.Schedulers;
 public class BaseCitiesPresenter<V extends BaseCitiesContract.View> extends BasePresenter<V>
         implements BaseCitiesContract.Presenter<V> {
 
-    protected CitiesModel citiesModel;
-    protected List<City> cities;
-
     @Inject
     AppStorageManager storage;
+
+    protected CitiesModel citiesModel;
+    protected List<City> cities;
 
     @Inject
     public BaseCitiesPresenter(CitiesModel citiesModel) {

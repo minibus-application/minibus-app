@@ -6,6 +6,7 @@ import org.minibus.app.data.network.pojo.carrier.Carrier;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Objects;
 
 public class Vehicle implements Serializable {
 
@@ -72,5 +73,19 @@ public class Vehicle implements Serializable {
 
     public Carrier getCarrier() {
         return carrier;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return id.equals(vehicle.id) &&
+                Objects.equals(plateNumber, vehicle.plateNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, plateNumber);
     }
 }

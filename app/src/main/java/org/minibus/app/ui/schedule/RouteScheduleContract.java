@@ -13,7 +13,6 @@ import java.util.List;
 public interface RouteScheduleContract {
 
     interface View extends Contract.View {
-
         void showRouteDirection();
         void hideRouteDirection();
         void showJumpTopFab();
@@ -34,18 +33,25 @@ public interface RouteScheduleContract {
         void setArrivalCity(String arrCity);
         void setRouteDirection(String depCity, String arrCity);
         void setOperationalDays(List<Integer> operationalDays);
+        void setOptionsMenu(boolean isUserAuthorized);
         void openSortingOptions(RouteScheduleAdapter.SortingOption sortingOption);
         void openProfile();
         void openLogin();
         void openDepartureCities();
         void openArrivalCities();
-        void openBusTripSummary(RouteTrip routeTrip, Route route, LocalDate depDate);
+        void openRouteTripSummary(RouteTrip routeTrip, Route route, LocalDate depDate);
+        void openAbout();
         void jumpTop();
         void finish();
     }
 
     interface Presenter<V extends RouteScheduleContract.View> extends Contract.Presenter<V> {
-
+        void onCreatedOptionsMenu();
+        void onUserAuthorized();
+        void onProfileMenuItemClick();
+        void onLoginMenuItemClick();
+        void onAboutMenuItemClick();
+        void onLogoutMenuItemClick();
         void onBackPressed();
         void onStart(LocalDate depDate);
         void onRefresh(LocalDate depDate);
@@ -58,7 +64,6 @@ public interface RouteScheduleContract {
         void onDepartureCityChanged(City city, LocalDate depDate);
         void onDepartureCityFieldClick();
         void onArrivalCityFieldClick();
-        void onProfileIconClick();
         void onSortByClick(RouteScheduleAdapter.SortingOption selectedSortingOption);
         void onRouteDirectionFabClick();
         void onJumpTopFabClick();

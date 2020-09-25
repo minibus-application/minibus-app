@@ -7,7 +7,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public class CitiesModel extends BaseModel {
+public class CitiesModel extends Model {
 
     public CitiesModel(AppApiClient appApiClient) {
         super(appApiClient);

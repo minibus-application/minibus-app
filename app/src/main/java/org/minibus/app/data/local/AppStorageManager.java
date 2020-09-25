@@ -8,6 +8,7 @@ import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.user.User;
 import org.minibus.app.di.ApplicationContext;
+
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
@@ -18,14 +19,10 @@ import timber.log.Timber;
 @Singleton
 public class AppStorageManager {
 
-    private static final String KEY_USER_BOOKINGS_COUNT = "key_user_bookings_count";
-    private static final String KEY_USER_BOOKINGS_LIMIT = "key_user_bookings_limit";
-    private static final String KEY_USER_BOOKINGS_LEFT = "key_user_bookings_left";
     private static final String KEY_USER_AUTH_TOKEN = "key_user_auth_token";
     private static final String KEY_USER_DATA = "key_user_data";
     private static final String KEY_ROUTE = "key_route";
     private static final String KEY_DEPARTURE_CITY = "key_departure_city";
-    private static final String KEY_DEPARTURE_START_BUS_STOP = "key_departure_start_bus_stop";
     private static final String KEY_ARRIVAL_CITY = "key_arrival_city";
 
     private SharedPreferences storage;
@@ -73,20 +70,6 @@ public class AppStorageManager {
         put(KEY_USER_AUTH_TOKEN, token);
     }
 
-    public void setUserBookingsCount(int count) {
-        put(KEY_USER_BOOKINGS_COUNT, count);
-
-        setUserBookingsLeft(getUserBookingsLimit() - count);
-    }
-
-    private void setUserBookingsLeft(int left) {
-        put(KEY_USER_BOOKINGS_LEFT, left);
-    }
-
-    private void setUserBookingsLimit(int limit) {
-        put(KEY_USER_BOOKINGS_LIMIT, limit);
-    }
-
     public void setUserSession(String token, User user) {
         setAuthToken(token);
         setUserData(user);
@@ -94,18 +77,6 @@ public class AppStorageManager {
 
     public String getAuthToken() {
         return get(KEY_USER_AUTH_TOKEN, null);
-    }
-
-    public int getUserBookingsCount() {
-        return get(KEY_USER_BOOKINGS_COUNT, 0);
-    }
-
-    public int getUserBookingsLimit() {
-        return get(KEY_USER_BOOKINGS_LIMIT, AppConstants.DEFAULT_PASSENGERS_COUNT_PER_BOOKING);
-    }
-
-    public int getUserBookingsLeft() {
-        return get(KEY_USER_BOOKINGS_LEFT, AppConstants.DEFAULT_PASSENGERS_COUNT_PER_BOOKING);
     }
 
     public User getUserData() {
@@ -133,11 +104,6 @@ public class AppStorageManager {
         delete(KEY_USER_AUTH_TOKEN);
     }
 
-    public void clearDirection() {
-        delete(KEY_ARRIVAL_CITY);
-        delete(KEY_DEPARTURE_CITY);
-        delete(KEY_DEPARTURE_START_BUS_STOP);
-    }
     private boolean contains(String key) {
         return storage.contains(key);
     }

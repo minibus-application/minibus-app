@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import org.minibus.app.data.network.pojo.city.City;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 
 public class Route implements Serializable {
 
@@ -37,10 +37,6 @@ public class Route implements Serializable {
         this.operationalDays = operationalDays;
     }
 
-    public long getIdLong() {
-        return new BigInteger(id, 16).longValue();
-    }
-
     public String getId() {
         return id;
     }
@@ -59,5 +55,20 @@ public class Route implements Serializable {
 
     public List<Integer> getOperationalDays() {
         return operationalDays;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return id.equals(route.id) &&
+                Objects.equals(departureCity, route.departureCity) &&
+                Objects.equals(arrivalCity, route.arrivalCity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, departureCity, arrivalCity);
     }
 }

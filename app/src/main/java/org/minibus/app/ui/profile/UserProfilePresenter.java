@@ -18,10 +18,10 @@ import io.reactivex.schedulers.Schedulers;
 public class UserProfilePresenter<V extends UserProfileContract.View> extends BasePresenter<V>
         implements UserProfileContract.Presenter<V> {
 
-    private UserModel userModel;
-
     @Inject
     AppStorageManager storage;
+
+    private UserModel userModel;
 
     @Inject
     public UserProfilePresenter(UserModel userModel) {
@@ -41,7 +41,7 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
 
     @Override
     public void onBookingCancelButtonClick(String bookingId) {
-        getView().ifAlive(v -> v.showAsk(R.string.warning_booking_cancel_message, (dialogInterface, i) -> {
+        getView().ifAlive(v -> v.showQuestion(R.string.warning_booking_cancel_message, (dialogInterface, i) -> {
             dialogInterface.dismiss();
             addSubscription(getRevokeBookingObservable(storage.getAuthToken(), bookingId)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
@@ -75,15 +75,6 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
         addSubscription(getUserDataObservable(storage.getAuthToken(), checkedTab)
                 .doFinally(() -> getView().ifAlive(V::hideRefresh))
                 .subscribeWith(getUserDataObserver()));
-    }
-
-    @Override
-    public void onLogoutButtonClick() {
-        getView().ifAlive(v -> v.showAsk(R.string.warning_logout_message, (dialogInterface, i) -> {
-            dialogInterface.dismiss();
-            storage.clearUserSession();
-            getView().ifAlive(V::logout);
-        }));
     }
 
     @Override

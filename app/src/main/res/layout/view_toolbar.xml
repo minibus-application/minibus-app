@@ -34,15 +34,4 @@
             android:singleLine="true"
             android:visibility="visible" />
     </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_action"
-        style="@style/Widget.AppTheme.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:layout_margin="8dp"
-        android:visibility="gone"
-        android:textAllCaps="true"
-        android:textSize="14sp" />
 </androidx.appcompat.widget.Toolbar>

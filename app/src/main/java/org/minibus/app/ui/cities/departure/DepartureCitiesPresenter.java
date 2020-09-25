@@ -3,9 +3,7 @@ package org.minibus.app.ui.cities.departure;
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.data.network.model.CitiesModel;
-import org.minibus.app.data.network.pojo.BaseResponse;
 import org.minibus.app.data.network.pojo.city.City;
-import org.minibus.app.data.network.pojo.city.CityResponse;
 import org.minibus.app.helpers.ApiErrorHelper;
 import org.minibus.app.ui.cities.BaseCitiesPresenter;
 
@@ -40,9 +38,7 @@ public class DepartureCitiesPresenter<V extends DepartureCitiesContract.View> ex
                     @Override
                     public void onSuccess(List<City> response) {
                         cities = response;
-                        long prevSelectedCityId = storage.isRouteStored()
-                                ? storage.getDepartureCity().getLongId()
-                                : AppConstants.DEFAULT_SELECTED_CITY_ID;
+                        String prevSelectedCityId = storage.isRouteStored() ? storage.getDepartureCity().getId() : null;
 
                         if (!response.isEmpty()) getView().ifAlive(v -> v.setCitiesData(cities, prevSelectedCityId));
                         else getView().ifAlive(V::showEmptyView);

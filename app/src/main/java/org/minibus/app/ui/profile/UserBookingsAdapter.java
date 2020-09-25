@@ -138,22 +138,24 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
             textArrCity.setText(routeTrip.getRoute().getArrivalCity().getName());
             textArrCityStation.setText(routeTrip.getRoute().getArrivalCity().getStation());
 
+            buttonAction.setVisibility(View.VISIBLE);
+            buttonAction.setText(context.getText(R.string.cancel));
+            buttonAction.setStrokeColor(ContextCompat.getColorStateList(context, R.color.selector_neg_outlined_btn));
+            buttonAction.setTextColor(ContextCompat.getColorStateList(context, R.color.selector_neg_outlined_btn_text));
+            buttonAction.setRippleColor(null);
+            buttonAction.setEnabled(true);
+            buttonAction.setClickable(true);
+            buttonAction.setFocusable(true);
+
             if (booking.isEnRoute()) {
-                buttonAction.setVisibility(View.VISIBLE);
-                buttonAction.setStrokeColorResource(R.color.colorGreen);
                 buttonAction.setText(context.getText(R.string.en_route));
+                buttonAction.setStrokeColorResource(R.color.colorGreen);
                 buttonAction.setTextColor(context.getColor(R.color.colorGreen));
                 buttonAction.setEnabled(false);
                 buttonAction.setClickable(false);
                 buttonAction.setFocusable(false);
             } else {
-                if (booking.isActive()) {
-                    buttonAction.setVisibility(View.VISIBLE);
-                    buttonAction.setText(context.getText(R.string.cancel));
-                    buttonAction.setEnabled(true);
-                    buttonAction.setClickable(true);
-                    buttonAction.setFocusable(true);
-                } else {
+                if (!booking.isActive()) {
                     buttonAction.setVisibility(View.GONE);
                 }
             }

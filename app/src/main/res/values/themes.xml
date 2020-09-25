@@ -19,6 +19,7 @@
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorControlHighlight">@color/colorSecondaryVariant</item>
         <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:textColorSecondary">@color/colorOnPrimary</item>
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorError">@color/colorError</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
@@ -45,6 +46,8 @@
         <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.AppTheme.Dialog.Alert</item>
         <item name="android:radioButtonStyle">@style/Widget.AppTheme.RadioButton</item>
+        <item name="actionOverflowButtonStyle">@style/AppTheme.OverflowButton</item>
+        <item name="toolbarNavigationButtonStyle">@style/AppTheme.NavigationButton</item>
 
         <!--Other-->
         <item name="android:letterSpacing">0</item>
@@ -61,6 +64,14 @@
 
     <style name="AppTheme.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Widget.AppTheme.BottomSheet.Modal</item>
+    </style>
+
+    <style name="AppTheme.OverflowButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">?colorIconPrimary</item>
+    </style>
+
+    <style name="AppTheme.NavigationButton" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">?colorIconPrimary</item>
     </style>
 
     <style name="AppTheme.DialogFragment" parent="AppTheme">

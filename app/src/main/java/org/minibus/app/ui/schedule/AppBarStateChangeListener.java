@@ -4,22 +4,6 @@ import com.google.android.material.appbar.AppBarLayout;
 
 public abstract class AppBarStateChangeListener implements AppBarLayout.OnOffsetChangedListener {
 
-    public enum State {
-        EXPANDED ("EXPANDED"),
-        COLLAPSED ("COLLAPSED"),
-        IDLE ("IDLE");
-
-        private final String state;
-
-        State(String state) {
-            this.state = state;
-        }
-
-        public String toString() {
-            return this.state;
-        }
-    }
-
     private State state = State.IDLE;
 
     @Override
@@ -43,4 +27,20 @@ public abstract class AppBarStateChangeListener implements AppBarLayout.OnOffset
     }
 
     public abstract void onAppBarStateChanged(AppBarLayout appBarLayout, State state);
+
+    public enum State {
+        EXPANDED ("EXPANDED"),
+        COLLAPSED ("COLLAPSED"),
+        IDLE ("IDLE");
+
+        private final String state;
+
+        State(String state) {
+            this.state = state;
+        }
+
+        public String toString() {
+            return this.state;
+        }
+    }
 }

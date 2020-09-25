@@ -1,12 +1,10 @@
 package org.minibus.app.ui.sorting;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -17,10 +15,6 @@ import org.minibus.app.ui.base.BaseDialogFragment;
 import java.util.ArrayList;
 
 public class SortingOptionsDialogFragment extends BaseDialogFragment {
-
-    public interface OnSortingOptionClickListener {
-        void onSortingOptionItemClick(int position);
-    }
 
     public static final String SORT_OPTIONS_KEY = "sort_options_key";
     public static final String SORT_OPTION_POS_KEY = "sort_option_pos_key";
@@ -71,5 +65,9 @@ public class SortingOptionsDialogFragment extends BaseDialogFragment {
     @Override
     protected void onBack() {
         dismiss();
+    }
+
+    public interface OnSortingOptionClickListener {
+        void onSortingOptionItemClick(int position);
     }
 }

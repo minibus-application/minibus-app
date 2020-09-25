@@ -9,7 +9,6 @@ public class NetworkConnectivityUtil {
     public static final int TYPE_NOT_CONNECTED = 0;
     public static final int TYPE_WIRELESS = 1;
     public static final int TYPE_MOBILE = 2;
-
     public static final int NETWORK_STATUS_NOT_CONNECTED = 0;
     public static final int NETWORK_STATUS_WIRELESS = 1;
     public static final int NETWORK_STATUS_MOBILE = 2;

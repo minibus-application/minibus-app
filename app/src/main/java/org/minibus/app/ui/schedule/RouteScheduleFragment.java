@@ -10,8 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
+import org.minibus.app.AppConstants;
 import org.minibus.app.data.network.pojo.city.City;
 import org.minibus.app.data.network.pojo.route.Route;
+import org.minibus.app.helpers.AppAlertsHelper;
+import org.minibus.app.ui.BuildConfig;
 import org.minibus.app.ui.cities.arrival.ArrivalCitiesFragment;
 import org.minibus.app.ui.cities.departure.DepartureCitiesFragment;
 import org.minibus.app.ui.schedule.trip.RouteTripFragment;
@@ -73,6 +76,7 @@ public class RouteScheduleFragment extends BaseFragment implements
         DepartureCitiesFragment.OnCityClickListener,
         ArrivalCitiesFragment.OnCityClickListener,
         RouteTripFragment.OnRouteTripBookingListener,
+        LoginFragment.OnLoginListener,
         BackButtonListener {
 
     @BindView(R.id.cl_route_schedule_content) CoordinatorLayout layoutContent;
@@ -95,6 +99,7 @@ public class RouteScheduleFragment extends BaseFragment implements
 
     private static final RouteScheduleAdapter.SortingOption DEFAULT_SORTING_OPTION = RouteScheduleAdapter.SortingOption.DEPARTURE_TIME;
     private boolean isRouteDirectionExpanded = true;
+    private Menu menu;
     private LinearLayoutManager layoutManagerRouteSchedule;
     private SpanningLinearLayoutManager layoutManagerCalendar;
     private RouteScheduleCalendarAdapter adapterCalendar;
@@ -107,6 +112,7 @@ public class RouteScheduleFragment extends BaseFragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -216,14 +222,37 @@ public class RouteScheduleFragment extends BaseFragment implements
 
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
+        // set default menu
+        this.menu = menu;
         inflater.inflate(R.menu.menu_route_schedule, menu);
         super.onCreateOptionsMenu(menu, inflater);
+
+        presenter.onCreatedOptionsMenu();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_profile) presenter.onProfileIconClick();
-        return true;
+        switch (item.getItemId()) {
+            case R.id.menu_item_profile:
+                presenter.onProfileMenuItemClick();
+                return true;
+            case R.id.menu_item_login:
+                presenter.onLoginMenuItemClick();
+                return true;
+            case R.id.menu_item_about:
+                presenter.onAboutMenuItemClick();
+                return true;
+            case R.id.menu_item_logout:
+                presenter.onLogoutMenuItemClick();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -275,6 +304,11 @@ public class RouteScheduleFragment extends BaseFragment implements
     /**
      * Listeners
      */
+
+    @Override
+    public void onUserLoggedIn() {
+        presenter.onUserAuthorized();
+    }
 
     @Override
     public void onRouteTripBooked() {
@@ -407,6 +441,20 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
+    public void setOptionsMenu(boolean isUserAuthorized) {
+        if (isUserAuthorized) {
+            this.menu.findItem(R.id.menu_item_profile).setVisible(true);
+            this.menu.findItem(R.id.menu_item_login).setVisible(false);
+            this.menu.findItem(R.id.menu_item_logout).setVisible(true);
+        } else {
+            this.menu.findItem(R.id.menu_item_profile).setVisible(false);
+            this.menu.findItem(R.id.menu_item_login).setVisible(true);
+            this.menu.findItem(R.id.menu_item_logout).setVisible(false);
+        }
+        this.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void setRouteDirectionDescription(String text) {
         fadeInOut(textToolbarSubtitle, text);
     }
@@ -466,7 +514,7 @@ public class RouteScheduleFragment extends BaseFragment implements
     }
 
     @Override
-    public void openBusTripSummary(RouteTrip routeTrip, Route route, LocalDate depDate) {
+    public void openRouteTripSummary(RouteTrip routeTrip, Route route, LocalDate depDate) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(RouteTripFragment.ROUTE_TRIP_KEY, routeTrip);
         bundle.putSerializable(RouteTripFragment.ROUTE_KEY, route);
@@ -493,6 +541,13 @@ public class RouteScheduleFragment extends BaseFragment implements
     @Override
     public void openArrivalCities() {
         super.openDialogFragment(ArrivalCitiesFragment.newInstance(), ArrivalCitiesFragment.REQ_CODE, null);
+    }
+
+    @Override
+    public void openAbout() {
+        AppAlertsHelper.showAlertDialog(getMainActivity(),
+                getResources().getString(R.string.menu_about),
+                String.format("Version: %s\nAuthor: %s", BuildConfig.VERSION_NAME, AppConstants.APP_AUTHOR));
     }
 
     /**

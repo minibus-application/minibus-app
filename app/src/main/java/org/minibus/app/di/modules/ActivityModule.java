@@ -49,7 +49,7 @@ public class ActivityModule {
     }
 
     @Provides
-    RouteScheduleContract.Presenter<RouteScheduleContract.View> provideBusSchedulePresenter
+    RouteScheduleContract.Presenter<RouteScheduleContract.View> provideRouteSchedulePresenter
             (RouteSchedulePresenter<RouteScheduleContract.View> presenter) {
         return presenter;
     }
@@ -73,7 +73,7 @@ public class ActivityModule {
     }
 
     @Provides
-    RouteTripContract.Presenter<RouteTripContract.View> provideBusTripPresenter
+    RouteTripContract.Presenter<RouteTripContract.View> provideRouteTripPresenter
             (RouteTripPresenter<RouteTripContract.View> presenter) {
         return presenter;
     }
@@ -91,7 +91,7 @@ public class ActivityModule {
     }
 
     @Provides
-    RouteScheduleModel provideBusScheduleModel(AppApiClient appApiClient) {
+    RouteScheduleModel provideRouteScheduleModel(AppApiClient appApiClient) {
         return new RouteScheduleModel(appApiClient);
     }
 

@@ -6,7 +6,7 @@ import org.minibus.app.data.network.pojo.user.User;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.util.Objects;
 
 public class Booking implements Serializable {
 
@@ -52,10 +52,6 @@ public class Booking implements Serializable {
         this.isActive = isActive;
     }
 
-    public long getLongId() {
-        return new BigInteger(id, 16).longValue();
-    }
-
     public String getId() {
         return id;
     }
@@ -86,5 +82,20 @@ public class Booking implements Serializable {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return isEnRoute == booking.isEnRoute &&
+                isActive == booking.isActive &&
+                id.equals(booking.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, isEnRoute, isActive);
     }
 }

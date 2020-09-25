@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import io.reactivex.Single;
 
-public class UserModel extends BaseModel {
+public class UserModel extends Model {
 
     public UserModel(AppApiClient appApiClient) {
         super(appApiClient);

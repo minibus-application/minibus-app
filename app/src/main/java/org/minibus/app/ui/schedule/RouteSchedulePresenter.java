@@ -10,7 +10,6 @@ import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.base.BasePresenter;
 import org.minibus.app.helpers.ApiErrorHelper;
-import org.minibus.app.helpers.AppDatesHelper;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,12 +53,6 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
         } else {
             getView().ifAlive(v -> v.showError(R.string.error_departure_first));
         }
-    }
-
-    @Override
-    public void onProfileIconClick() {
-        if (storage.isAuthorised()) getView().ifAlive(V::openProfile);
-        else getView().ifAlive(V::openLogin);
     }
 
     @Override
@@ -133,6 +126,40 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     }
 
     @Override
+    public void onCreatedOptionsMenu() {
+        getView().ifAlive(v -> v.setOptionsMenu(storage.isAuthorised()));
+    }
+
+    @Override
+    public void onUserAuthorized() {
+        getView().ifAlive(v -> v.setOptionsMenu(true));
+    }
+
+    @Override
+    public void onProfileMenuItemClick() {
+        getView().ifAlive(V::openProfile);
+    }
+
+    @Override
+    public void onLoginMenuItemClick() {
+        getView().ifAlive(V::openLogin);
+    }
+
+    @Override
+    public void onAboutMenuItemClick() {
+        getView().ifAlive(V::openAbout);
+    }
+
+    @Override
+    public void onLogoutMenuItemClick() {
+        getView().ifAlive(v -> v.showQuestion(R.string.warning_logout_message, (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+            storage.clearUserSession();
+            getView().ifAlive(view -> view.setOptionsMenu(false));
+        }));
+    }
+
+    @Override
     public void onSwapRouteDirectionButtonClick(LocalDate depDate) {
         if (storage.isRouteStored()) {
             City newArrivalCity = storage.getRoute().getDepartureCity();
@@ -197,7 +224,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
                                     .filter(t -> t.getId().equals(tripId)).findFirst();
 
                             if (optional.isPresent()) {
-                                getView().ifAlive(v -> v.openBusTripSummary(optional.get(), storage.getRoute(), depDate));
+                                getView().ifAlive(v -> v.openRouteTripSummary(optional.get(), storage.getRoute(), depDate));
                             } else {
                                 onError(new UnsupportedOperationException("Time's up, and the bus is probably already too"));
                             }

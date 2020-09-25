@@ -26,6 +26,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import org.minibus.app.ui.R;
+import org.minibus.app.ui.schedule.trip.RouteTripFragment;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -60,6 +62,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
     @Inject LoginPresenter<LoginContract.View> presenter;
 
     public static final int REQ_CODE = AppConstants.LOGIN_FRAGMENT_REQ_CODE;
+    private OnLoginListener listener;
     private boolean isLoginForm = true;
 
     public static LoginFragment newInstance() {
@@ -86,6 +89,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        listener = (OnLoginListener) getTargetFragment();
         setUnbinder(ButterKnife.bind(this, view));
         getActivityComponent().inject(this);
         presenter.attachView(this);
@@ -134,6 +138,10 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         super.onDestroyView();
     }
 
+    /**
+     * OnClick methods
+     */
+
     @OnClick(R.id.btn_confirm)
     public void onLoginClick() {
         hideKeyboard();
@@ -162,6 +170,19 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
             buttonFormSwitcher.setText(getResources().getString(R.string.login_no_account));
         }
     }
+
+    /**
+     * Listeners
+     */
+
+    @Override
+    protected void onBack() {
+        presenter.onCloseButtonClick();
+    }
+
+    /**
+     * View contract methods
+     */
 
     @Override
     public void showWelcomeMessage(@StringRes int msgResId, String userName) {
@@ -208,6 +229,22 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         inputContainerUserConfirmPass.setError(null);
     }
 
+    @Override
+    public void closeOnSuccessLogin() {
+        final Handler handler = new Handler();
+        AppAlertsHelper.setProgressHudCompleted(getMainActivity());
+        handler.postDelayed(() -> {
+            AppAlertsHelper.hideProgressHud();
+            listener.onUserLoggedIn();
+            close();
+        }, 1200);
+    }
+
+    @Override
+    public void close() {
+        dismiss();
+    }
+
     private void hideKeyboard() {
         try {
             final InputMethodManager inputManager =
@@ -218,23 +255,7 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
         }
     }
 
-    @Override
-    public void close() {
-        dismiss();
-    }
-
-    @Override
-    public void closeOnSuccessLogin() {
-        final Handler handler = new Handler();
-        AppAlertsHelper.setProgressHudCompleted(getMainActivity());
-        handler.postDelayed(() -> {
-            AppAlertsHelper.hideProgressHud();
-            close();
-        }, 1200);
-    }
-
-    @Override
-    protected void onBack() {
-        presenter.onCloseButtonClick();
+    public interface OnLoginListener {
+        void onUserLoggedIn();
     }
 }

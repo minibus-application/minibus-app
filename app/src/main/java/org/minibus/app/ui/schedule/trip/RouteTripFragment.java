@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import android.os.Handler;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,6 @@ import android.widget.TextView;
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.schedule.RouteTrip;
-import org.minibus.app.helpers.AppAlertsHelper;
 import org.minibus.app.helpers.AppDatesHelper;
 import org.minibus.app.ui.base.BaseSheetDialogFragment;
 import org.minibus.app.ui.R;
@@ -31,7 +29,6 @@ import org.minibus.app.ui.custom.ProgressMaterialButton;
 import org.minibus.app.utils.CommonUtil;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.button.MaterialButton;
 
 import java.time.LocalDate;
 
@@ -43,10 +40,6 @@ import butterknife.OnClick;
 
 
 public class RouteTripFragment extends BaseSheetDialogFragment implements RouteTripContract.View {
-
-    public interface OnRouteTripBookingListener {
-        void onRouteTripBooked();
-    }
 
     @BindView(R.id.rg_seats) RadioGroup radioGroupSeats;
     @BindView(R.id.btn_confirm_reservation) ProgressMaterialButton btnConfirmReservation;
@@ -223,5 +216,9 @@ public class RouteTripFragment extends BaseSheetDialogFragment implements RouteT
         RadioButton rb = (RadioButton) radioGroupSeats.getChildAt(idx);
 
         return Integer.parseInt(rb.getText().toString());
+    }
+
+    public interface OnRouteTripBookingListener {
+        void onRouteTripBooked();
     }
 }

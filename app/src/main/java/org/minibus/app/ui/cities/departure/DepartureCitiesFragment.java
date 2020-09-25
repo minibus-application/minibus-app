@@ -16,16 +16,10 @@ import javax.inject.Inject;
 
 public class DepartureCitiesFragment extends BaseCitiesFragment implements DepartureCitiesContract.View {
 
-    public static final int REQ_CODE = AppConstants.DEP_CITIES_FRAGMENT_REQ_CODE;
-    public static final String CITY_KEY = "key_departure_city";
-
     @Inject
     DepartureCitiesPresenter<DepartureCitiesContract.View> presenter;
 
-    public interface OnCityClickListener {
-        void onDepartureCityItemClicked(City city);
-    }
-
+    public static final int REQ_CODE = AppConstants.DEP_CITIES_FRAGMENT_REQ_CODE;
     private OnCityClickListener listener;
 
     public static DepartureCitiesFragment newInstance() {
@@ -47,17 +41,25 @@ public class DepartureCitiesFragment extends BaseCitiesFragment implements Depar
     }
 
     @Override
+    protected String getTitle() {
+        return getMainActivity().getResources().getString(R.string.departure_cities_title);
+    }
+
+    /**
+     * View contract methods
+     */
+
+    @Override
     public void changeCity(City city) {
         listener.onDepartureCityItemClicked(city);
     }
 
     @Override
-    public void setCitiesData(List<City> cities, long prevSelectedCityId) {
+    public void setCitiesData(List<City> cities, String prevSelectedCityId) {
         super.setData(cities, prevSelectedCityId);
     }
 
-    @Override
-    protected String getTitle() {
-        return getMainActivity().getResources().getString(R.string.departure_cities_title);
+    public interface OnCityClickListener {
+        void onDepartureCityItemClicked(City city);
     }
 }

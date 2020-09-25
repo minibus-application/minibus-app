@@ -6,7 +6,7 @@ import org.minibus.app.data.network.pojo.route.Route;
 import org.minibus.app.data.network.pojo.vehicle.Vehicle;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.util.Objects;
 
 public class RouteTrip implements Serializable {
 
@@ -121,5 +121,20 @@ public class RouteTrip implements Serializable {
 
     public double getComparablePrice() {
         return Double.parseDouble(price);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RouteTrip routeTrip = (RouteTrip) o;
+        return id.equals(routeTrip.id) &&
+                Objects.equals(departureTime, routeTrip.departureTime) &&
+                Objects.equals(route, routeTrip.route);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, departureTime, route);
     }
 }

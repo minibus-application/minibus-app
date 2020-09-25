@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 import io.reactivex.Single;
 
-public class RouteScheduleModel extends BaseModel {
+public class RouteScheduleModel extends Model {
 
     public RouteScheduleModel(AppApiClient appApiClient) {
         super(appApiClient);

@@ -3,7 +3,7 @@ package org.minibus.app.data.network.pojo.carrier;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.util.Objects;
 
 public class Carrier implements Serializable {
 
@@ -26,8 +26,8 @@ public class Carrier implements Serializable {
         this.costFactor = costFactor;
     }
 
-    public long getId() {
-        return new BigInteger(id, 16).longValue();
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -40,5 +40,19 @@ public class Carrier implements Serializable {
 
     public String getCostFactor() {
         return costFactor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Carrier carrier = (Carrier) o;
+        return id.equals(carrier.id) &&
+                Objects.equals(name, carrier.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

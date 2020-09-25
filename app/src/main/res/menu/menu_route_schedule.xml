@@ -3,11 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_item_profile"
-        android:title="@string/profile_title"
+        android:id="@+id/menu_item_login"
+        android:title="@string/menu_login"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_profile_dark_24dp"
-        android:iconTint="?colorOnPrimary"
         android:actionLayout="@layout/view_toolbar"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_item_profile"
+        android:title="@string/menu_profile"
+        android:visible="false"
+        android:orderInCategory="200"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_item_about"
+        android:title="@string/menu_about"
+        android:orderInCategory="300"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_item_logout"
+        android:title="@string/menu_logout"
+        android:orderInCategory="400"
+        android:visible="false"
+        app:showAsAction="never"/>
 </menu>

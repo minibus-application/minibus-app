@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Objects;
 
 public class City implements Serializable {
@@ -51,10 +50,6 @@ public class City implements Serializable {
         return name;
     }
 
-    public long getLongId() {
-        return new BigInteger(id, 16).longValue();
-    }
-
     public String getId() {
         return id;
     }
@@ -82,11 +77,13 @@ public class City implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         City city = (City) o;
-        return id.equals(city.id) && Objects.equals(name, city.name) && Objects.equals(region, city.region);
+        return Double.compare(city.latitude, latitude) == 0 &&
+                Double.compare(city.longitude, longitude) == 0 &&
+                id.equals(city.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, region);
+        return Objects.hash(id, latitude, longitude);
     }
 }

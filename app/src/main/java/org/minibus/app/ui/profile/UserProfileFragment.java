@@ -52,7 +52,6 @@ public class UserProfileFragment extends BaseDialogFragment implements
     @BindView(R.id.srl_bookings) SwipeRefreshLayout swipeRefreshBookings;
     @BindView(R.id.tv_toolbar_title) TextView textToolbarTitle;
     @BindView(R.id.tv_toolbar_subtitle) TextView textToolbarSubtitle;
-    @BindView(R.id.btn_action) MaterialButton buttonLogout;
 
     @Inject UserProfilePresenter<UserProfileContract.View> presenter;
 
@@ -68,17 +67,17 @@ public class UserProfileFragment extends BaseDialogFragment implements
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_DialogFragment);
+    }
+
+    @Override
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
         Objects.requireNonNull(dialog.getWindow()).getAttributes().windowAnimations = R.style.DialogSlideAnimation;
         return dialog;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_DialogFragment);
     }
 
     @Nullable
@@ -101,8 +100,6 @@ public class UserProfileFragment extends BaseDialogFragment implements
         toolbar.setNavigationOnClickListener(v -> presenter.onCloseButtonClick());
 
         textToolbarSubtitle.setVisibility(View.VISIBLE);
-        buttonLogout.setVisibility(View.VISIBLE);
-        buttonLogout.setText(getResources().getString(R.string.logout));
 
         swipeRefreshBookings.setOnRefreshListener(this);
         swipeRefreshBookings.setColorSchemeResources(R.color.colorAccent);
@@ -116,20 +113,30 @@ public class UserProfileFragment extends BaseDialogFragment implements
         return view;
     }
 
-    @OnClick(R.id.btn_action)
-    public void onLogoutButtonClick() {
-        presenter.onLogoutButtonClick();
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.onStart(checkedTab);
     }
+
+    @Override
+    public void onDestroyView() {
+        presenter.detachView();
+        super.onDestroyView();
+    }
+
+    /**
+     * OnClick methods
+     */
 
     @OnClick(R.id.button_empty_route_schedule)
     public void onRouteScheduleButtonClick() {
         presenter.onRouteScheduleButtonClick();
     }
 
-    @Override
-    public void onRefresh() {
-        presenter.onBookingsTabRefresh(checkedTab);
-    }
+    /**
+     * Listeners
+     */
 
     @Override
     public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
@@ -143,19 +150,22 @@ public class UserProfileFragment extends BaseDialogFragment implements
     }
 
     @Override
-    protected void onBack() {
-        presenter.onCloseButtonClick();
-    }
-
-    @Override
     public void onBookingActionButtonClick(View view, String id) {
         presenter.onBookingCancelButtonClick(id);
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        presenter.onStart(checkedTab);
+    protected void onBack() {
+        presenter.onCloseButtonClick();
+    }
+
+    /**
+     * View contract methods
+     */
+
+    @Override
+    public void onRefresh() {
+        presenter.onBookingsTabRefresh(checkedTab);
     }
 
     @Override
@@ -195,16 +205,6 @@ public class UserProfileFragment extends BaseDialogFragment implements
     }
 
     @Override
-    public void logout() {
-        close();
-    }
-
-    @Override
-    public void close() {
-        dismiss();
-    }
-
-    @Override
     public void showEmptyView() {
         if (multiStateView.getViewState() != MultiStateView.ViewState.EMPTY) {
             multiStateView.setViewState(MultiStateView.ViewState.EMPTY);
@@ -226,9 +226,8 @@ public class UserProfileFragment extends BaseDialogFragment implements
     }
 
     @Override
-    public void onDestroyView() {
-        presenter.detachView();
-        super.onDestroyView();
+    public void close() {
+        dismiss();
     }
 
     enum BookingsTab {

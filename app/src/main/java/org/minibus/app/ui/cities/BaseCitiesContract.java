@@ -6,13 +6,11 @@ import org.minibus.app.ui.base.Contract;
 public interface BaseCitiesContract {
 
     interface View extends Contract.View {
-
         void changeCity(City city);
         void close();
     }
 
     interface Presenter<V extends BaseCitiesContract.View> extends Contract.Presenter<V> {
-
         void onCloseButtonClick();
         void onCitySelect(City city);
     }

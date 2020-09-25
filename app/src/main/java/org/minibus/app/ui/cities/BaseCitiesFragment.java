@@ -90,16 +90,24 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
         return view;
     }
 
-    @OnClick(R.id.btn_empty_cities)
-    public void onRouteScheduleButtonClick() {
-        presenter.onCloseButtonClick();
-    }
-
     @Override
     public void onDestroyView() {
         presenter.detachView();
         super.onDestroyView();
     }
+
+    /**
+     * OnClick methods
+     */
+
+    @OnClick(R.id.btn_empty_cities)
+    public void onRouteScheduleButtonClick() {
+        presenter.onCloseButtonClick();
+    }
+
+    /**
+     * Listeners
+     */
 
     @Override
     public void onCityClick(View view, City city, int pos) {
@@ -117,6 +125,15 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
             showError(R.string.error_finding_direction);
         }
     }
+
+    @Override
+    protected void onBack() {
+        presenter.onCloseButtonClick();
+    }
+
+    /**
+     * View contract methods
+     */
 
     @Override
     public void showEmptyView() {
@@ -140,22 +157,13 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
     }
 
     @Override
-    protected void onBack() {
-        presenter.onCloseButtonClick();
-    }
-
-    @Override
     public void close() {
         dismiss();
     }
 
-    protected void setData(List<City> cities, long prevSelectedCityId) {
+    protected void setData(List<City> cities, String prevSelectedCityId) {
         adapter.setData(cities, prevSelectedCityId);
         multiStateView.setViewState(MultiStateView.ViewState.CONTENT);
-    }
-
-    protected void openGoogleMapsDirections(String lat, String lng) {
-
     }
 
     protected abstract String getTitle();

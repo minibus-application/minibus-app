@@ -4,10 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import org.minibus.app.data.network.pojo.route.Route;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class RouteScheduleResponse implements Serializable {
+public class RouteScheduleResponse {
 
     @SerializedName("timeline")
     private List<RouteTrip> routeTrips;

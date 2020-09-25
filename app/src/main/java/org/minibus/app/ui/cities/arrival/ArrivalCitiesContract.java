@@ -8,7 +8,7 @@ import java.util.List;
 public interface ArrivalCitiesContract {
 
     interface View extends BaseCitiesContract.View {
-        void setCitiesData(List<City> cities, long prevSelectedCityId);
+        void setCitiesData(List<City> cities, String prevSelectedCityId);
     }
 
     interface Presenter<V extends ArrivalCitiesContract.View> extends BaseCitiesContract.Presenter<V> {

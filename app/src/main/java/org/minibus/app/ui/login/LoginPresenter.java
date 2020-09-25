@@ -1,6 +1,5 @@
 package org.minibus.app.ui.login;
 
-import android.util.Base64;
 
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.local.AppStorageManager;
@@ -21,9 +20,10 @@ import io.reactivex.schedulers.Schedulers;
 public class LoginPresenter<V extends LoginContract.View> extends BasePresenter<V>
         implements LoginContract.Presenter<V> {
 
-    private UserModel userModel;
+    @Inject
+    AppStorageManager storage;
 
-    @Inject AppStorageManager storage;
+    private UserModel userModel;
 
     @Inject
     public LoginPresenter(UserModel userModel) {
@@ -43,9 +43,11 @@ public class LoginPresenter<V extends LoginContract.View> extends BasePresenter<
                     .subscribeWith(new DisposableSingleObserver<UserResponse>() {
                         @Override
                         public void onSuccess(UserResponse userResponse) {
-                            if (userResponse.getToken() == null) throw new RuntimeException("Can't retrieve user token");
+                            if (userResponse.getToken() == null)
+                                throw new RuntimeException("Can't retrieve user token");
 
                             storage.setUserSession(userResponse.getToken(), userResponse.getUser());
+                            getView().ifAlive(v -> v.showWelcomeMessage(R.string.welcome_user_message, userResponse.getUser().getName()));
                             getView().ifAlive(V::closeOnSuccessLogin);
                         }
 
@@ -75,11 +77,7 @@ public class LoginPresenter<V extends LoginContract.View> extends BasePresenter<
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private boolean isFormValid(String userName,
-                                String userPhone,
-                                String userPassword,
-                                String userConfirmPassword,
-                                boolean isLoginForm) {
+    private boolean isFormValid(String userName, String userPhone, String userPassword, String userConfirmPassword, boolean isLoginForm) {
         boolean isValid = true;
 
         if (userPhone.length() < AppConstants.DEFAULT_PHONE_NUMBER_LENGTH) {

@@ -7,33 +7,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class AppDatesHelper {
-
-    public enum DatePattern {
-        ISO("yyyy-MM-dd"),
-        CALENDAR ("EE d"),
-        BOOKING ("EEEE, d MMM"),
-        SUMMARY ("EE, d MMM");
-
-        private final String pattern;
-
-        DatePattern(String pattern) {
-            this.pattern = pattern;
-        }
-
-        public String toString() {
-            return this.pattern;
-        }
-    }
-
-    public static LocalDate getDateByDayOfWeek(int dayOfWeek) {
-        Optional<LocalDate> optional = getWeek().stream().filter(d -> getDayOfWeek(d) == dayOfWeek).findFirst();
-        return optional.orElseGet(() -> getWeek().get(dayOfWeek));
-    }
 
     public static List<Integer> getDaysOfWeek() {
         return IntStream.rangeClosed(1, DayOfWeek.values().length).boxed().collect(Collectors.toList());
@@ -58,10 +35,6 @@ public class AppDatesHelper {
         return LocalDate.parse(date, getDateTimeFormatter(datePattern));
     }
 
-    public static String getToday() {
-        return getDateTimeFormatter(DatePattern.ISO).format(LocalDate.now());
-    }
-
     public static String formatDate(String date, DatePattern currentPattern, DatePattern newPattern) {
         return getDateTimeFormatter(newPattern).format(parseDate(date, currentPattern));
     }
@@ -72,5 +45,22 @@ public class AppDatesHelper {
 
     private static DateTimeFormatter getDateTimeFormatter(DatePattern datePattern) {
         return DateTimeFormatter.ofPattern(datePattern.toString());
+    }
+
+    public enum DatePattern {
+        ISO("yyyy-MM-dd"),
+        CALENDAR ("EE d"),
+        BOOKING ("EEEE, d MMM"),
+        SUMMARY ("EE, d MMM");
+
+        private final String pattern;
+
+        DatePattern(String pattern) {
+            this.pattern = pattern;
+        }
+
+        public String toString() {
+            return this.pattern;
+        }
     }
 }

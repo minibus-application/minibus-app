@@ -4,12 +4,12 @@ import org.minibus.app.data.network.AppApiClient;
 
 import javax.inject.Inject;
 
-public class BaseModel {
+public class Model {
 
     private AppApiClient appApiClient;
 
     @Inject
-    public BaseModel(AppApiClient appApiClient) {
+    public Model(AppApiClient appApiClient) {
         this.appApiClient = appApiClient;
     }
 

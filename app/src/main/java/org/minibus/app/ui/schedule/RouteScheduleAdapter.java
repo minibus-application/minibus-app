@@ -271,9 +271,6 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         @OnClick(R.id.btn_select)
         public void onSelectButtonClick(View itemView) {
-            // have to get position by invoking getAdapterPosition()
-            // because this is where sometimes the "position" value is not the proper one
-            // and sometimes returns an exception regarding inconsistent items state.
             int itemPos = getAdapterPosition();
 
             if (isItemClickable && itemPos >= 0) {
