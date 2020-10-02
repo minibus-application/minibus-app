@@ -12,14 +12,14 @@
     android:weightSum="5">
 
     <FrameLayout
-        android:id="@+id/container_hub"
+        android:id="@+id/container_hud"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="4"
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/image_hub_progress"
+            android:id="@+id/image_hud_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_vertical"
@@ -28,7 +28,7 @@
             android:scaleY="0.8" />
 
         <ImageView
-            android:id="@+id/image_hub_checkmark"
+            android:id="@+id/image_hud_checkmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_vertical"
@@ -40,7 +40,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/text_hub_message"
+        android:id="@+id/text_hud_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

@@ -15,8 +15,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.StringRes;
-
 import org.minibus.app.ui.R;
 
 
@@ -36,7 +34,7 @@ public class ProgressHud extends Dialog {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus){
-        ImageView imageView = findViewById(R.id.image_hub_progress);
+        ImageView imageView = findViewById(R.id.image_hud_progress);
         RotateDrawable rotateDrawable = (RotateDrawable) imageView.getBackground();
         ObjectAnimator oa = ObjectAnimator.ofInt(rotateDrawable, "level", 0, 10000);
         oa.setDuration(1000);
@@ -47,8 +45,8 @@ public class ProgressHud extends Dialog {
 
     public void setMessage(CharSequence message) {
         if(message != null && message.length() > 0) {
-            findViewById(R.id.text_hub_message).setVisibility(View.VISIBLE);
-            TextView txt = findViewById(R.id.text_hub_message);
+            findViewById(R.id.text_hud_message).setVisibility(View.VISIBLE);
+            TextView txt = findViewById(R.id.text_hud_message);
             txt.setText(message);
             txt.invalidate();
         }
@@ -59,9 +57,9 @@ public class ProgressHud extends Dialog {
         setTitle("");
 
         if (message == null || message.length() == 0) {
-            findViewById(R.id.text_hub_message).setVisibility(View.GONE);
+            findViewById(R.id.text_hud_message).setVisibility(View.GONE);
         } else {
-            TextView txt = findViewById(R.id.text_hub_message);
+            TextView txt = findViewById(R.id.text_hud_message);
             txt.setText(message);
         }
 
@@ -78,9 +76,9 @@ public class ProgressHud extends Dialog {
 
     public void setCompleted(CharSequence message) {
         setMessage(message);
-        ImageView imageView = findViewById(R.id.image_hub_progress);
+        ImageView imageView = findViewById(R.id.image_hud_progress);
         imageView.setVisibility(View.GONE);
-        showUp(findViewById(R.id.image_hub_checkmark));
+        showUp(findViewById(R.id.image_hud_checkmark));
     }
 
     private void showUp(View v) {
