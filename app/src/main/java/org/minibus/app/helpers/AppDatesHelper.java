@@ -23,7 +23,7 @@ public class AppDatesHelper {
     public static ArrayList<LocalDate> getWeek() {
         ArrayList<LocalDate> weekdays = new ArrayList<>();
 
-        IntStream.rangeClosed(0, DayOfWeek.values().length).forEach(i -> {
+        IntStream.range(0, DayOfWeek.values().length).forEach(i -> {
             LocalDateTime date = LocalDate.now().plus(i, ChronoUnit.DAYS).atStartOfDay();
             weekdays.add(date.toLocalDate());
         });
