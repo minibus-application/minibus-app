@@ -95,6 +95,8 @@ public class UserProfileFragment extends BaseDialogFragment implements
         tabsBookingsTypes.check(buttonActiveBookings.getId());
         defaultActiveBookingsTabName = getResources().getString(R.string.active);
         defaultBookingsHistoryTabName = getResources().getString(R.string.history);
+        buttonActiveBookings.setText(defaultActiveBookingsTabName);
+        buttonBookingsHistory.setText(defaultBookingsHistoryTabName);
 
         toolbar.setNavigationIcon(R.drawable.ic_close_dark_24dp);
         toolbar.setNavigationOnClickListener(v -> presenter.onCloseButtonClick());

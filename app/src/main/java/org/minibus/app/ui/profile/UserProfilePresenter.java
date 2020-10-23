@@ -31,7 +31,6 @@ public class UserProfilePresenter<V extends UserProfileContract.View> extends Ba
     @Override
     public void onStart(UserProfileFragment.BookingsTab checkedTab) {
         getView().ifAlive(v -> v.setUserData(storage.getUserData().getName(), storage.getUserData().getPhone()));
-        onBookingsTabChecked(checkedTab);
     }
 
     @Override

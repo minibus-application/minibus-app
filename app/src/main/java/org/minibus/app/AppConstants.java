@@ -2,7 +2,7 @@ package org.minibus.app;
 
 public class AppConstants {
 
-    public static final String BASE_URL = "http://192.168.3.8:3000";
+    public static final String BASE_URL = "http://192.168.3.12:3000";
     public static final String STORAGE_NAME = "app-prefs";
     public static final String COUNTRY_CODE = "+375";
     public static final String APP_AUTHOR = "https://github.com/n3gbx";
