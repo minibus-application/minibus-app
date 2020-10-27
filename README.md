@@ -1,7 +1,7 @@
 # minibus-app
 MVP based + RxJava2 + Dagger 2 + ButterKnife + Retrofit 2
 
-[app-debug.apk](./demo/app-debug.apk) (MD5 checksum: 5cb1142e321e46b5687d10e2fd853291)
+[app-debug.apk](./demo/app-debug.apk) (MD5 checksum: 8b022b1ea78ef8fb6c8353a4ba08e07b)
 
 <p align="left">
   <img src="./demo/1.png" height="480">
