@@ -1,8 +1,10 @@
 package org.minibus.app;
 
+import org.minibus.app.ui.BuildConfig;
+
 public class AppConstants {
 
-    public static final String BASE_URL = "http://192.168.3.12:3000";
+    public static final String BASE_URL = BuildConfig.BASE_URL;
     public static final String STORAGE_NAME = "app-prefs";
     public static final String COUNTRY_CODE = "+375";
     public static final String APP_AUTHOR = "https://github.com/n3gbx";
