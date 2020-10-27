@@ -8,7 +8,6 @@
         android:id="@+id/rl_summary_header"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"

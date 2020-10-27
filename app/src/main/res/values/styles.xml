@@ -78,6 +78,7 @@
         parent="@style/Widget.MaterialComponents.BottomSheet.Modal">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.AppTheme.BottomSheet</item>
         <item name="shapeAppearance">@style/ShapeAppearance.AppTheme.LargeComponent</item>
+        <item name="backgroundTint">?colorPrimary</item>
     </style>
 
     <style name="Widget.AppTheme.TextInputLayout.OutlinedBox"

@@ -6,6 +6,7 @@
     <attr name="colorIconSecondary" format="color|reference" />
     <attr name="colorStroke" format="color|reference" />
     <attr name="colorCard" format="color|reference" />
+    <attr name="colorHud" format="color|reference" />
     <attr name="colorBackground" format="color|reference" />
     <attr name="colorGreen" format="color|reference" />
     <attr name="colorYellow" format="color|reference" />

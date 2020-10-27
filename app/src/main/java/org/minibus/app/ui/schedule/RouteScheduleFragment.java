@@ -134,6 +134,7 @@ public class RouteScheduleFragment extends BaseFragment implements
 
         swipeRefreshRouteSchedule.setOnRefreshListener(this);
         swipeRefreshRouteSchedule.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshRouteSchedule.setProgressBackgroundColorSchemeResource(R.color.colorPrimary);
 
         layoutManagerCalendar = new SpanningLinearLayoutManager(getMainActivity(), LinearLayoutManager.HORIZONTAL, false);
         adapterCalendar = new RouteScheduleCalendarAdapter(getMainActivity());

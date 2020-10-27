@@ -105,6 +105,7 @@ public class UserProfileFragment extends BaseDialogFragment implements
 
         swipeRefreshBookings.setOnRefreshListener(this);
         swipeRefreshBookings.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshBookings.setProgressBackgroundColorSchemeResource(R.color.colorPrimary);
 
         layoutManager = new LinearLayoutManager(getMainActivity(), RecyclerView.VERTICAL, false);
         adapter = new UserBookingsAdapter(getMainActivity());

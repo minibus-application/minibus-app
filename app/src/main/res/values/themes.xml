@@ -8,6 +8,7 @@
         <item name="colorIconSecondary">@color/colorIconSecondary</item>
         <item name="colorStroke">@color/colorStroke</item>
         <item name="colorCard">@color/colorCard</item>
+        <item name="colorHud">@color/colorHud</item>
         <item name="colorBackground">@color/colorBackground</item>
         <item name="colorGreen">@color/colorGreen</item>
         <item name="colorYellow">@color/colorYellow</item>
@@ -54,8 +55,9 @@
         <item name="android:textStyle">normal</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.Launcher">
@@ -75,7 +77,6 @@
     </style>
 
     <style name="AppTheme.DialogFragment" parent="AppTheme">
-        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">false</item>

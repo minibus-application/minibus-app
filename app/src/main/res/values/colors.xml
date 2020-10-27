@@ -30,6 +30,7 @@
     <color name="colorGreen">#00C853</color>
     <color name="colorStroke">#E0E0E0</color>
     <color name="colorCard">#FFFFFF</color>
+    <color name="colorHud">#80121212</color>
 
     <!--text and drawables-->
     <color name="colorTextPrimary">#121212</color>

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
         CommonUtil.adjustFontSize(this, (float) AppConstants.MAX_FONT_SCALE_FACTOR);
 
@@ -59,16 +59,10 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(new NetworkChangeReceiver(), filter);
 
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        View decor = getWindow().getDecorView();
-        decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.container,
-                    RouteScheduleFragment.newInstance(),
-                    RouteScheduleFragment.class.getName());
+            transaction.add(R.id.container, RouteScheduleFragment.newInstance(), RouteScheduleFragment.class.getName());
             transaction.commitNow();
         }
     }
