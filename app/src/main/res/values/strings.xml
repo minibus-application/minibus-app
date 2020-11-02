@@ -57,7 +57,7 @@
     <string name="user_name_empty_error">Enter your name</string>
     <string name="user_phone_format_error">Wrong phone number format</string>
     <string name="user_pass_empty_error">Please enter the password</string>
-    <string name="user_confirm_pass_error">Passwords don\'t match</string>
+    <string name="user_confirm_pass_error">Passwords does not match</string>
     <string name="user_confirm_pass_empty_error">Please confirm the password</string>
     <string name="login_account_exists">I already have an account</string>
     <string name="login_no_account">I don\'t have an account yet</string>
