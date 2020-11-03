@@ -263,9 +263,11 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (routeTrip.getAvailableSeats() == 0) {
                 textSeatsAvailable.setTextColor(ContextCompat.getColor(context, R.color.colorError));
                 btnSelect.setEnabled(false);
+                btnSelect.setClickable(false);
             } else {
                 textSeatsAvailable.setTextColor(ContextCompat.getColor(context, R.color.colorGreen));
                 btnSelect.setEnabled(true);
+                btnSelect.setClickable(true);
             }
         }
 

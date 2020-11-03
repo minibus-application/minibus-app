@@ -6,7 +6,7 @@
 
     <!--primary-->
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryVariant">#F5F5F5</color>
+    <color name="colorPrimaryVariant">#EEEEEE</color>
     <color name="colorOnPrimary">#121212</color>
 
     <!--secondary-->
@@ -15,7 +15,7 @@
     <color name="colorOnSecondary">#FFFFFF</color>
 
     <!--background-->
-    <color name="colorBackground">#FAFAFA</color>
+    <color name="colorBackground">#F7F7F7</color>
 
     <!--surface-->
     <color name="colorSurface">#FFFFFF</color>
@@ -28,7 +28,7 @@
     <!--others-->
     <color name="colorYellow">#FFAB00</color>
     <color name="colorGreen">#00C853</color>
-    <color name="colorStroke">#E0E0E0</color>
+    <color name="colorStroke">#D6D6D6</color>
     <color name="colorCard">#FFFFFF</color>
     <color name="colorHud">#80121212</color>
 

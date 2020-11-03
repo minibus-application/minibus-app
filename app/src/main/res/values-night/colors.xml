@@ -2,40 +2,40 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--accent-->
-    <color name="colorAccent">#64b5f6</color>
+    <color name="colorAccent">#64B5F6</color>
 
     <!--primary-->
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryVariant">#424242</color>
+    <color name="colorPrimary">#191919</color>
+    <color name="colorPrimaryVariant">#2B2B2B</color>
     <color name="colorOnPrimary">#F7F7F7</color>
 
     <!--secondary-->
-    <color name="colorSecondary">#64b5f6</color>
-    <color name="colorSecondaryVariant">#3064b5f6</color>
-    <color name="colorOnSecondary">#3C3C3C</color>
+    <color name="colorSecondary">#64B5F6</color>
+    <color name="colorSecondaryVariant">#3064B5F6</color>
+    <color name="colorOnSecondary">#272727</color>
 
     <!--background-->
-    <color name="colorBackground">#121212</color>
+    <color name="colorBackground">#000000</color>
 
     <!--surface-->
-    <color name="colorSurface">#121212</color>
+    <color name="colorSurface">#000000</color>
     <color name="colorOnSurface">#F7F7F7</color>
 
     <!--error-->
-    <color name="colorError">#fa8c95</color>
-    <color name="colorOnError">#3c3c3c</color>
+    <color name="colorError">#FA8C95</color>
+    <color name="colorOnError">#3C3C3C</color>
 
     <!--others-->
-    <color name="colorYellow">#fdf16b</color>
+    <color name="colorYellow">#FDF16B</color>
     <color name="colorGreen">#B2FF59</color>
     <color name="colorStroke">#424242</color>
-    <color name="colorCard">#1c1c1c</color>
+    <color name="colorCard">#121212</color>
     <color name="colorHud">#80424242</color>
 
     <!--text and drawables-->
-    <color name="colorTextPrimary">#f7f7f7</color>
-    <color name="colorTextSecondary">#bdbdbd</color>
-    <color name="colorIconPrimary">#f7f7f7</color>
+    <color name="colorTextPrimary">#F7F7F7</color>
+    <color name="colorTextSecondary">#BDBDBD</color>
+    <color name="colorIconPrimary">#F7F7F7</color>
     <color name="colorIconSecondary">#616161</color>
 
     <color tools:override = "true" name="mtrl_textinput_default_box_stroke_color">#616161</color>
