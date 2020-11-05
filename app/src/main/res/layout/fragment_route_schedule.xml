@@ -101,8 +101,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:backgroundTint="?colorAccent"
         android:src="@drawable/ic_direction_light_24dp"
+        app:tint="@color/colorPrimary"
+        app:backgroundTint="?colorAccent"
         app:borderWidth="0dp"
         app:elevation="6dp" />
 
@@ -120,7 +121,8 @@
         android:layout_gravity="end|top"
         android:layout_margin="16dp"
         android:src="@drawable/ic_arrow_top_light_24dp"
-        android:backgroundTint="?colorGreen"
+        app:tint="@color/colorPrimary"
+        app:backgroundTint="?colorGreen"
         app:layout_anchor="@id/dummy"
         app:layout_anchorGravity="top|right|end"
         app:borderWidth="0dp"
