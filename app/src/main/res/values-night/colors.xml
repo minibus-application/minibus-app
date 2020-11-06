@@ -23,6 +23,7 @@
 
     <!--error-->
     <color name="colorError">#FA8C95</color>
+    <color name="colorErrorVariant">#6C2B32</color>
     <color name="colorOnError">#3C3C3C</color>
 
     <!--others-->

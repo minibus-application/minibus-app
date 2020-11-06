@@ -154,7 +154,7 @@
             android:layout_below="@+id/booking_arr_container"
             android:text="@string/cancel"
             android:textColor="@color/selector_neg_outlined_btn_text"
-            app:rippleColor="@null"
+            app:rippleColor="?colorErrorVariant"
             app:strokeColor="@color/selector_neg_outlined_btn" />
     </RelativeLayout>
 </FrameLayout>

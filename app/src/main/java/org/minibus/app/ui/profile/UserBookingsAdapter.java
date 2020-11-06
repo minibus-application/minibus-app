@@ -142,7 +142,7 @@ public class UserBookingsAdapter extends RecyclerView.Adapter<UserBookingsAdapte
             buttonAction.setText(context.getText(R.string.cancel));
             buttonAction.setStrokeColor(ContextCompat.getColorStateList(context, R.color.selector_neg_outlined_btn));
             buttonAction.setTextColor(ContextCompat.getColorStateList(context, R.color.selector_neg_outlined_btn_text));
-            buttonAction.setRippleColor(null);
+            buttonAction.setRippleColor(ContextCompat.getColorStateList(context, R.color.colorErrorVariant));
             buttonAction.setEnabled(true);
             buttonAction.setClickable(true);
             buttonAction.setFocusable(true);

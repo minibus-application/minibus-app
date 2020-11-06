@@ -23,6 +23,7 @@
         <item name="android:textColorSecondary">@color/colorOnPrimary</item>
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorError">@color/colorError</item>
+        <item name="colorErrorVariant">@color/colorErrorVariant</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
