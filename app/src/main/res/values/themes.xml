@@ -12,6 +12,8 @@
         <item name="colorBackground">@color/colorBackground</item>
         <item name="colorGreen">@color/colorGreen</item>
         <item name="colorYellow">@color/colorYellow</item>
+        <item name="colorOrange">@color/colorOrange</item>
+        <item name="colorOrangeVariant">@color/colorOrangeVariant</item>
 
         <!--Material color attributes -->
         <item name="colorPrimary">@color/colorPrimary</item>

@@ -17,6 +17,7 @@ android {
 
         stage {
             buildConfigField 'String', 'BASE_URL', '"https://minibus-app.herokuapp.com/"'
+            debuggable true
             signingConfig signingConfigs.debug
         }
 

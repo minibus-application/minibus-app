@@ -105,11 +105,15 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
 
             addSubscription(getRouteScheduleObservable(depDate)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
+                    .doFinally(() -> getView().ifAlive(V::showRouteDirection))
                     .subscribeWith(getRouteScheduleObserver()));
         } else {
             addSubscription(getAllRoutesDataObservable()
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showLoadingDataDialog))
-                    .doFinally(() -> getView().ifAlive(V::hideLoadingDataDialog))
+                    .doFinally(() -> {
+                        getView().ifAlive(V::hideLoadingDataDialog);
+                        getView().ifAlive(V::showRouteDirection);
+                    })
                     .flatMap(response -> {
                         Route defaultRoute = response.get(0);
                         City depCity = defaultRoute.getDepartureCity();
@@ -187,6 +191,9 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
     public void onDepartureCityChanged(City depCity, LocalDate depDate) {
         if (storage.isArrivalCityStored()) {
             addSubscription(getCompleteRouteScheduleObserver(depCity.getId(), storage.getArrivalCity().getId(), depDate));
+        } else {
+            storage.setDepartureCity(depCity);
+            getView().ifAlive(v -> v.setDepartureCity(depCity.getName()));
         }
     }
 

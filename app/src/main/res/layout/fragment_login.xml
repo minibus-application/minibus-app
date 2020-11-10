@@ -125,7 +125,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:textAllCaps="true"
                 android:text="@string/login" />
 
             <com.google.android.material.button.MaterialButton

@@ -38,7 +38,7 @@ public class DepartureCitiesPresenter<V extends DepartureCitiesContract.View> ex
                     @Override
                     public void onSuccess(List<City> response) {
                         cities = response;
-                        String prevSelectedCityId = storage.isRouteStored() ? storage.getDepartureCity().getId() : null;
+                        String prevSelectedCityId = storage.isDepartureCityStored() ? storage.getDepartureCity().getId() : null;
 
                         if (!response.isEmpty()) getView().ifAlive(v -> v.setCitiesData(cities, prevSelectedCityId));
                         else getView().ifAlive(V::showEmptyView);

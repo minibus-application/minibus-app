@@ -24,12 +24,17 @@
     <string name="no">No</string>
 
     <!-- Empty state -->
-    <string name="bookings_empty_title">No reservations</string>
-    <string name="bookings_empty_message">Hurry up to book a seat</string>
-    <string name="bus_stops_empty_title">No cities found</string>
-    <string name="bus_stops_empty_message">Try to update later</string>
-    <string name="bus_schedule_empty_title">No schedule found</string>
-    <string name="bus_schedule_empty_message">Change the date or departure city</string>
+    <string name="empty_user_bookings_title">No bookings found</string>
+    <string name="empty_user_bookings_message">Hurry up to book a seat</string>
+    <string name="empty_user_bookings_button">Explore route schedule</string>
+
+    <string name="empty_cities_title">No cities found</string>
+    <string name="empty_cities_message">It might be an error. Try to update later</string>
+    <string name="empty_cities_button">Back to route schedule</string>
+
+    <string name="empty_route_schedule_title">No schedule found</string>
+    <string name="empty_route_schedule_message">Try to change a route or a date</string>
+    <string name="empty_route_schedule_button">Departure cities</string>
 
     <!-- Labels -->
     <string name="label_departure_date">Departure date:</string>

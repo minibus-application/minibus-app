@@ -57,7 +57,9 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
     @Override
     public void onBindViewHolder(@NonNull final CitiesViewHolder viewHolder, final int position) {
         City city = cities.get(position);
-        viewHolder.bind(city, lastSelectedItemId == null ? cities.get(0).getId() : lastSelectedItemId);
+
+        if (lastSelectedItemId == null) viewHolder.bind(city);
+        else viewHolder.bind(city, lastSelectedItemId);
     }
 
     @Override
@@ -97,6 +99,14 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
             textCityName.setText(city.getName());
             textCityName.setTextColor(ContextCompat.getColor(context,
                     cityId.equals(lastSelectedCityId) ? R.color.colorSecondary : R.color.colorTextPrimary));
+        }
+
+        public void bind(City city) {
+            this.city = city;
+            this.cityId = city.getId();
+
+            textCityRegionName.setText(city.getRegion());
+            textCityName.setText(city.getName());
         }
 
         @OnClick(R.id.ll_city_container)

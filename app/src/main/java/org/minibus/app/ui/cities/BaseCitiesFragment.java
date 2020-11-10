@@ -94,7 +94,7 @@ public abstract class BaseCitiesFragment extends BaseDialogFragment implements
      * OnClick methods
      */
 
-    @OnClick(R.id.btn_empty_cities)
+    @OnClick(R.id.btn_empty_action)
     public void onRouteScheduleButtonClick() {
         presenter.onCloseButtonClick();
     }

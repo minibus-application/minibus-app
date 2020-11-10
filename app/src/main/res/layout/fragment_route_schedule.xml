@@ -13,7 +13,7 @@
         android:visibility="visible"
         android:elevation="4dp"
         android:background="@drawable/bg_top_sheet"
-        app:expanded="true">
+        app:expanded="false">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -80,8 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
-            app:msv_errorView="@layout/view_route_schedule_empty"
-            app:msv_emptyView="@layout/view_route_schedule_empty"
+            app:msv_errorView="@layout/view_empty_route_schedule"
+            app:msv_emptyView="@layout/view_empty_route_schedule"
             app:msv_loadingView="@layout/view_loading"
             app:msv_viewState="empty">
 

@@ -132,7 +132,7 @@ public class UserProfileFragment extends BaseDialogFragment implements
      * OnClick methods
      */
 
-    @OnClick(R.id.button_empty_route_schedule)
+    @OnClick(R.id.btn_empty_action)
     public void onRouteScheduleButtonClick() {
         presenter.onRouteScheduleButtonClick();
     }

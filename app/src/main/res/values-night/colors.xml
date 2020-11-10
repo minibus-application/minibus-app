@@ -28,6 +28,8 @@
 
     <!--others-->
     <color name="colorYellow">#FDF16B</color>
+    <color name="colorOrange">#FFD650</color>
+    <color name="colorOrangeVariant">#70FFD650</color>
     <color name="colorGreen">#B2FF59</color>
     <color name="colorStroke">#424242</color>
     <color name="colorCard">#121212</color>

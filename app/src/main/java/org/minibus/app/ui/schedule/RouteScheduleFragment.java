@@ -198,9 +198,9 @@ public class RouteScheduleFragment extends BaseFragment implements
         // shift progress indicator from center to top with a small margin
         // because of the collapsing toolbar layout behavior
         try {
-            RelativeLayout loadingView = (RelativeLayout) multiStateView.getView(MultiStateView.ViewState.LOADING);
-            loadingView.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-            loadingView.setPadding(0, CommonUtil.dpToPx(getMainActivity(), 32), 0, 0);
+            RelativeLayout loadingLayout = (RelativeLayout) multiStateView.getView(MultiStateView.ViewState.LOADING);
+            loadingLayout.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+            loadingLayout.setPadding(0, CommonUtil.dpToPx(getMainActivity(), 32), 0, 0);
         } catch (NullPointerException e) {}
     }
 
@@ -266,7 +266,7 @@ public class RouteScheduleFragment extends BaseFragment implements
      * OnClick methods
      */
 
-    @OnClick(R.id.btn_empty_cities)
+    @OnClick(R.id.btn_empty_action)
     public void onDepartureCitiesButtonClick() {
         presenter.onDepartureCityFieldClick();
     }
