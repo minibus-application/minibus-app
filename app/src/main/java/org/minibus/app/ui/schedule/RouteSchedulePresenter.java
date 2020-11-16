@@ -193,7 +193,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
             addSubscription(getCompleteRouteScheduleObserver(depCity.getId(), storage.getArrivalCity().getId(), depDate));
         } else {
             storage.setDepartureCity(depCity);
-            getView().ifAlive(v -> v.setDepartureCity(depCity.getName()));
+            getView().ifAlive(v -> v.setDepartureCity(depCity.getFullName()));
         }
     }
 
@@ -281,7 +281,7 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
                 })
                 .flatMap(response -> {
                     Route stored = storage.getRoute();
-                    if (!stored.getDepartureCity().getId().equals(depCityId) || !stored.getArrivalCity().getId().equals(arrCityId)) {
+                    if (stored == null || !stored.getDepartureCity().getId().equals(depCityId) || !stored.getArrivalCity().getId().equals(arrCityId)) {
                         storage.setRoute(response);
                         getView().ifAlive(v -> v.setRouteDirection(response.getDepartureCity().getFullName(),
                                 response.getArrivalCity().getFullName()));
