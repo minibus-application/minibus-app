@@ -26,7 +26,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import org.minibus.app.ui.R;
-import org.minibus.app.ui.schedule.trip.RouteTripFragment;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
@@ -143,9 +142,9 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
      */
 
     @OnClick(R.id.btn_confirm)
-    public void onLoginClick() {
+    public void onConfirmClick() {
         hideKeyboard();
-        presenter.onLoginButtonClick(inputUserName.getEditableText().toString(),
+        presenter.onConfirmButtonClick(inputUserName.getEditableText().toString(),
                 inputUserPhone.getEditableText().toString(),
                 inputUserPass.getEditableText().toString(),
                 inputUserConfirmPass.getEditableText().toString(),

@@ -31,7 +31,7 @@ public class LoginPresenter<V extends LoginContract.View> extends BasePresenter<
     }
 
     @Override
-    public void onLoginButtonClick(String name, String phone, String password, String confirmedPassword, boolean isLoginForm) {
+    public void onConfirmButtonClick(String name, String phone, String password, String confirmedPassword, boolean isLoginForm) {
         if (isFormValid(name, phone, password, confirmedPassword, isLoginForm)) {
 
             Single<UserResponse> observable = isLoginForm

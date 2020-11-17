@@ -22,10 +22,10 @@ public interface LoginContract {
 
     interface Presenter<V extends LoginContract.View> extends Contract.Presenter<V> {
         void onCloseButtonClick();
-        void onLoginButtonClick(String userName,
-                                String userPhone,
-                                String userPassword,
-                                String userConfirmPassword,
-                                boolean isLoginForm);
+        void onConfirmButtonClick(String userName,
+                                  String userPhone,
+                                  String userPassword,
+                                  String userConfirmPassword,
+                                  boolean isLoginForm);
     }
 }
