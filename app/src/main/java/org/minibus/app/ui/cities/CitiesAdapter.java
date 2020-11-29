@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +17,7 @@ import org.minibus.app.ui.R;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,10 +38,10 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
         this.clickListener = clickListener;
     }
 
-    public void setData(List<City> cities, String lastSelectedItemId) {
+    public void setData(List<City> cities, final String lastSelectedItemId) {
         this.lastSelectedItemId = lastSelectedItemId;
         this.cities.clear();
-        this.cities.addAll(cities);
+        this.cities.addAll(getSortedBySelected(cities));
 
         notifyDataSetChanged();
     }
@@ -70,6 +70,12 @@ public class CitiesAdapter extends RecyclerView.Adapter<CitiesAdapter.CitiesView
     @Override
     public int getItemCount() {
         return cities == null ? 0 : cities.size();
+    }
+
+    private List<City> getSortedBySelected(List<City> unsorted) {
+        return unsorted.stream()
+                .sorted((o1, o2) -> o1.getId().equals(lastSelectedItemId) ? -1 : o2.getId().equals(lastSelectedItemId) ? 1 : 0)
+                .collect(Collectors.toList());
     }
 
     public interface OnCityItemClickListener {
