@@ -1,23 +1,24 @@
 package org.minibus.app.ui.main;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import org.minibus.app.App;
 import org.minibus.app.AppConstants;
+import org.minibus.app.data.local.AppStorageManager;
 import org.minibus.app.di.components.ActivityComponent;
 
 
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-
         CommonUtil.adjustFontSize(this, (float) AppConstants.MAX_FONT_SCALE_FACTOR);
 
         setContentView(R.layout.activity_main);
@@ -64,6 +63,19 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.container, RouteScheduleFragment.newInstance(), RouteScheduleFragment.class.getName());
             transaction.commitNow();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        int currentNightMode = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Night mode is not active, we're using the light theme
+                break;
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Night mode is active, we're using dark theme
+                break;
         }
     }
 

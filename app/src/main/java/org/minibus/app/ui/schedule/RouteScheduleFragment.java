@@ -26,6 +26,8 @@ import org.minibus.app.ui.profile.UserProfileFragment;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -201,7 +203,9 @@ public class RouteScheduleFragment extends BaseFragment implements
             RelativeLayout loadingLayout = (RelativeLayout) multiStateView.getView(MultiStateView.ViewState.LOADING);
             loadingLayout.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
             loadingLayout.setPadding(0, CommonUtil.dpToPx(getMainActivity(), 32), 0, 0);
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException ignore) {
+
+        }
     }
 
     @Override

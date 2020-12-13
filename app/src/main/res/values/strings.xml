@@ -37,9 +37,7 @@
     <string name="empty_route_schedule_button">Departure cities</string>
 
     <!-- Labels -->
-    <string name="label_departure_date">Departure date:</string>
     <string name="label_travel_time">Travel time:</string>
-    <string name="label_arrival_time">Arrival time:</string>
     <string name="label_trip_route">Route:</string>
     <string name="label_passenger">Passenger:</string>
     <string name="label_departure_station">Departure station:</string>
@@ -80,15 +78,12 @@
     <!--Menu-->
     <string name="menu_profile">Profile</string>
     <string name="menu_login">Login</string>
-    <string name="menu_theme">Toggle theme</string>
     <string name="menu_about">About</string>
     <string name="menu_logout">Logout</string>
 
     <!-- Success -->
     <string name="success_booking_title">Reserved!</string>
     <string name="success_booking_message">To view active bookings, go to your profile</string>
-    <string name="success_login_title">Welcome!</string>
-    <string name="success_login_message">Continue searching for a suitable route or open your profile?</string>
 
     <!-- Progress -->
     <string name="progress_default_title">Loading</string>
@@ -96,16 +91,13 @@
     <string name="progress_default_message">Please wait</string>
 
     <!-- Errors -->
-    <string name="error_default_title">Error</string>
-    <string name="error_default_message">An error occurred while loading data</string>
-    <string name="error_trip_not_available">This ride is no longer available</string>
+    <string name="error_default_message">Oops something went wrong!</string>
     <string name="error_departure_first">Please select your departure point firstly</string>
     <string name="error_complete_route">Please complete your route details</string>
     <string name="error_finding_direction">An error occurred while finding exact route</string>
 
     <!-- Warnings -->
     <string name="warning_default_title">Attention</string>
-    <string name="warning_bookings_limit_message">Active booking limit exceeded</string>
     <string name="warning_no_seats_message">No seats available for booking</string>
     <string name="warning_logout_message">Do you really want to log out?</string>
     <string name="warning_booking_cancel_message">Do you really want to cancel your reservation?</string>
@@ -114,5 +106,4 @@
 
     <!-- Welcome and goodbye -->
     <string name="welcome_user_message">Welcome, %1$s</string>
-    <string name="goodbye_user_message">Come back again, %1$s</string>
 </resources>
