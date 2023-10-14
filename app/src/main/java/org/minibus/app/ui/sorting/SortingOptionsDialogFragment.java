@@ -46,12 +46,12 @@ public class SortingOptionsDialogFragment extends BaseDialogFragment {
         listener = (OnSortingOptionClickListener) getTargetFragment();
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getMainActivity());
-        builder.setTitle(getResources().getString(R.string.sort_by));
+        builder.setTitle(getResources().getString(R.string.sort));
         builder.setSingleChoiceItems(options.toArray(new CharSequence[0]), lastSelectedPosition, (dialogInterface, i) -> {
             selectedPosition = i;
         });
 
-        builder.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+        builder.setPositiveButton(getString(R.string.select), (dialogInterface, i) -> {
             listener.onSortingOptionItemClick(selectedPosition);
         });
 

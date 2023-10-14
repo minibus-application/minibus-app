@@ -5,10 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import org.jetbrains.annotations.NotNull;
 import org.minibus.app.AppConstants;
 import org.minibus.app.data.network.pojo.city.City;
@@ -23,16 +21,13 @@ import org.minibus.app.utils.CommonUtil;
 import org.minibus.app.ui.base.BaseFragment;
 import org.minibus.app.ui.login.LoginFragment;
 import org.minibus.app.ui.profile.UserProfileFragment;
-
 import com.google.android.material.appbar.AppBarLayout;
-
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.appcompat.widget.Toolbar;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,22 +40,19 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import org.minibus.app.ui.base.BackButtonListener;
 import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.custom.SpanningLinearLayoutManager;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kennyc.view.MultiStateView;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.stream.Collectors;
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -509,8 +501,12 @@ public class RouteScheduleFragment extends BaseFragment implements
 
     @Override
     public void openSortingOptions(RouteScheduleAdapter.SortingOption sortingOption) {
+        ArrayList<String> options = DEFAULT_SORTING_OPTION.getOptionsResIds().stream()
+                .map(this::getString)
+                .collect(Collectors.toCollection(ArrayList::new));
+
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList(SortingOptionsDialogFragment.SORT_OPTIONS_KEY, DEFAULT_SORTING_OPTION.getOptions());
+        bundle.putStringArrayList(SortingOptionsDialogFragment.SORT_OPTIONS_KEY, options);
         bundle.putInt(SortingOptionsDialogFragment.SORT_OPTION_POS_KEY, sortingOption.getPosition());
 
         super.openDialogFragment(SortingOptionsDialogFragment.newInstance(), SortingOptionsDialogFragment.REQ_CODE, bundle);

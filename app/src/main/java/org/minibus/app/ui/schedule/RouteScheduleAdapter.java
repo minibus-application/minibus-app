@@ -2,6 +2,7 @@ package org.minibus.app.ui.schedule;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -164,31 +165,31 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     public enum SortingOption {
-        DEPARTURE_TIME("Departure time", 0),
-        ARRIVAL_TIME("Arrival time", 1),
-        CARRIER_RATING("Carrier rating", 2),
-        AVAILABLE_SEATS("Available seats", 3),
-        PRICE("Price", 4);
+        DEPARTURE_TIME(R.string.label_departure_time, 0),
+        ARRIVAL_TIME(R.string.label_arrival_time, 1),
+        CARRIER_RATING(R.string.label_carrier_rating, 2),
+        AVAILABLE_SEATS(R.string.label_available_seats, 3),
+        PRICE(R.string.label_price, 4);
 
-        private String option;
+        private int optionResId;
         private int position;
 
-        SortingOption(String option, int position) {
-            this.option = option;
+        SortingOption(@StringRes int optionResId, int position) {
+            this.optionResId = optionResId;
             this.position = position;
         }
 
-        public String getOption() {
-            return option;
+        public int getOptionResId() {
+            return optionResId;
         }
 
         public int getPosition() {
             return position;
         }
 
-        public ArrayList<String> getOptions() {
+        public ArrayList<Integer> getOptionsResIds() {
             return Arrays.stream(SortingOption.values())
-                    .map(SortingOption::getOption).collect(Collectors.toCollection(ArrayList::new));
+                    .map(SortingOption::getOptionResId).collect(Collectors.toCollection(ArrayList::new));
         }
 
         public static SortingOption getByPosition(int position) {
@@ -214,7 +215,7 @@ public class RouteScheduleAdapter extends RecyclerView.Adapter<RecyclerView.View
         public void bind(Context context, SortingOption selectedSortingOption) {
             this.selectedSortingOption = selectedSortingOption;
 
-            String option = selectedSortingOption.getOption().toLowerCase();
+            String option = context.getString(selectedSortingOption.getOptionResId()).toLowerCase();
             buttonSortBy.setText(context.getResources().getString(R.string.label_sort_by_option, option));
         }
 
