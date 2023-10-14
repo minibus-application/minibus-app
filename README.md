@@ -1,7 +1,7 @@
 # minibus-app
 MVP + Java + RxJava2 + Dagger 2 + ButterKnife + Retrofit 2
 
-A simple demo application for displaying bus schedules among 6 cities, which also includes a calendar of operating days, timeline filtering, user session, and trips booking management. 
+A simple demo application for displaying bus schedules among 6 cities, which also includes a calendar of operating days, timeline filtering, user session, and trips booking management. Development time frame: Sep 2019 - Dec 2020
 
 Designed for demo purposes only. Depends on [minibus-service](https://github.com/n3gbx/minibus-service) repository
 
