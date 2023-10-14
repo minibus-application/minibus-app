@@ -7,7 +7,7 @@ Designed for testing purposes only. Depends on [minibus-service](https://github.
 
 [app-debug.apk](./demo/app-debug.apk), points to locally running service at 10.0.2.2:3000 (using emulator)
 
-[app-stage.apk](./demo/app-debug.apk), points to cloud service
+[app-stage.apk](./demo/app-stage.apk), points to cloud based service
 
 <p align="left">
   <img src="./demo/1.png" height="480">
