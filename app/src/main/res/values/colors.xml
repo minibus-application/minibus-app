@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--accent-->
-    <color name="colorAccent">#1E88E5</color>
+    <color name="colorAccent">#00897B</color>
 
     <!--primary-->
     <color name="colorPrimary">#FFFFFF</color>
@@ -10,8 +10,8 @@
     <color name="colorOnPrimary">#121212</color>
 
     <!--secondary-->
-    <color name="colorSecondary">#1E88E5</color>
-    <color name="colorSecondaryVariant">#BBDEFB</color>
+    <color name="colorSecondary">#00897B</color>
+    <color name="colorSecondaryVariant">#B2DFDB</color>
     <color name="colorOnSecondary">#FFFFFF</color>
 
     <!--background-->
