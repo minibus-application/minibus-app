@@ -1,23 +1,17 @@
 package org.minibus.app.helpers;
 
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import android.content.Context;
 import android.content.DialogInterface;
-import android.view.LayoutInflater;
+import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.custom.ProgressHud;
-import org.minibus.app.ui.main.MainActivity;
-
 
 public class AppAlertsHelper {
 
@@ -78,10 +72,12 @@ public class AppAlertsHelper {
 
     public static Toast showToast(Context context, String msg) {
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
-        toast.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.colorOnPrimary));
-        ((TextView) toast.getView().findViewById(android.R.id.message)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            View view = toast.getView();
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.colorOnPrimary));
+            ((TextView) view.findViewById(android.R.id.message)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        }
         toast.show();
-
         return toast;
     }
 }
