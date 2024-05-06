@@ -10,11 +10,9 @@ import org.minibus.app.data.network.pojo.schedule.RouteTrip;
 import org.minibus.app.ui.R;
 import org.minibus.app.ui.base.BasePresenter;
 import org.minibus.app.helpers.ApiErrorHelper;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 import javax.inject.Inject;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -105,15 +103,11 @@ public class RouteSchedulePresenter<V extends RouteScheduleContract.View> extend
 
             addSubscription(getRouteScheduleObservable(depDate)
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showProgress))
-                    .doFinally(() -> getView().ifAlive(V::showRouteDirection))
                     .subscribeWith(getRouteScheduleObserver()));
         } else {
             addSubscription(getAllRoutesDataObservable()
                     .doOnSubscribe(disposable -> getView().ifAlive(V::showLoadingDataDialog))
-                    .doFinally(() -> {
-                        getView().ifAlive(V::hideLoadingDataDialog);
-                        getView().ifAlive(V::showRouteDirection);
-                    })
+                    .doFinally(() -> getView().ifAlive(V::hideLoadingDataDialog))
                     .flatMap(response -> {
                         Route defaultRoute = response.get(0);
                         City depCity = defaultRoute.getDepartureCity();

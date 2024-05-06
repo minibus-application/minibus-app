@@ -90,7 +90,7 @@ public class RouteScheduleFragment extends BaseFragment implements
     RouteSchedulePresenter<RouteScheduleContract.View> presenter;
 
     private static final RouteScheduleAdapter.SortingOption DEFAULT_SORTING_OPTION = RouteScheduleAdapter.SortingOption.DEPARTURE_TIME;
-    private boolean isRouteDirectionExpanded = true;
+    private boolean isRouteDirectionExpanded = false;
     private Menu menu;
     private LinearLayoutManager layoutManagerRouteSchedule;
     private SpanningLinearLayoutManager layoutManagerCalendar;
