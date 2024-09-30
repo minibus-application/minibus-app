@@ -22,3 +22,9 @@ Designed for demo purposes only. Depends on [minibus-service](https://github.com
   <img src="./demo/5.png" height="480">
   <img src="./demo/6.png" height="480">
 </p>
+
+<p align="left">
+  <img src="./demo/7.png" height="480">
+  <img src="./demo/8.png" height="480">
+  <img src="./demo/9.png" height="480">
+</p>

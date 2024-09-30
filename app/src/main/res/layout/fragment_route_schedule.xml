@@ -122,7 +122,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_arrow_top_light_24dp"
         app:tint="@color/colorPrimary"
-        app:backgroundTint="?colorGreen"
+        app:backgroundTint="?colorSecondary"
         app:layout_anchor="@id/dummy"
         app:layout_anchorGravity="top|right|end"
         app:borderWidth="0dp"

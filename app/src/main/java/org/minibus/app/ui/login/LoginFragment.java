@@ -157,14 +157,14 @@ public class LoginFragment extends BaseDialogFragment implements LoginContract.V
             isLoginForm = false;
             inputContainerUserName.setVisibility(View.VISIBLE);
             inputContainerUserConfirmPass.setVisibility(View.VISIBLE);
-            buttonLogin.setBackgroundColor(ContextCompat.getColor(getMainActivity(), R.color.colorGreen));
+            buttonLogin.setBackgroundColor(ContextCompat.getColor(getMainActivity(), R.color.colorAccent));
             buttonLogin.setText(R.string.sign_up);
             buttonFormSwitcher.setText(getResources().getString(R.string.login_account_exists));
         } else {
             isLoginForm = true;
             inputContainerUserName.setVisibility(View.GONE);
             inputContainerUserConfirmPass.setVisibility(View.GONE);
-            buttonLogin.setBackgroundColor(ContextCompat.getColor(getMainActivity(), R.color.colorAccent));
+            buttonLogin.setBackgroundColor(ContextCompat.getColor(getMainActivity(), R.color.colorSecondary));
             buttonLogin.setText(R.string.login);
             buttonFormSwitcher.setText(getResources().getString(R.string.login_no_account));
         }
