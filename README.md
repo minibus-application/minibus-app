@@ -9,6 +9,11 @@ Designed for demo purposes only. Depends on [minibus-service](https://github.com
 
 [app-stage.apk](./demo/app-stage.apk), points to cloud based service
 
-[![Recording demonstrating core functionality](./demo/demo.mp4)](./demo/demo.mp4)
+## Recordings demonstrating core functionality
+|Authentication|Filtering|Sorting|Booking|
+|------|------|------|------|
+|<video src="https://github.com/user-attachments/assets/cadc33bf-4d72-4595-ab47-980d6036bfbd" height="480">|<video src="https://github.com/user-attachments/assets/d0cf42cc-564b-4c0c-aa85-ad92af32d8bf" height="480">|<video src="https://github.com/user-attachments/assets/10b89dd4-a498-481a-bd15-14a76a84c486" height="480">|<video src="https://github.com/user-attachments/assets/c76ba75d-8b4d-4742-95dc-16b34482a388" height="480">|
 
+## Architecture diagram
 <img src="./demo/architecture_diagram.svg" height="640" alt="Architecture diagram">
+
