@@ -9,22 +9,6 @@ Designed for demo purposes only. Depends on [minibus-service](https://github.com
 
 [app-stage.apk](./demo/app-stage.apk), points to cloud based service
 
-[demo.mp4](./demo/demo.mp4) recording demonstrating core functionality
+[![Recording demonstrating core functionality](./demo/demo.mp4)](./demo/demo.mp4)
 
-<p align="left">
-  <img src="./demo/1.png" height="480">
-  <img src="./demo/2.png" height="480">
-  <img src="./demo/3.png" height="480">
-</p>
-
-<p align="left">
-  <img src="./demo/4.png" height="480">
-  <img src="./demo/5.png" height="480">
-  <img src="./demo/6.png" height="480">
-</p>
-
-<p align="left">
-  <img src="./demo/7.png" height="480">
-  <img src="./demo/8.png" height="480">
-  <img src="./demo/9.png" height="480">
-</p>
+<img src="./demo/architecture_diagram.svg" height="640" alt="Architecture diagram">
