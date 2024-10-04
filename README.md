@@ -12,7 +12,7 @@ Designed for demo purposes only. Depends on [minibus-service](https://github.com
 ## Recordings demonstrating core functionality
 |Authentication|Filtering|Sorting|Booking|
 |------|------|------|------|
-|<video src="https://github.com/user-attachments/assets/cadc33bf-4d72-4595-ab47-980d6036bfbd" height="480">|<video src="https://github.com/user-attachments/assets/d0cf42cc-564b-4c0c-aa85-ad92af32d8bf" height="480">|<video src="https://github.com/user-attachments/assets/10b89dd4-a498-481a-bd15-14a76a84c486" height="480">|<video src="https://github.com/user-attachments/assets/c76ba75d-8b4d-4742-95dc-16b34482a388" height="480">|
+|<video src="https://github.com/user-attachments/assets/5f7791ce-34a4-4aee-b389-af7dc0483f82" height="480">|<video src="https://github.com/user-attachments/assets/ec79cbde-56b9-478d-91d7-37974fdae8bc" height="480">|<video src="https://github.com/user-attachments/assets/699f05c2-6329-4ba5-b2a6-fd26b7d431b3" height="480">|<video src="https://github.com/user-attachments/assets/3e518a0a-8699-4592-a7a0-3169e5269347" height="480">|
 
 ## Architecture diagram
 <img src="./demo/architecture_diagram.svg" height="640" alt="Architecture diagram">
